@@ -33,6 +33,8 @@
 
 ## [Documentación técnica](https://github.com/nnavrio140/TFG-Peluqueria/wiki/DOCUMENTACI%C3%93N-T%C3%89CNICA)
 
+## [Bitacora del proyecto](https://github.com/nnavrio140/TFG-Peluqueria/wiki/BIT%C3%81CORA-DEL-PROYECTO)
+
 ## Bibliografía
 
 ## Autor
