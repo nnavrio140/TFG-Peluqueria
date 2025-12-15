@@ -28,6 +28,6 @@
  - Despliegue:
    -- Docker
    -- AWS Amazon
-## [Esquema entida-relación]()
+## [Esquema entida-relación](https://github.com/nnavrio140/TFG-Peluqueria/wiki/Modelo-Entidad-Relaci%C3%B3n)
 ## Autor
  - Nicolás Navarrete Ríos
