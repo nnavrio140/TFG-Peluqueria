@@ -18,9 +18,10 @@
   -- CRUD Perfil
 ## Arquitectura/Tecnología
  - Frontend:
-   -- React
-   -- Module CSS
-   -- Librerias
+   - Figma para prototipado
+   - React
+   - Module CSS
+   - Librerias
  - Backend:
    -- Laravel
    -- ORM: Eloquent
