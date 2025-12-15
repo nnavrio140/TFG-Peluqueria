@@ -21,7 +21,7 @@
    - Figma para prototipado
    - React
    - Module CSS
-   - Librerias
+   - Librerias: esto hay que completarlo..
  - Backend:
    - Laravel
    - ORM: Eloquent
