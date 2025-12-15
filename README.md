@@ -30,5 +30,10 @@
    - Docker
    - AWS Amazon
 ## [Esquema entida-relación](https://github.com/nnavrio140/TFG-Peluqueria/wiki/Modelo-Entidad-Relaci%C3%B3n)
+
+## [Documentación técnica] (https://github.com/nnavrio140/TFG-Peluqueria/wiki/DOCUMENTACI%C3%93N-T%C3%89CNICA)
+
+## Bibliografía
+
 ## Autor
  - Nicolás Navarrete Ríos
