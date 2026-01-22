@@ -1,0 +1,42 @@
+services:
+  web:
+    container_name: TFG-Peluqueria-web
+    build: .
+    ports:
+      - "${HTTP_PORT}:80"
+    volumes:
+      - ../:/var/www/html
+    user: "${UID}:${GID}"
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=${COMPOSER_ALLOW_SUPERUSER}
+      - HOME=/tmp
+    depends_on:
+      - db
+
+  db:
+    container_name: TFG-Peluqueria-db
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - db_TFG-Peluqueria:/var/lib/mysql
+  
+  phpmyadmin:
+    container_name: TFG-Peluqueria-phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${PMA_PORT}:80"
+    depends_on:
+      - db
+
+volumes:
+  db_TFG-Peluqueria:
