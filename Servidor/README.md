@@ -38,7 +38,7 @@ Dispondremos de tres contenedores (web, db y phpmyadmin) y un fichero de configu
         composer create-project laravel/laravel TFG-Peluqueria
 #### 1.1.1.9. Comprobar el correcto funcionamiento del entorno:
         http://localhost:8081
-        http://localhost:8080/gestor-tareas/public/index.php
+        http://localhost:8080/TFG-Peluqueria/public/index.php
 
 ### 1.1.2. Restauración del entorno
 
