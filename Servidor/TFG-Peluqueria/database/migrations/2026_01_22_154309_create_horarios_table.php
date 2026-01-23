@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('dia_semana');
             $table->time('hora_inicio');
             $table->time('hora_fin');
-            $table->foreignId('id_empleado')->constrained('empleados', 'id_empleado');
+            $table->foreignId('id_empleado')->constrained('empleados');
             $table->timestamps();
         });
     }

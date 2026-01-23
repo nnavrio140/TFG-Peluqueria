@@ -19,7 +19,7 @@ class HistorialCita extends Model
     // Un historial pertenece a una cita
     public function cita()
     {
-        return $this->belongsTo(Cita::class, 'id_cita', 'id_cita');
+        return $this->belongsTo(Cita::class, 'id_cita');
     }
 
     // Relación N:1

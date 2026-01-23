@@ -17,7 +17,7 @@ class Estado extends Model
     // Un estado puede estar en muchas citas
     public function citas()
     {
-        return $this->hasMany(Cita::class, 'id_estado', 'id_estado');
+        return $this->hasMany(Cita::class, 'id_estado');
     }
 }
 

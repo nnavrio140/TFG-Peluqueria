@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('citas', function (Blueprint $table) {
-            $table->id('id_cita');
+            $table->id();
             $table->date('fecha');
             $table->time('hora_inicio');
-            $table->foreignId('id_estado')->constrained('estados', 'id_estado');
+            $table->foreignId('id_estado')->constrained('estados');
             $table->foreignId('user_id')->constrained('usuarios'); // apunta a usuarios.id
-            $table->foreignId('id_servicio')->constrained('servicios', 'id_servicio');
-            $table->foreignId('id_empleado')->constrained('empleados', 'id_empleado');
+            $table->foreignId('id_servicio')->constrained('servicios');
+            $table->foreignId('id_empleado')->constrained('empleados');
             $table->timestamps();
         });
     }

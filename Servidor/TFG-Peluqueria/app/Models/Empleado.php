@@ -21,20 +21,20 @@ class Empleado extends Model
     // Un empleado pertenece a un usuario
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'id_usuario', 'id_usuario');
+        return $this->belongsTo(User::class, 'id_usuario');
     }
 
     // Relación 1:N
     // Un empleado puede tener varios horarios
     public function horarios()
     {
-        return $this->hasMany(Horario::class, 'id_empleado', 'id_empleado');
+        return $this->hasMany(Horario::class, 'id_empleado');
     }
 
     // Relación 1:N
     // Un empleado puede atender muchas citas
     public function citas()
     {
-        return $this->hasMany(Cita::class, 'id_empleado', 'id_empleado');
+        return $this->hasMany(Cita::class, 'id_empleado');
     }
 }

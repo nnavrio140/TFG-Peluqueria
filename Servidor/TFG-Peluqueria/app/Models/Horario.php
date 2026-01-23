@@ -19,7 +19,7 @@ class Horario extends Model
     // Un horario pertenece a un empleado
     public function empleado()
     {
-        return $this->belongsTo(Empleado::class, 'id_empleado', 'id_empleado');
+        return $this->belongsTo(Empleado::class, 'id_empleado');
     }
 }
 

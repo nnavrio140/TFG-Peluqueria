@@ -18,7 +18,7 @@ class Rol extends Model
     // Un rol puede estar asignado a muchos usuarios
     public function usuarios()
     {
-        return $this->hasMany(User::class, 'id_rol', 'id_rol');
+        return $this->hasMany(User::class, 'id_rol');
     }
 }
 
