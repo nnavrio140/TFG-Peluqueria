@@ -16,6 +16,9 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    protected $table = 'usuarios';
+    protected $primaryKey = 'user_id';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -34,7 +37,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password',
+        'contraseña',
         'remember_token',
     ];
 
@@ -47,7 +50,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'contraseña' => 'hashed',
         ];
     }
 
@@ -55,21 +58,21 @@ class User extends Authenticatable
     // Un usuario pertenece a un solo rol
     public function rol()
     {
-        return $this->belongsTo(Rol::class, 'id_rol', 'id_rol');
+        return $this->belongsTo(Rol::class, 'id_rol');
     }
 
     // Relación 1:N
     // Un usuario puede tener muchas citas
     public function citas()
     {
-        return $this->hasMany(Cita::class, 'id_usuario', 'id_usuario');
+        return $this->hasMany(Cita::class, 'id_usuario');
     }
 
     // Relación 1:1
     // Un usuario puede ser un empleado
     public function empleado()
     {
-        return $this->hasOne(Empleado::class, 'id_usuario', 'id_usuario');
+        return $this->hasOne(Empleado::class, 'id_usuario');
     }
 }
 

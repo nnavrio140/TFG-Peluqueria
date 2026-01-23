@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id('id_cita');
             $table->date('fecha');
             $table->time('hora_inicio');
-            $table->foreignId('id_usuario')->constrained('usuarios', 'id_usuario');
-            $table->foreignId('id_servicio')->constrained('servicios', 'id_servicio');
             $table->foreignId('id_estado')->constrained('estados', 'id_estado');
+            $table->foreignId('user_id')->constrained('usuarios'); // apunta a usuarios.id
+            $table->foreignId('id_servicio')->constrained('servicios', 'id_servicio');
             $table->foreignId('id_empleado')->constrained('empleados', 'id_empleado');
             $table->timestamps();
         });

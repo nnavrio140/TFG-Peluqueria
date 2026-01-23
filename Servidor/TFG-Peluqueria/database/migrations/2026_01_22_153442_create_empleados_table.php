@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('especialidad');
             $table->decimal('salario', 10, 2);
             $table->boolean('activo')->default(true);
-            $table->foreignId('id_usuario')->constrained('usuarios', 'id_usuario');
+            $table->foreignId('user_id')->constrained('usuarios'); // apunta a usuarios.id
             $table->timestamps();
         });
     }
