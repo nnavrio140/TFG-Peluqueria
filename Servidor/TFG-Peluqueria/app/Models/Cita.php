@@ -4,6 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Servicio;
+use App\Models\Empleado;
+use App\Models\Estado;
+use App\Models\HistorialCita;
+
+
 class Cita extends Model
 {
     protected $fillable = [

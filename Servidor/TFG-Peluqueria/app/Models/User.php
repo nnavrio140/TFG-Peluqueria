@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 use App\Models\Rol;
+use App\Models\Cita;
+use App\Models\Empleado;
 
 class User extends Authenticatable
 {
@@ -19,10 +21,11 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
+     protected $fillable = [
+        'nombre',
         'email',
-        'password',
+        'contraseña',
+        'id_rol'
     ];
 
     /**
@@ -48,7 +51,25 @@ class User extends Authenticatable
         ];
     }
 
-    public function rol() {
-        return $this->belongsTo(Rol::class, 'id_rol');
+    // Relación N:1
+    // Un usuario pertenece a un solo rol
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class, 'id_rol', 'id_rol');
+    }
+
+    // Relación 1:N
+    // Un usuario puede tener muchas citas
+    public function citas()
+    {
+        return $this->hasMany(Cita::class, 'id_usuario', 'id_usuario');
+    }
+
+    // Relación 1:1
+    // Un usuario puede ser un empleado
+    public function empleado()
+    {
+        return $this->hasOne(Empleado::class, 'id_usuario', 'id_usuario');
     }
 }
+

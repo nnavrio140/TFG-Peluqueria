@@ -13,13 +13,14 @@ class Servicio extends Model
         'nombre_servicio',
         'descripcion',
         'precio',
-        'duracion'
+        'duracion',
     ];
 
-    // Relaciones
+    // Relación 1:N
+    // Un servicio puede estar asociado a muchas citas
     public function citas()
     {
-        return $this->hasMany(Cita::class, 'id_servicio');
+        return $this->hasMany(Cita::class, 'id_servicio', 'id_servicio');
     }
 }
 
