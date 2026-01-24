@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             ServicioSeeder::class,
             HorarioSeeder::class,
             CitaSeeder::class,
+            HistorialCitaSeeder::class,
         ]);
 
         // if (app()->environment('local')) {

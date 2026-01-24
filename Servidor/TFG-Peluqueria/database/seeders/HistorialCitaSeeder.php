@@ -5,15 +5,15 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\Cita;
+use App\Models\HistorialCita;
 
-class CitaSeeder extends Seeder
+class HistorialCitaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Cita::factory()->count(10)->create();
+        HistorialCita::factory()->count(20)->create();
     }
 }

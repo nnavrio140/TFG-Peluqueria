@@ -16,7 +16,7 @@ class CitaFactory extends Factory
     {
         return [
             // Selecciona un usuario con rol 'usuario'
-            'id_usuario' => User::whereHas('rol', fn ($q) => $q->where('slug', 'usuario')) ->inRandomOrder()->first()->id,
+            'user_id' => User::whereHas('rol', fn ($q) => $q->where('slug', 'usuario'))->inRandomOrder()->first()->id,
             //Coger las FK aleatorias
             'id_empleado' => Empleado::inRandomOrder()->first()->id,
             'id_servicio' => Servicio::inRandomOrder()->first()->id,
@@ -24,7 +24,7 @@ class CitaFactory extends Factory
             //Genera fedha entre hoy y un mes a partir de hoy
             'fecha' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             //Genera horas en formato 24 horas
-            'hora' => $this->faker->time('H:i'),
+            'hora_inicio' => $this->faker->time('H:i'),
         ];
     }
 }
