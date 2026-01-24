@@ -10,12 +10,12 @@ class ServicioSeeder extends Seeder
 {
     public function run(): void
     {
-        Servicio::firstOrCreate(['nombre_servicio' => 'Corte de Cabello', 'descripcion' => 'Corte tradicional', 'precio' => 15.00, 'duracion' => 30]);
-        Servicio::firstOrCreate(['nombre_servicio' => 'Afeitado Clásico', 'descripcion' => 'Afeitado tradicional con brocha y navaja', 'precio' => 21.00, 'duracion' => 30]);
-        Servicio::firstOrCreate(['nombre_servicio' => 'Arreglo de Barba', 'descripcion' => 'Perfilado y arreglo de barba', 'precio' => 9.00, 'duracion' => 30]);
-        Servicio::firstOrCreate(['nombre_servicio' => 'Peinado', 'descripcion' => 'Peinado y estilo final', 'precio' => 8.00, 'duracion' => 15]);
-        Servicio::firstOrCreate(['nombre_servicio' => 'Lavado y Peinado', 'descripcion' => 'Lavado de cabello y peinado', 'precio' => 6.00, 'duracion' => 15]);
-        Servicio::firstOrCreate(['nombre_servicio' => 'Corte + Barba', 'descripcion' => 'Combo de corte de cabello y arreglo de barba', 'precio' => 39.00, 'duracion' => 60]);
-        Servicio::firstOrCreate(['nombre_servicio' => 'Corte + Afeitado', 'descripcion' => 'Corte de cabello y afeitado clásico', 'precio' => 40.00, 'duracion' => 50]);
+        Servicio::firstOrCreate(['nombre_servicio' => 'Corte & Barba', 'descripcion' => 'Corte moderno combinado con arreglo y perfilado de barba, adaptado a tu estilo.', 'precio' => 12.00, 'duracion' => 30]);
+        Servicio::firstOrCreate(['nombre_servicio' => 'Afeitado Clásico', 'descripcion' => 'Afeitado tradicional con navaja y toalla caliente, usando productos premium.', 'precio' => 8.00, 'duracion' => 15]);
+        Servicio::firstOrCreate(['nombre_servicio' => 'Facial & Shave', 'descripcion' => 'Tratamiento facial exclusivo junto con afeitado completo para una piel fresca y revitalizada.', 'precio' => 20.00, 'duracion' => 45]);
+        Servicio::firstOrCreate(['nombre_servicio' => 'Facial', 'descripcion' => 'Limpieza profunda del rostro que elimina impurezas, hidrata y devuelve vitalidad a la piel.', 'precio' =>15.00, 'duracion' => 30]);
+        Servicio::firstOrCreate(['nombre_servicio' => 'Mustache Trimming', 'descripcion' => 'Perfilado y recorte de bigote con precisión para un look elegante y bien cuidado.', 'precio' => 5.00, 'duracion' => 15]);
+        Servicio::firstOrCreate(['nombre_servicio' => 'Hair Styling', 'descripcion' => 'Peinado y acabado profesional, ideal para eventos especiales o el día a día.', 'precio' => 6.00, 'duracion' => 15]);
+
     }
 }

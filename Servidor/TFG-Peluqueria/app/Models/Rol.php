@@ -8,6 +8,7 @@ use App\Models\User;
 
 class Rol extends Model
 {
+    protected $table = 'roles';
     protected $fillable = [
         'nombre_rol', 
         'descripcion',

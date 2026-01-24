@@ -25,12 +25,13 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            RolSeeder::class,
+            RoleSeeder::class,
             UsuarioSeeder::class,
-            Empleado::class,
+            EmpleadoSeeder::class,
             EstadoSeeder::class,
             ServicioSeeder::class,
             HorarioSeeder::class,
+            CitaSeeder::class,
         ]);
 
         // if (app()->environment('local')) {

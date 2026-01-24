@@ -9,8 +9,8 @@ class EmpleadoSeeder extends Seeder
 {
     public function run(): void
     {
-        Empleado::firstOrCreate(['id_empleado' => 1, 'especialidad' => 'Corte', 'salario' => 1500, 'activo' => true, 'id_usuario' => 1, ]);
-        Empleado::firstOrCreate(['id_empleado' => 2, 'especialidad' => 'Color', 'salario' => 1300, 'activo' => true,'id_usuario' => 2, ]);
-        Empleado::firstOrCreate(['id_empleado' => 3, 'especialidad' => 'Peinado', 'salario' => 1200, 'activo' => true,'id_usuario' => 3, ]);
+        Empleado::firstOrCreate(['especialidad' => 'Corte & Estilo', 'salario' => 1500, 'activo' => true, 'user_id' => 2, ]);
+        Empleado::firstOrCreate(['especialidad' => 'Barbero Clásico', 'salario' => 1300, 'activo' => true,'user_id' => 3, ]);
+        Empleado::firstOrCreate(['especialidad' => 'Facial & Grooming', 'salario' => 1200, 'activo' => true,'user_id' => 4, ]);
     }
 }

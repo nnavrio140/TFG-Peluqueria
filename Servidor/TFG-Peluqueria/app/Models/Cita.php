@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use App\Models\Servicio;
 use App\Models\Empleado;
@@ -20,6 +21,9 @@ class Cita extends Model
         'id_estado',
         'id_empleado'
     ];
+
+    // Necesario si tiene factory
+    use HasFactory;
 
     // Relaciones correctas
 

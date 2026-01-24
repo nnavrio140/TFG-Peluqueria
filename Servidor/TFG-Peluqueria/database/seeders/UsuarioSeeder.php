@@ -16,6 +16,11 @@ class UsuarioSeeder extends Seeder
 
         User::firstOrCreate(['nombre' => 'admin', 'email' => 'admin@admin.com', 'password' => bcrypt('1234'), 'role_id' => $adminRole->id]);
         User::firstOrCreate(['nombre' => 'juanje', 'email' => 'juanje@admin.com', 'password' => bcrypt('1234'), 'role_id' => $empleadoRole->id]);
+        User::firstOrCreate(['nombre' => 'nico', 'email' => 'nico@admin.com', 'password' => bcrypt('1234'), 'role_id' => $empleadoRole->id]);
+        User::firstOrCreate(['nombre' => 'antonio', 'email' => 'antonio@admin.com', 'password' => bcrypt('1234'), 'role_id' => $empleadoRole->id]);
+
+
+        User::factory()->count(10)->create();
 
     
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use App\Models\Cita;
 use App\Models\Estado;
@@ -14,6 +15,9 @@ class HistorialCita extends Model
         'id_cita',
         'id_estado',
     ];
+
+    // Necesario si tiene factory
+    use HasFactory;
 
     // Relación N:1
     // Un historial pertenece a una cita
