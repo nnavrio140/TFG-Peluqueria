@@ -6,6 +6,7 @@ use App\Models\Cita;
 use App\Models\Estado;
 use App\Models\Servicio;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -14,8 +15,8 @@ class DashboardController extends Controller
         // Obtener usuario logado
         $usuario = Auth::user();
 
-        // Obtener todas las citas
-        $citas = Cita::with(['usuario', 'servicio', 'empleado', 'estado'])->get();
+        // Obtener citas del día actual 
+        $citas = Cita::with(['usuario', 'servicio', 'empleado', 'estado'])->whereDate('fecha', Carbon::today())->get();
 
         // Obtener todos los servicios
         $servicios = Servicio::all();

@@ -21,7 +21,7 @@ class Empleado extends Model
     // Un empleado pertenece a un usuario
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'id_usuario');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     // Relación 1:N

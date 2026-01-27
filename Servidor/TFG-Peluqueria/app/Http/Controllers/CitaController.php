@@ -34,7 +34,7 @@ class CitaController extends Controller
         $request->validate([
            'fecha' => 'required|date',
            'hora_inicio' => 'required',
-           'id_usuario' => 'required|exists:usuarios,id',
+           'user_id' => 'required|exists:usuarios,id',
            'id_empleado' => 'required|exists:empleados,id',
            'id_servicio' => 'required|exists:servicios,id',
            'id_estado' => 'required|exists:estados,id',
@@ -52,7 +52,12 @@ class CitaController extends Controller
 
     public function edit(Cita $cita)
     {
-        return view('citas.edit', compact('cita'));
+         // Obtener datos para el formulario
+        $estados = Estado::all();
+        $usuarios = User::all();
+        $empleados = Empleado::all();
+        $servicios = Servicio::all();
+        return view('citas.edit', compact('cita', 'estados', 'usuarios', 'empleados', 'servicios'));
     }
 
     public function update(Request $request, Cita $cita)
@@ -60,7 +65,7 @@ class CitaController extends Controller
          $request->validate([
            'fecha' => 'required|date',
            'hora_inicio' => 'required',
-           'id_usuario' => 'required|exists:usuarios,id',
+           'user_id' => 'required|exists:usuarios,id',
            'id_empleado' => 'required|exists:empleados,id',
            'id_servicio' => 'required|exists:servicios,id',
            'id_estado' => 'required|exists:estados,id',

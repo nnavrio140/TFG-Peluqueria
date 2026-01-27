@@ -72,7 +72,7 @@ class User extends Authenticatable
     // Un usuario puede ser un empleado
     public function empleado()
     {
-        return $this->hasOne(Empleado::class, 'id_usuario');
+        return $this->hasOne(Empleado::class, 'user_id');
     }
 }
 
