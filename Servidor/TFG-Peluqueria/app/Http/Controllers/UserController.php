@@ -67,13 +67,13 @@ class UserController extends Controller
     }
 
     public function destroy(User $usuario)
-{
-    // Borrar sesiones del usuario
-    DB::table('sessions')->where('user_id', $usuario->id)->delete();
+    {
+        // Borrar sesiones del usuario
+        DB::table('sessions')->where('user_id', $usuario->id)->delete();
 
-    // Borrar el usuario
-    $usuario->delete();
+        // Borrar el usuario
+        $usuario->delete();
 
-    return redirect()->route('usuarios.index');
+        return redirect()->route('usuarios.index');
     }
 }
