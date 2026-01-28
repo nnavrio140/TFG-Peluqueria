@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\CitaController;
+use App\Http\Controllers\UserController;
+
 
 // Autenticación
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -22,5 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::resource('servicios', ServicioController::class);
     Route::resource('citas', CitaController::class);
+    Route::resource('usuarios', UserController::class);
 });
 

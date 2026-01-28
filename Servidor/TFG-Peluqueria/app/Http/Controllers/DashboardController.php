@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cita;
 use App\Models\Estado;
+use App\Models\User;
 use App\Models\Servicio;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -21,9 +22,12 @@ class DashboardController extends Controller
         // Obtener todos los servicios
         $servicios = Servicio::all();
 
+         // Obtener todos los usuarios
+        $usuarios = User::all();
+
         // Obtener todos los estados
         $estados = Estado::all();
 
-        return view('dashboard.index', compact('usuario', 'citas', 'servicios', 'estados'));
+        return view('dashboard.index', compact('usuario', 'citas', 'servicios', 'estados', 'usuarios'));
     }
 }

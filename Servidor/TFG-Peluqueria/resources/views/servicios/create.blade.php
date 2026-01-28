@@ -1,4 +1,4 @@
- <h1>Ver Crear Servicio</h1>
+ <h1>Crear Servicio</h1>
 <form action="{{ route('servicios.store') }}" method="POST">
     @csrf
 

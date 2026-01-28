@@ -10,4 +10,7 @@
     <h2>Lista de citas</h2>
     @include('citas._list')
     <p><a href="{{ route('citas.index') }}">Lista completa de citas</a></p>
+    <h2>Lista de usuarios</h2>
+    @include('usuarios._list')
+    <p><a href="{{ route('usuarios.index') }}">Lista completa de usuarios</a></p>
 @endsection
