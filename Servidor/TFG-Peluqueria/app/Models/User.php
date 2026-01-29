@@ -65,7 +65,7 @@ class User extends Authenticatable
     // Un usuario puede tener muchas citas
     public function citas()
     {
-        return $this->hasMany(Cita::class, 'id_usuario');
+        return $this->hasMany(Cita::class, 'user_id');
     }
 
     // Relación 1:1

@@ -17,6 +17,7 @@
     @if(auth()->user()->rol->slug === 'admin' || auth()->user()->rol->slug === 'empleado')
     <label>Usuario</label>
     <select name="user_id">
+        <option value="">Seleccione un usuario</option>
         @foreach($usuarios as $usuario)
             <option value="{{ $usuario->id }}" {{ old('user_id') == $usuario->id ? 'selected' : '' }}>
                 {{ $usuario->nombre }}
@@ -34,6 +35,7 @@
     
     <label>Empleado</label>
     <select name="id_empleado">
+        <option value="">Seleccione un empleado</option>
         @foreach($empleados as $empleado)
             <option value="{{ $empleado->id }}" {{ old('id_empleado') == $empleado->id ? 'selected' : '' }}>
                 {{ $empleado->usuario->nombre }}
@@ -46,6 +48,7 @@
 
      <label>Servicio</label>
     <select name="id_servicio">
+        <option value="">Seleccione un servicio</option>
         @foreach($servicios as $servicio)
             <option value="{{ $servicio->id }}" {{ old('id_servicio') == $servicio->id ? 'selected' : '' }}>
                 {{ $servicio->nombre_servicio }}
@@ -58,6 +61,7 @@
 
     <label>Estado</label>
     <select name="id_estado">
+        <option value="">Seleccione un estado</option>
         @foreach($estados as $estado)
             <option value="{{ $estado->id }}" {{ old('id_estado') == $estado->id ? 'selected' : '' }}>
                 {{ $estado->nombre_estado }}

@@ -10,6 +10,7 @@
 
    <label>Rol</label>
     <select name="role_id">
+        <option value="">Seleccione un rol</option>
         @foreach($roles as $rol)
             <option value="{{ $rol->id }}" {{ old('rol') == $rol->id ? 'selected' : '' }}>
                 {{ $rol->slug }}

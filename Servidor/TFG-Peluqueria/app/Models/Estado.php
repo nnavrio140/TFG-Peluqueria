@@ -8,6 +8,9 @@ use App\Models\Cita;
 
 class Estado extends Model
 {
+    protected $table = 'estados';
+    public $timestamps = true;
+    
     protected $fillable = [
     'nombre_estado', 
     'descripcion'

@@ -12,7 +12,7 @@
         <label>Rol</label>
             <select name="role_id">
             @foreach($roles as $rol)
-                    <option value="{{ $rol->id }}" {{ old('rol') == $rol->id ? 'selected' : '' }}>
+                   <option value="{{ $rol->id }}" {{ old('role_id', $usuario->role_id) == $rol->id ? 'selected' : '' }}>
                         {{ $rol->slug }}
                     </option>
                 @endforeach
@@ -24,12 +24,6 @@
         <label>Email</label>
         <input type="email" name="email" value="{{ old('email', $usuario->email) }}"></br></br>
         @error('email')
-            <div class="error">{{ $message }}</div>
-        @enderror
-
-        <label>Password</label>
-        <input type="password" name="password" value="{{ old('password', $usuario->password) }}"></br></br>
-        @error('password')
             <div class="error">{{ $message }}</div>
         @enderror
 

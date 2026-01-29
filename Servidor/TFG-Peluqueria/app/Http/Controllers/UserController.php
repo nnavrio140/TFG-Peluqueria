@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Rol;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -21,15 +22,8 @@ class UserController extends Controller
         return view('usuarios.create', compact('roles'));
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $request->validate([
-            'nombre'   => 'required|string|max:255',
-            'email'    => 'required|email|unique:usuarios,email',
-            'password' => 'required|string|min:8|confirmed',
-            'role_id'  => 'required|exists:roles,id',
-        ]);
-
         User::create($request->only(['nombre', 'email', 'password', 'role_id']));
 
         return redirect()->route('usuarios.index');
@@ -46,30 +40,33 @@ class UserController extends Controller
         return view('usuarios.edit', compact('usuario', 'roles'));
     }
 
-    public function update(Request $request, User $usuario)
+    public function update(UpdateUserRequest $request, User $usuario)
     {
-        $request->validate([
-            'nombre'   => 'required|string|max:255',
-            'email'    => 'required|email|unique:usuarios,email,' . $usuario->id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'role_id'  => 'required|exists:roles,id',
-        ]);
-
-        $data = $request->only(['nombre', 'email', 'role_id']);
-
-        if ($request->filled('password')) {
-            $data['password'] = $request->password;
-        }
-
-        $usuario->update($data);
+        $validated = $request->validated();
+        $usuario->update($validated);
 
         return redirect()->route('usuarios.index');
     }
 
     public function destroy(User $usuario)
     {
+        //Todo esto se ahoraría con claves foráneas y on delete cascade, pero lo hago así para practicar
+
         // Borrar sesiones del usuario
         DB::table('sessions')->where('user_id', $usuario->id)->delete();
+
+        // Borrar historial de las citas del usuario
+        foreach ($usuario->citas as $cita) {
+            $cita->historial()->delete();
+        }
+
+        // Borrar citas del usuario
+        $usuario->citas()->delete();
+
+        // Borrar empleado asociado si existe
+        if ($usuario->empleado) {
+            $usuario->empleado()->delete();
+        }
 
         // Borrar el usuario
         $usuario->delete();

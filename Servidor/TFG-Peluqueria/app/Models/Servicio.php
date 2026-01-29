@@ -8,6 +8,8 @@ use App\Models\Cita;
 
 class Servicio extends Model
 {
+    protected $table = 'servicios';
+    public $timestamps = true;
 
     protected $fillable = [
         'nombre_servicio',

@@ -19,7 +19,7 @@
         <label>Usuario</label>
         <select name="user_id">
             @foreach($usuarios as $usuario)
-                <option value="{{ $usuario->id }}" {{ old('user_id') == $usuario->id ? 'selected' : '' }}>
+                <option value="{{ $usuario->id }}" {{ old('user_id', $cita->user_id) == $usuario->id ? 'selected' : '' }}>
                     {{ $usuario->nombre }}
                 </option>
             @endforeach
@@ -36,7 +36,7 @@
         <label>Empleado</label>
         <select name="id_empleado">
             @foreach($empleados as $empleado)
-                <option value="{{ $empleado->id }}" {{ old('id_empleado') == $empleado->id ? 'selected' : '' }}>
+                <option value="{{ $empleado->id }}" {{ old('id_empleado', $cita->id_empleado) == $empleado->id ? 'selected' : '' }}>
                     {{ $empleado->usuario->nombre }}
                 </option>
             @endforeach
@@ -48,7 +48,7 @@
         <label>Servicio</label>
         <select name="id_servicio">
             @foreach($servicios as $servicio)
-                <option value="{{ $servicio->id }}" {{ old('id_servicio') == $servicio->id ? 'selected' : '' }}>
+                <option value="{{ $servicio->id }}" {{ old('id_servicio', $cita->id_servicio) == $servicio->id ? 'selected' : '' }}>
                     {{ $servicio->nombre_servicio }}
                 </option>
             @endforeach
@@ -60,7 +60,7 @@
         <label>Estado</label>
         <select name="id_estado">
             @foreach($estados as $estado)
-                <option value="{{ $estado->id }}" {{ old('id_estado') == $estado->id ? 'selected' : '' }}>
+                <option value="{{ $estado->id }}" {{ old('id_estado', $cita->id_estado) == $estado->id ? 'selected' : '' }}>
                     {{ $estado->nombre_estado }}
                 </option>
             @endforeach

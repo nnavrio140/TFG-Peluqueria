@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCitaRequest;
+use App\Http\Requests\UpdateCitaRequest;
 use Illuminate\Http\Request;
 use App\Models\Servicio;
 use App\Models\User;
@@ -29,19 +31,12 @@ class CitaController extends Controller
         return view('citas.create', compact('estados', 'usuarios', 'empleados', 'servicios'));
     }
 
-    public function store(Request $request)
+    public function store(StoreCitaRequest $request)
     {
-        $request->validate([
-           'fecha' => 'required|date',
-           'hora_inicio' => 'required',
-           'user_id' => 'required|exists:usuarios,id',
-           'id_empleado' => 'required|exists:empleados,id',
-           'id_servicio' => 'required|exists:servicios,id',
-           'id_estado' => 'required|exists:estados,id',
-        ]);
-
-        Cita::create($request->all());
-
+        //Comprobamos y guardamos la cita
+        $validated = $request->validated();
+        //Creamos la cita
+        Cita::create($validated);
         return redirect()->route('citas.index')->with('success', 'Cita creada correctamente');
     }
 
@@ -60,24 +55,20 @@ class CitaController extends Controller
         return view('citas.edit', compact('cita', 'estados', 'usuarios', 'empleados', 'servicios'));
     }
 
-    public function update(Request $request, Cita $cita)
+    public function update(UpdateCitaRequest $request, Cita $cita)
     {
-         $request->validate([
-           'fecha' => 'required|date',
-           'hora_inicio' => 'required',
-           'user_id' => 'required|exists:usuarios,id',
-           'id_empleado' => 'required|exists:empleados,id',
-           'id_servicio' => 'required|exists:servicios,id',
-           'id_estado' => 'required|exists:estados,id',
-        ]);
-
-        $cita->update($request->all());
+         $validated = $request->validated();
+         $cita->update($validated);
 
         return redirect()->route('citas.index')->with('success', 'Cita actualizada correctamente');
     }
 
     public function destroy(Cita $cita)
     {
+        // Borrar el historial de la cita primero
+        $cita->historial()->delete();
+        
+        // Luego borrar la cita
         $cita->delete();
 
         return redirect()->route('citas.index')->with('success', 'Cita eliminada correctamente');
