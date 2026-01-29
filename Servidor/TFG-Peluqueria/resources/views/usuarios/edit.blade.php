@@ -27,6 +27,18 @@
             <div class="error">{{ $message }}</div>
         @enderror
 
+        <label>Password (si esta en blanco no cambia la password actual)</label>
+        <input type="password" name="password"></br></br>
+        @error('password')
+            <div class="error">{{ $message }}</div>
+        @enderror
+
+        <label>Confirmar Password</label>
+        <input type="password" name="password_confirmation"><br><br>
+         @error('password_confirmation')
+            <div class="error">{{ $message }}</div>
+        @enderror
+
         <button type="submit">Guardar</button>
     </form>
 

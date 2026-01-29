@@ -13,6 +13,19 @@ class UpdateUserRequest extends FormRequest
     {
         return true;
     }
+/**
+ * Elimina la contraseña del request si está vacía antes de validar.
+ * Si el usuario deja el campo de contraseña vacío
+ * Al editar su perfil, no se cambia la contraseña en la base de datos.
+ * Es como que se ejecuta un "if" antes de la validación.
+ */
+    protected function prepareForValidation(): void
+    {
+        if (empty($this->password)) {
+            $this->request->remove('password');
+            $this->request->remove('password_confirmation');
+        }
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,7 +36,8 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'nombre'   => 'required|string|max:255',
-            'email'    => 'required|email:rfc,dns|unique:usuarios,email,' . $this->route('usuario')->id,
+            'email'    => 'required|email|unique:usuarios,email,' . $this->route('usuario')->id,
+            'password' => 'sometimes|string|min:8|confirmed',
             'role_id'  => 'required|exists:roles,id',
         ];
     }
@@ -39,6 +53,9 @@ class UpdateUserRequest extends FormRequest
             'email.unique'    => 'El email ya está en uso por otro usuario.',
             'role_id.required'  => 'El campo rol es obligatorio.',
             'role_id.exists'    => 'El rol seleccionado no es válido.',
+            'password.string' => 'El campo contraseña debe ser una cadena de texto.',
+            'password.min'    => 'El campo contraseña debe tener al menos 8 caracteres.',
+            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
         ];
     }
 }
