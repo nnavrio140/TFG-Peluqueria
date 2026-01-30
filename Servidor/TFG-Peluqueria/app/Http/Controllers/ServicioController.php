@@ -6,9 +6,17 @@ use App\Http\Requests\StoreServicioRequest;
 use App\Http\Requests\UpdateServicioRequest;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use App\Services\ServicioService;
 
 class ServicioController extends Controller
 {
+    protected $servicioService;
+    
+    public function __construct(ServicioService $servicioService)
+    {
+        $this->servicioService = $servicioService;
+    }
+
     public function index()
     {
         // Obtener todos los servicios
@@ -27,7 +35,7 @@ class ServicioController extends Controller
         //Comprobamos y guardamos el servicio
         $validated = $request->validated();
         //Creamos el servicio ya comprobado
-        Servicio::create($validated);
+        $this->servicioService->createServicio($validated);
         return redirect()->route('servicios.index')->with('success', 'Servicio creado correctamente');
     }
 
