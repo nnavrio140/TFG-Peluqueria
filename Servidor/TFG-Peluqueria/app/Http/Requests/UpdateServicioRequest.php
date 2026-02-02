@@ -11,7 +11,10 @@ class UpdateServicioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+         if($this->user()->isAdminOrEmploye()){
+            return true;
+        }
+        return false;
     }
 
     /**

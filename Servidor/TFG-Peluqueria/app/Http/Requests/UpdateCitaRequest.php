@@ -11,7 +11,11 @@ class UpdateCitaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        //Permitir a administradores y empleados y propiertarios de la cita
+        if($this->user()->isAdminOrEmploye() || $this->user()->id == $this->cita->user_id){
+            return true;  
+        }
+        return false;
     }
 
     /**

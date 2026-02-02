@@ -3,13 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Rol;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Services\UsuarioService;
 
 class UserController extends Controller
 {
+    protected $usuarioService;
+
+    public function __construct(UsuarioService $usuarioService)
+    {
+        $this->usuarioService = $usuarioService;
+    }
+
     public function index()
     {
         $usuarios = User::all();
@@ -22,11 +31,11 @@ class UserController extends Controller
         return view('usuarios.create', compact('roles'));
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(Request $request)
     {
-        User::create($request->only(['nombre', 'email', 'password', 'role_id']));
+        $this->usuarioService->createUser($request->all());
 
-        return redirect()->route('usuarios.index');
+        return redirect()->route('usuarios.index')->with('success', 'Usuario creado y cita asignada');
     }
 
     public function show(User $usuario)

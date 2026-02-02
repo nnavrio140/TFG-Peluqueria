@@ -16,9 +16,17 @@ class DashboardController extends Controller
         // Obtener usuario logado
         $usuario = Auth::user();
 
-        // Obtener citas del día actual 
-        $citas = Cita::with(['usuario', 'servicio', 'empleado', 'estado'])->whereDate('fecha', Carbon::today())->get();
-
+        // Obtener citas segun roles
+        if ($usuario->isAdmin()) {
+            //Si es admin obtener todas las citas del día actual
+            $citas = Cita::with(['usuario', 'servicio', 'empleado', 'estado'])->whereDate('fecha', Carbon::today())->get();
+        } elseif ($usuario->isEmploye()) {
+            // Si es empleado obtener todas las citas del día actual suyas
+            $citas = Cita::with(['usuario', 'servicio', 'empleado', 'estado'])->whereDate('fecha', Carbon::today())->where('empleado_id', $usuario->empleado->id)->get();
+        } else {
+            // Si es cliente obtener todas sus citas da igual el día
+            $citas = Cita::with(['usuario', 'servicio', 'empleado', 'estado'])->where('user_id', $usuario->id)->get();
+        }
         // Obtener todos los servicios
         $servicios = Servicio::all();
 

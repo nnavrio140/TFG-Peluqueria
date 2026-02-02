@@ -12,7 +12,11 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        // Permitir solo a administradores o a los empleados que cambien el perfild de usuarios
+        if($this->user()->isAdminOrEmploye()){
+            return true;
+        }
+        return false;
     }
 /**
  * Elimina la contraseña del request si está vacía antes de validar.

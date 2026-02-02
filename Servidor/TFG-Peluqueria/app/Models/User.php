@@ -74,5 +74,26 @@ class User extends Authenticatable
     {
         return $this->hasOne(Empleado::class, 'user_id');
     }
+
+    // Verificar si el usuario es administrador
+    public function isAdmin()
+    {
+        $administratorRole = Rol::where('slug', 'admin')->first();
+        return $this->role_id === $administratorRole->id;
+    }
+
+    // Verificar si el usuario es administrador o empleado
+    public function isAdminOrEmploye()
+    {
+        $administratorRole = Rol::where('slug', 'admin')->first();
+        $employeeRole = Rol::where('slug', 'empleado')->first();
+        return $this->role_id === $administratorRole->id || $this->role_id === $employeeRole->id;
+    }
+
+    public function isEmploye()
+    {
+        $employeeRole = Rol::where('slug', 'empleado')->first();
+        return $this->role_id === $employeeRole->id;
+    }
 }
 

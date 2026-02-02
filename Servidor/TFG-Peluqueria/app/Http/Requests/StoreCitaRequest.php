@@ -11,6 +11,7 @@ class StoreCitaRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        //Cualquiera puede crear una cita logado
         return true;
     }
 
