@@ -6,6 +6,7 @@ use App\Http\Requests\StoreServicioRequest;
 use App\Http\Requests\UpdateServicioRequest;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ServicioController extends Controller
 {
@@ -52,6 +53,12 @@ class ServicioController extends Controller
 
     public function destroy(Servicio $servicio)
     {
+          /** @var User $user */
+        $user = Auth::user();
+        // Solo el admin o empleados 
+        if (!$user->isAdminOrEmploye()) {
+            return redirect()->route('dashboard.index')->with('error', 'No tienes permiso para eliminar este servicio');
+        }
         $servicio->delete();
 
         return redirect()->route('dashboard.index')->with('success', 'Servicio eliminado correctamente');

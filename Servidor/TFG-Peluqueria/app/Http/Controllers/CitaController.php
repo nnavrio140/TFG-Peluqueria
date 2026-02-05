@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\Empleado;
 use App\Models\Estado;
 use App\Models\Cita;
-
+use Illuminate\Support\Facades\Auth;
 
 class CitaController extends Controller
 {
@@ -65,6 +65,12 @@ class CitaController extends Controller
 
     public function destroy(Cita $cita)
     {
+        /** @var User $user */
+        $user = Auth::user();
+        // Solo el admin o el cliente que creó la cita pueden eliminarla
+        if (!$user->isAdminOrEmploye() && $cita->user_id !== $user->id) {
+            return redirect()->route('dashboard.index')->with('error', 'No tienes permiso para eliminar esta cita');
+        }
         // Borrar el historial de la cita primero
         $cita->historial()->delete();
         

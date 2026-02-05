@@ -9,6 +9,7 @@ use App\Models\Rol;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UsuarioService;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -59,6 +60,13 @@ class UserController extends Controller
 
     public function destroy(User $usuario)
     {
+
+        /** @var User $user */
+        $user = Auth::user();
+        // Solo el admin o empleados 
+        if (!$user->isAdminOrEmploye()) {
+            return redirect()->route('dashboard.index')->with('error', 'No tienes permiso para eliminar este usuario');
+        }
         //Todo esto se ahoraría con claves foráneas y on delete cascade, pero lo hago así para practicar
 
         // Borrar sesiones del usuario
