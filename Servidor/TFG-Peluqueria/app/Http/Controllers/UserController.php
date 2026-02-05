@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $this->usuarioService->createUser($request->all());
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario creado y cita asignada');
+        return redirect()->route('dashboard.index')->with('success', 'Usuario creado y cita asignada');
     }
 
     public function show(User $usuario)
@@ -54,7 +54,7 @@ class UserController extends Controller
         $validated = $request->validated();
         $usuario->update($validated);
 
-        return redirect()->route('usuarios.index');
+        return redirect()->route('dashboard.index');
     }
 
     public function destroy(User $usuario)
@@ -80,6 +80,6 @@ class UserController extends Controller
         // Borrar el usuario
         $usuario->delete();
 
-        return redirect()->route('usuarios.index');
+        return redirect()->route('dashboard.index');
     }
 }

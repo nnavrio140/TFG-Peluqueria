@@ -13,4 +13,4 @@
    Estado: </br>
     <input type="text" value="{{$cita->estado->nombre_estado }}" disabled></br></br>
 
-    <a href="{{ route('citas.index') }}">Volver</a>
+    <a href="{{ route('dashboard.index') }}">Volver</a>

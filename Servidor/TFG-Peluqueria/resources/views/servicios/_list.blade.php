@@ -8,12 +8,15 @@
                 {{ $servicio->descripcion }} -
                 {{ $servicio->precio }}€ -
                 {{ $servicio->duracion }} min
-                <a href="{{ route('servicios.show', $servicio) }}">Ver</a> -
+                <a href="{{ route('servicios.show', $servicio) }}">Ver</a> 
+                  @if (auth()->user()->rol->slug === 'admin' || auth()->user()->rol->slug === 'empleado')
+                  -
                 <a href="{{ route('servicios.edit', $servicio) }}">Editar</a> -
                 <form action="{{ route('servicios.destroy', $servicio) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
                     <button>Eliminar</button>
+                @endif
                 </form>
             </li>
         @endforeach

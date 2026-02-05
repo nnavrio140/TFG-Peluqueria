@@ -42,4 +42,4 @@
         <button type="submit">Guardar</button>
     </form>
 
-    <a href="{{ route('usuarios.index') }}">Volver</a>
+    <a href="{{ route('dashboard.index') }}">Volver</a>

@@ -90,10 +90,17 @@ class User extends Authenticatable
         return $this->role_id === $administratorRole->id || $this->role_id === $employeeRole->id;
     }
 
-    public function isEmploye()
+    public function isEmployee()
     {
         $employeeRole = Rol::where('slug', 'empleado')->first();
         return $this->role_id === $employeeRole->id;
     }
-}
 
+    public function isUser()
+    {
+        $userRole = Rol::where('slug', 'usuario')->first();
+        return $this->role_id === $userRole->id;
+    }
+
+    
+}

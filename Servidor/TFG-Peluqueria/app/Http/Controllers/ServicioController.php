@@ -29,7 +29,7 @@ class ServicioController extends Controller
         //Comprobamos y guardamos el servicio
         $validated = $request->validated();
         Servicio::create($validated);
-        return redirect()->route('servicios.index')->with('success', 'Servicio creado correctamente');
+        return redirect()->route('dashboard.index')->with('success', 'Servicio creado correctamente');
     }
 
     public function show(Servicio $servicio)
@@ -47,13 +47,13 @@ class ServicioController extends Controller
         $validated = $request->validated();
         $servicio->update($validated);
 
-        return redirect()->route('servicios.index')->with('success', 'Servicio actualizado correctamente');
+        return redirect()->route('dashboard.index')->with('success', 'Servicio actualizado correctamente');
     }
 
     public function destroy(Servicio $servicio)
     {
         $servicio->delete();
 
-        return redirect()->route('servicios.index')->with('success', 'Servicio eliminado correctamente');
+        return redirect()->route('dashboard.index')->with('success', 'Servicio eliminado correctamente');
     }
 }

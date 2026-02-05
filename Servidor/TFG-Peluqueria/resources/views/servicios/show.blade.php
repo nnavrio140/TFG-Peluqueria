@@ -8,4 +8,4 @@
    Duración</br>
     <input type="text" value="{{ $servicio->duracion }} minutos" disabled></br></br>
 
-    <a href="{{ route('servicios.index') }}">Volver</a>
+    <a href="{{ route('dashboard.index') }}">Volver</a>

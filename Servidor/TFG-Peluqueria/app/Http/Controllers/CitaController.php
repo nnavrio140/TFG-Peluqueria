@@ -37,7 +37,7 @@ class CitaController extends Controller
         $validated = $request->validated();
         //Creamos la cita
         Cita::create($validated);
-        return redirect()->route('citas.index')->with('success', 'Cita creada correctamente');
+        return redirect()->route('dashboard.index')->with('success', 'Cita creada correctamente');
     }
 
     public function show(Cita $cita)
@@ -60,7 +60,7 @@ class CitaController extends Controller
          $validated = $request->validated();
          $cita->update($validated);
 
-        return redirect()->route('citas.index')->with('success', 'Cita actualizada correctamente');
+        return redirect()->route('dashboard.index')->with('success', 'Cita actualizada correctamente');
     }
 
     public function destroy(Cita $cita)
@@ -71,6 +71,6 @@ class CitaController extends Controller
         // Luego borrar la cita
         $cita->delete();
 
-        return redirect()->route('citas.index')->with('success', 'Cita eliminada correctamente');
+        return redirect()->route('dashboard.index')->with('success', 'Cita eliminada correctamente');
     }
 }

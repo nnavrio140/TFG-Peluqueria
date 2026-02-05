@@ -6,4 +6,4 @@
    Email</br>
     <input type="text" value="{{ $usuario->email }}" disabled></br></br>
     
-    <a href="{{ route('usuarios.index') }}">Volver</a>
+    <a href="{{ route('dashboard.index') }}">Volver</a>
