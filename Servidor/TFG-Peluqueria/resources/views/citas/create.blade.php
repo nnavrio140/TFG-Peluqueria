@@ -14,7 +14,7 @@
         <div class="error">{{ $message }}</div>
     @enderror
     
-    @if(auth()->user()->rol->slug === 'admin' || auth()->user()->rol->slug === 'empleado')
+    @if(auth()->user()->isAdminOrEmploye())
     <label>Usuario</label>
     <select name="user_id">
         <option value="">Seleccione un usuario</option>
