@@ -10,11 +10,12 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Rol;
 use App\Models\Cita;
 use App\Models\Empleado;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, HasApiTokens, Notifiable;
 
     protected $table = 'usuarios';
     protected $primaryKey = 'id';
