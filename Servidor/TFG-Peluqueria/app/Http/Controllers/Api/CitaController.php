@@ -13,7 +13,7 @@ class CitaController extends Controller
     {
         // Obtener todas las citas
         $citas = Cita::all();
-        return $citas->toJson();
+        return response()->json($citas, 200);
     }
 
 
