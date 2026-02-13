@@ -57,17 +57,21 @@ class Cita extends Model
     // Scope para filtrar citas por fecha y usuario es necesario que se llame scope 
     public function scopeParaDashboard($query, User $usuario)
     {
+        //Significa que cuando hagas ->get(), Laravel traerá en la misma consulta los datos relacionados de usuario, servicio, empleado y estado, evitando consultas adicionales para cada relación.
         $query->with(['usuario', 'servicio', 'empleado', 'estado']);
 
+        //Si es admin que muestre todas las de hoy
         if ($usuario->isAdmin()) {
             return $query->whereDate('fecha', Carbon::today());
         }
 
+        //Si es empleado que muestre solo las de hoy y las suyas
         if ($usuario->isEmployee()) {
             return $query->whereDate('fecha', Carbon::today())
                         ->where('id_empleado', $usuario->empleado->id);
         }
 
+        //Si es cliente que muestre solo las suyas
         return $query->where('user_id', $usuario->id);
     }
 }
