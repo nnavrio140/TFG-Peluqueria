@@ -27,4 +27,23 @@ class ServicioController extends Controller
         $servicio = Servicio::create($validated);
         return response()->json(['message' => 'Servicio creado correctamente','data' => $servicio], 201);
     }
+
+    public function show(Servicio $servicio)
+    {
+        return new ServicioResource($servicio);
+    }
+
+    public function update(StoreServicioRequest $request, Servicio $servicio)
+    {
+        $validated = $request->validated();
+        $servicio->update($validated);
+        return response()->json(['message' => 'Servicio actualizado correctamente','data' => new ServicioResource($servicio)], 200);
+    }
+
+    public function destroy(Servicio $servicio)
+    {
+        $servicio->delete();
+        return response()->json(['message' => 'Servicio eliminado correctamente'], 200);
+    }
+
 }
