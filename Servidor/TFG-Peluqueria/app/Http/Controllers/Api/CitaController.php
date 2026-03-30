@@ -9,148 +9,184 @@ use App\Models\Cita;
 use App\Models\Empleado;
 use App\Models\Estado;
 use App\Models\Servicio;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CitaController extends Controller
 {
     /**
-     * Devuelve las citas visibles para el usuario autenticado.
-     * - admin: todas las citas
-     * - empleado: solo citas donde es el empleado asignado
-     * - usuario: solo sus propias citas
+     * Devuelve todas las citas que puede ver el usuario.
+     * - Admin: todas las citas.
+     * - Empleado: solo sus citas.
+     * - Cliente: solo sus propias citas.
      */
     public function index()
     {
-        $usuario = Auth::user();
+        $usuarioActual = Auth::user();
+        $consulta = Cita::with(['servicio', 'empleado.usuario', 'estado', 'usuario']);
 
-        $query = Cita::with(['servicio', 'empleado.usuario', 'estado', 'usuario']);
-
-        if ($usuario && !$usuario->isAdmin()) {
-            if ($usuario->isEmployee()) {
-                $empleado = $usuario->empleado;
+        if (!$usuarioActual->isAdmin()) {
+            if ($usuarioActual->isEmployee()) {
+                $empleado = $usuarioActual->empleado;
                 if ($empleado) {
-                    $query->where('id_empleado', $empleado->id);
+                    $consulta->where('id_empleado', $empleado->id);
                 } else {
-                    $query->where('id_empleado', 0);
+                    // Si no existe el empleado, no mostrará citas.
+                    $consulta->where('id_empleado', 0);
                 }
             } else {
-                $query->where('user_id', $usuario->id);
+                $consulta->where('user_id', $usuarioActual->id);
             }
         }
 
-        $citas = $query->get();
+        $citas = $consulta->get();
         return CitaResource::collection($citas);
     }
 
     /**
      * Crea una cita nueva.
-     * Valida la entrada, comprueba disponibilidad y guarda la cita con estado "Pendiente" si no se envía.
+     * Valida datos y comprueba que el horario está libre antes de guardar.
      */
     public function store(StoreCitaRequest $request)
     {
-        $usuario = Auth::user();
-        $validated = $request->validated();
+        $usuarioActual = Auth::user();
+        $datos = $request->validated();
 
-        $servicio = Servicio::findOrFail($validated['id_servicio']);
-        $empleado = Empleado::findOrFail($validated['id_empleado']);
+        $servicio = Servicio::findOrFail($datos['id_servicio']);
+        $empleado = Empleado::findOrFail($datos['id_empleado']);
+        $fecha = $datos['fecha'];
+        $horaInicio = $datos['hora_inicio'];
 
-        $this->authorizeBooking($servicio, $empleado, $validated['fecha'], $validated['hora_inicio']);
+        $this->verificarDisponibilidad($empleado, $servicio, $fecha, $horaInicio);
 
-        $estadoId = $validated['id_estado'] ?? Estado::where('nombre_estado', 'Pendiente')->first()?->id ?? Estado::first()?->id;
+        if (isset($datos['id_estado'])) {
+            $idEstado = $datos['id_estado'];
+        } else {
+            $estadoPendiente = Estado::where('nombre_estado', 'Pendiente')->first();
+            if ($estadoPendiente) {
+                $idEstado = $estadoPendiente->id;
+            } else {
+                $primerEstado = Estado::first();
+                $idEstado = $primerEstado ? $primerEstado->id : null;
+            }
+        }
+
+        if (isset($datos['user_id']) && $usuarioActual->isAdmin()) {
+            $idUsuario = $datos['user_id'];
+        } else {
+            $idUsuario = $usuarioActual->id;
+        }
 
         $cita = Cita::create([
-            'fecha' => $validated['fecha'],
-            'hora_inicio' => $validated['hora_inicio'],
-            'user_id' => $usuario->isAdmin() && isset($validated['user_id']) ? $validated['user_id'] : $usuario->id,
+            'fecha' => $fecha,
+            'hora_inicio' => $horaInicio,
+            'user_id' => $idUsuario,
             'id_servicio' => $servicio->id,
             'id_empleado' => $empleado->id,
-            'id_estado' => $estadoId,
+            'id_estado' => $idEstado,
         ]);
+
+        $cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']);
 
         return response()->json([
             'message' => 'Cita creada correctamente',
-            'data' => new CitaResource($cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']))
+            'data' => new CitaResource($cita)
         ], 201);
     }
 
     /**
-     * Devuelve los datos completos de una cita.
-     * Incluye relaciones de servicio, empleado, estado y usuario.
+     * Muestra una cita concreta.
      */
     public function show(Cita $cita)
     {
-        return new CitaResource($cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']));
+        $cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']);
+        return new CitaResource($cita);
     }
 
     /**
-     * Actualiza una cita existente.
-     * Solo permite editarla si eres admin o si eres el usuario dueño de la cita.
+     * Actualiza una cita ya existente.
+     * Solo el admin o el propietario de la cita pueden hacerlo.
      */
     public function update(StoreCitaRequest $request, Cita $cita)
     {
-        $usuario = Auth::user();
-        if (!$usuario->isAdmin() && $cita->user_id !== $usuario->id) {
+        $usuarioActual = Auth::user();
+
+        if (!$usuarioActual->isAdmin() && $cita->user_id !== $usuarioActual->id) {
             return response()->json(['message' => 'No tienes permiso para modificar esta cita.'], 403);
         }
 
-        $validated = $request->validated();
+        $datos = $request->validated();
+        $servicio = Servicio::findOrFail($datos['id_servicio']);
+        $empleado = Empleado::findOrFail($datos['id_empleado']);
+        $fecha = $datos['fecha'];
+        $horaInicio = $datos['hora_inicio'];
 
-        $servicio = Servicio::findOrFail($validated['id_servicio']);
-        $empleado = Empleado::findOrFail($validated['id_empleado']);
+        $this->verificarDisponibilidad($empleado, $servicio, $fecha, $horaInicio, $cita->id);
 
-        $this->authorizeBooking($servicio, $empleado, $validated['fecha'], $validated['hora_inicio'], $cita->id);
+        if (isset($datos['user_id']) && $usuarioActual->isAdmin()) {
+            $idUsuario = $datos['user_id'];
+        } else {
+            $idUsuario = $cita->user_id;
+        }
+
+        if (isset($datos['id_estado'])) {
+            $idEstado = $datos['id_estado'];
+        } else {
+            $idEstado = $cita->id_estado;
+        }
 
         $cita->update([
-            'fecha' => $validated['fecha'],
-            'hora_inicio' => $validated['hora_inicio'],
-            'user_id' => $usuario->isAdmin() && isset($validated['user_id']) ? $validated['user_id'] : $cita->user_id,
+            'fecha' => $fecha,
+            'hora_inicio' => $horaInicio,
+            'user_id' => $idUsuario,
             'id_servicio' => $servicio->id,
             'id_empleado' => $empleado->id,
-            'id_estado' => $validated['id_estado'] ?? $cita->id_estado,
+            'id_estado' => $idEstado,
         ]);
+
+        $cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']);
 
         return response()->json([
             'message' => 'Cita actualizada correctamente',
-            'data' => new CitaResource($cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']))
+            'data' => new CitaResource($cita)
         ], 200);
     }
 
     /**
      * Elimina una cita.
-     * Solo puede borrar el propietario de la cita o un administrador.
      */
     public function destroy(Cita $cita)
     {
-        $usuario = Auth::user();
-        if (!$usuario->isAdmin() && $cita->user_id !== $usuario->id) {
+        $usuarioActual = Auth::user();
+
+        if (!$usuarioActual->isAdmin() && $cita->user_id !== $usuarioActual->id) {
             return response()->json(['message' => 'No tienes permiso para eliminar esta cita.'], 403);
         }
 
         $cita->delete();
+
         return response()->json(['message' => 'Cita eliminada correctamente'], 200);
     }
 
     /**
-     * Calcula la disponibilidad de horarios para un servicio + empleado + fecha.
-     * Devuelve los posibles inicios de cita que no chocan con otras reservas.
+     * Devuelve las horas libres para un servicio y un empleado en una fecha.
      */
     public function disponibilidad(Request $request)
     {
-        $data = $request->validate([
+        $datos = $request->validate([
             'id_servicio' => 'required|exists:servicios,id',
             'id_empleado' => 'required|exists:empleados,id',
             'fecha' => 'required|date',
         ]);
 
-        $servicio = Servicio::findOrFail($data['id_servicio']);
-        $empleado = Empleado::findOrFail($data['id_empleado']);
+        $servicio = Servicio::findOrFail($datos['id_servicio']);
+        $empleado = Empleado::findOrFail($datos['id_empleado']);
+        $fecha = $datos['fecha'];
 
-        $slots = $this->getAvailableSlots($empleado, $servicio, $data['fecha']);
+        $horarios = $this->obtenerHorariosDisponibles($empleado, $servicio, $fecha);
 
         return response()->json([
-            'disponibilidad' => $slots,
+            'disponibilidad' => $horarios,
             'servicio' => [
                 'id' => $servicio->id,
                 'nombre' => $servicio->nombre_servicio,
@@ -159,85 +195,114 @@ class CitaController extends Controller
             ],
             'empleado' => [
                 'id' => $empleado->id,
-                'nombre' => $empleado->usuario?->nombre,
+                'nombre' => $empleado->usuario ? $empleado->usuario->nombre : null,
             ],
         ], 200);
     }
 
     /**
-     * Valida si se puede reservar una cita en el horario y día del empleado.
-     * Comprueba que el empleado trabaje ese día y que el slot esté libre.
+     * Verifica si un hueco de horaInicio es válido y libre.
      */
-    private function authorizeBooking(Servicio $servicio, Empleado $empleado, string $fecha, string $horaInicio, ?int $excludeAppointmentId = null): void
+    private function verificarDisponibilidad(Empleado $empleado, Servicio $servicio, $fecha, $horaInicio, $ignoreId = null)
     {
-        $diaSemana = $this->getDiaSemana($fecha);
-        $horario = $empleado->horarios()->where('dia_semana', $diaSemana)->first();
+        $horario = $this->obtenerHorarioDelDia($empleado, $fecha);
 
         if (!$horario) {
             abort(422, 'El empleado no trabaja ese día.');
         }
 
-        if (!$this->isSlotAvailable($empleado, $servicio, $fecha, $horaInicio, $excludeAppointmentId)) {
+        $disponible = $this->espacioDisponible($empleado, $servicio, $fecha, $horaInicio, $ignoreId);
+
+        if (!$disponible) {
             abort(422, 'El horario seleccionado no está disponible.');
         }
     }
 
     /**
-     * Calcula todos los horarios de inicio posibles para un servicio.
-     * Recorre la jornada del empleado y devuelve solo los slots que no chocan.
+     * Busca el horario del empleado para el día de la semana de la fecha.
      */
-    private function getAvailableSlots(Empleado $empleado, Servicio $servicio, string $fecha, int $intervalMinutes = 15): array
+    private function obtenerHorarioDelDia(Empleado $empleado, $fecha)
     {
-        $diaSemana = $this->getDiaSemana($fecha);
-        $horario = $empleado->horarios()->where('dia_semana', $diaSemana)->first();
+        $diaSemana = $this->obtenerDiaSemana($fecha);
+        return $empleado->horarios()->where('dia_semana', $diaSemana)->first();
+    }
+
+    /**
+     * Calcula los horarios posibles dentro del horario del empleado.
+     * El paso se queda por defecto en 20 minutos.
+     *
+     * Detalle:
+     * - 'strtotime' convierte una fecha+hora a un número en segundos.
+     * - 'duracionSegundos' es la duración del servicio en segundos.
+     * - El bucle avanza 20 minutos cada vez: 20 * 60 segundos, esto sireve para calcular los horarios disponibles.
+     * - Solo devuelve las horas que están libres según espacioDisponible().
+     */
+    private function obtenerHorariosDisponibles(Empleado $empleado, Servicio $servicio, $fecha, $paso = 20)
+    {
+        $horario = $this->obtenerHorarioDelDia($empleado, $fecha);
         if (!$horario) {
             return [];
         }
 
-        $start = Carbon::parse($horario->hora_inicio);
-        $end = Carbon::parse($horario->hora_fin);
-        $duration = (int) $servicio->duracion;
+        // strtotime devuelve segundos desde 1970.
+        $inicio = strtotime($fecha . ' ' . $horario->hora_inicio);
+        $fin = strtotime($fecha . ' ' . $horario->hora_fin);
 
-        $slots = [];
-        $cursor = $start->copy();
+        // La duración del servicio está en minutos.
+        // * 60 convierte minutos a segundos porque las comparaciones se hacen en segundos.
+        $duracionSegundos = (int) $servicio->duracion * 60;
 
-        while ($cursor->copy()->addMinutes($duration)->lessThanOrEqualTo($end)) {
-            $candidateStart = $cursor->format('H:i');
-            if ($this->isSlotAvailable($empleado, $servicio, $fecha, $candidateStart)) {
-                $slots[] = $candidateStart;
+        $horarios = [];
+        $hora = $inicio;
+
+        while ($hora + $duracionSegundos <= $fin) {
+            $horaFormateada = date('H:i', $hora);
+            if ($this->espacioDisponible($empleado, $servicio, $fecha, $horaFormateada)) {
+                $horarios[] = $horaFormateada;
             }
-            $cursor->addMinutes($intervalMinutes);
+            // Avanzamos el reloj en el bucle cada 20 minutos.
+            // 20 minutos = 20 * 60 segundos.
+            $hora = $hora + ($paso * 60);
         }
 
-        return array_values(array_unique($slots));
+        return array_values(array_unique($horarios));
     }
 
     /**
-     * Verifica si un horario específico está libre para un servicio.
-     * Comprueba solapamientos con otras citas ya reservadas.
+     * Comprueba si el hueco está dentro del horario y no choca con otras citas.
+     *
+     * Detalle:
+     * - inicioCita: cuando empieza la nueva cita, en segundos.
+     * - finCita: cuando termina la nueva cita, en segundos.
+     * - inicioHorario / finHorario: el horario del empleado, en segundos.
+     * - Si la cita empieza antes o termina después del horario, no sirve.
+     * - Luego revisa si se cruza con alguna cita ya guardada.
      */
-    private function isSlotAvailable(Empleado $empleado, Servicio $servicio, string $fecha, string $horaInicio, ?int $excludeAppointmentId = null): bool
+    private function espacioDisponible(Empleado $empleado, Servicio $servicio, $fecha, $horaInicio, $ignoreId = null)
     {
-        $diaSemana = $this->getDiaSemana($fecha);
-        $horario = $empleado->horarios()->where('dia_semana', $diaSemana)->first();
+        $horario = $this->obtenerHorarioDelDia($empleado, $fecha);
         if (!$horario) {
             return false;
         }
 
-        $slotStart = Carbon::parse($horaInicio);
-        $slotEnd = $slotStart->copy()->addMinutes($servicio->duracion);
+        // Hora de inicio de la nueva cita en segundos.
+        $inicioCita = strtotime($fecha . ' ' . $horaInicio);
+        // Fin de la nueva cita = inicio + duración del servicio.
+        // El servicio está en minutos, por eso multiplicamos por 60.
+        $finCita = $inicioCita + ((int) $servicio->duracion * 60);
 
-        $scheduleStart = Carbon::parse($horario->hora_inicio);
-        $scheduleEnd = Carbon::parse($horario->hora_fin);
+        // Convertimos horario del empleado a segundos.
+        $inicioHorario = strtotime($fecha . ' ' . $horario->hora_inicio);
+        $finHorario = strtotime($fecha . ' ' . $horario->hora_fin);
 
-        if ($slotStart->lt($scheduleStart) || $slotEnd->gt($scheduleEnd)) {
+        if ($inicioCita < $inicioHorario || $finCita > $finHorario) {
             return false;
         }
 
-        $busy = $this->getBusyIntervals($empleado, $fecha, $excludeAppointmentId);
-
-        foreach ($busy as $interval) {
-            if ($slotStart->lt($interval['end']) && $slotEnd->gt($interval['start'])) {
+        $tiemposOcupados = $this->obtenerTiemposOcupados($empleado, $fecha, $ignoreId);
+        foreach ($tiemposOcupados as $tiempo) {
+            // Si la nueva cita se solapa con una cita ocupada.
+            if ($inicioCita < $tiempo['end'] && $finCita > $tiempo['start']) {
                 return false;
             }
         }
@@ -246,45 +311,38 @@ class CitaController extends Controller
     }
 
     /**
-     * Obtiene los intervalos ocupados por otras citas de ese empleado en la misma fecha.
-     * Sirve para comparar solapamientos de horarios.
+     * Devuelve los intervalos ocupados por citas del empleado en la fecha.
+     * ignoreId evita comparar con la propia cita cuando se actualiza.
      */
-    private function getBusyIntervals(Empleado $empleado, string $fecha, ?int $excludeAppointmentId = null): array
+    private function obtenerTiemposOcupados(Empleado $empleado, $fecha, $ignoreId = null)
     {
-        $query = Cita::with('servicio')
-            ->where('id_empleado', $empleado->id)
-            ->where('fecha', $fecha);
+        $consulta = Cita::with('servicio');
+        $consulta = $consulta->where('id_empleado', $empleado->id);
+        $consulta = $consulta->where('fecha', $fecha);
 
-        if ($excludeAppointmentId) {
-            $query->where('id', '<>', $excludeAppointmentId);
+        if ($ignoreId != null) {
+            $consulta = $consulta->where('id', '!=', $ignoreId);
         }
 
-        return $query->get()->map(function (Cita $cita) {
-            $start = Carbon::parse($cita->hora_inicio);
-            $end = $start->copy()->addMinutes($cita->servicio->duracion);
-            return [
-                'start' => $start,
-                'end' => $end,
-            ];
-        })->toArray();
+        $citas = $consulta->get();
+        $tiempos = [];
+
+        foreach ($citas as $cita) {
+            $inicio = strtotime($fecha . ' ' . $cita->hora_inicio);
+            $fin = $inicio + ((int) $cita->servicio->duracion * 60);
+            $tiempos[] = ['start' => $inicio, 'end' => $fin];
+        }
+
+        return $tiempos;
     }
 
     /**
-     * Convierte la fecha en el nombre del día de la semana en español.
-     * Esto se usa para buscar el horario del empleado en esa jornada.
+     * Convierte una fecha en el nombre del día de la semana.
      */
-    private function getDiaSemana(string $fecha): string
+    private function obtenerDiaSemana($fecha)
     {
-        $map = [
-            0 => 'Domingo',
-            1 => 'Lunes',
-            2 => 'Martes',
-            3 => 'Miércoles',
-            4 => 'Jueves',
-            5 => 'Viernes',
-            6 => 'Sábado',
-        ];
-
-        return $map[Carbon::parse($fecha)->dayOfWeek];
+        $numeroDia = date('w', strtotime($fecha));
+        $dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        return $dias[$numeroDia];
     }
 }
