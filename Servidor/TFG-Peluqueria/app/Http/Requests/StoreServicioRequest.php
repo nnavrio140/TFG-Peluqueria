@@ -9,6 +9,10 @@ class StoreServicioRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+    /**
+     * Verifica si el usuario tiene permiso para crear o editar servicios.
+     * Solo admin o empleado pueden gestionar servicios.
+     */
     public function authorize(): bool
     {
          if($this->user()->isAdminOrEmploye()){
@@ -18,7 +22,8 @@ class StoreServicioRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Reglas de validación para crear o actualizar un servicio.
+     */
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -31,6 +36,9 @@ class StoreServicioRequest extends FormRequest
             'duracion' => 'required|integer',
         ];
     }
+    /**
+     * Mensajes personalizados para los errores de validación del servicio.
+     */
     public function messages()
     {
         return [

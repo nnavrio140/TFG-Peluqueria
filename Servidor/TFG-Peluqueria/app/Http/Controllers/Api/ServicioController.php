@@ -10,16 +10,20 @@ use App\Http\Resources\ServicioResource;
 
 class ServicioController extends Controller
 {
+    /**
+     * Devuelve todos los servicios disponibles.
+     * Usado por la pantalla de selección de servicio en React.
+     */
     public function index()
     {
-        // Obtener todos los servicios
-        //$servicios = Servicio::all();
-        // $servicios = Servicio::with('tareas')->paginate(2);
-        $servicios = Servicio::paginate(2);
-        //return response()->json($servicios, 200);
+        $servicios = Servicio::all();
         return ServicioResource::collection($servicios);
     }
 
+    /**
+     * Crea un servicio nuevo.
+     * Este endpoint es para administración si se quiere añadir un servicio.
+     */
     public function store(StoreServicioRequest $request)
     {
         //Comprobamos y guardamos el servicio
@@ -28,11 +32,17 @@ class ServicioController extends Controller
         return response()->json(['message' => 'Servicio creado correctamente','data' => $servicio], 201);
     }
 
+    /**
+     * Devuelve los datos de un servicio concreto.
+     */
     public function show(Servicio $servicio)
     {
         return new ServicioResource($servicio);
     }
 
+    /**
+     * Actualiza los datos de un servicio.
+     */
     public function update(StoreServicioRequest $request, Servicio $servicio)
     {
         $validated = $request->validated();
@@ -40,6 +50,9 @@ class ServicioController extends Controller
         return response()->json(['message' => 'Servicio actualizado correctamente','data' => new ServicioResource($servicio)], 200);
     }
 
+    /**
+     * Elimina un servicio de la base de datos.
+     */
     public function destroy(Servicio $servicio)
     {
         $servicio->delete();

@@ -14,11 +14,14 @@ class Empleado extends Model
         'especialidad',
         'salario',
         'activo',
-        'id_usuario',
+        'user_id',
     ];
 
     // Relación 1:1
     // Un empleado pertenece a un usuario
+    /**
+     * Relación de empleado con su usuario correspondiente.
+     */
     public function usuario()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -26,6 +29,9 @@ class Empleado extends Model
 
     // Relación 1:N
     // Un empleado puede tener varios horarios
+    /**
+     * Horarios de trabajo del empleado.
+     */
     public function horarios()
     {
         return $this->hasMany(Horario::class, 'id_empleado');
@@ -33,6 +39,9 @@ class Empleado extends Model
 
     // Relación 1:N
     // Un empleado puede atender muchas citas
+    /**
+     * Citas que tiene asignadas este empleado.
+     */
     public function citas()
     {
         return $this->hasMany(Cita::class, 'id_empleado');

@@ -6,24 +6,45 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-  //Procesa el login del usuario
-   public function login(Request $request)
+    /**
+     * Autentica al usuario y genera un token Sanctum.
+     * Se utiliza para login desde React y obtener el token de acceso.
+     */
+    public function login(Request $request)
     {
-        $credenciales = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-         
-        // Busca el usuario y lo autentica
-        if (Auth::attempt($credenciales)) {
+        if (Auth::attempt($credentials)) {
             /** @var User $user */
             $user = Auth::user();
             $token = $user->createToken('auth_token')->plainTextToken;
+
             return response()->json(['token' => $token], 200);
-        } else {
-            return response()->json(['message' => 'Credenciales incorrectas'], 401);
         }
+
+        return response()->json(['message' => 'Credenciales incorrectas'], 401);
     }
-}
+
+    /**
+     * Devuelve los datos del usuario autenticado.
+     * Útil para saber quién está conectado y su rol.
+     */
+    public function me(Request $request)
+    {
+        return response()->json($request->user());
+    }
+
+    /**
+     * Elimina el token actual y cierra la sesión del usuario.
+     */
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        if ($user) {
+            $user->currentAccessToken()?->delete();
+        }
+
+        return response()->json(['message' => 'Sesión cerrada correctamente']);

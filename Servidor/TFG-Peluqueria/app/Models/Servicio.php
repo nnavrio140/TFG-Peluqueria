@@ -20,6 +20,9 @@ class Servicio extends Model
 
     // Relación 1:N
     // Un servicio puede estar asociado a muchas citas
+    /**
+     * Citas relacionadas con este servicio.
+     */
     public function citas()
     {
         return $this->hasMany(Cita::class, 'id_servicio');

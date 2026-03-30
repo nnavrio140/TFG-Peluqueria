@@ -17,9 +17,12 @@ class Rol extends Model
 
     // Relación 1:N
     // Un rol puede estar asignado a muchos usuarios
+    /**
+     * Usuarios que tienen este rol.
+     */
     public function usuarios()
     {
-        return $this->hasMany(User::class, 'id_rol');
+        return $this->hasMany(User::class, 'role_id');
     }
 }
 

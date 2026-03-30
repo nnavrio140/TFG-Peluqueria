@@ -9,6 +9,10 @@ class StoreCitaRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+    /**
+     * Verifica si el usuario puede realizar esta petición.
+     * En este caso cualquier usuario autenticado puede crear una cita.
+     */
     public function authorize(): bool
     {
         //Cualquiera puede crear una cita logado
@@ -16,7 +20,9 @@ class StoreCitaRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Reglas de validación para crear o actualizar una cita.
+     * Confirma que los identificadores existen en las tablas correspondientes.
+     */
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -25,13 +31,16 @@ class StoreCitaRequest extends FormRequest
         return [
            'fecha' => 'required|date',
            'hora_inicio' => 'required',
-           'user_id' => 'required|exists:usuarios,id',
+           'user_id' => 'sometimes|exists:usuarios,id',
            'id_empleado' => 'required|exists:empleados,id',
            'id_servicio' => 'required|exists:servicios,id',
-           'id_estado' => 'required|exists:estados,id',
+           'id_estado' => 'sometimes|exists:estados,id',
         ];
     }
 
+    /**
+     * Mensajes personalizados para los errores de validación.
+     */
     public function messages(): array
     {
         return [

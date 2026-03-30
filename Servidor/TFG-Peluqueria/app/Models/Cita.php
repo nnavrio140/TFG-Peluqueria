@@ -29,26 +29,41 @@ class Cita extends Model
 
     // Relaciones correctas
 
+    /**
+     * Relación de cita con el servicio reservado.
+     */
     public function servicio()
     {
         return $this->belongsTo(Servicio::class, 'id_servicio');
     }
 
+    /**
+     * Relación de cita con el usuario que la reservó.
+     */
     public function usuario()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * Relación de cita con el empleado asignado.
+     */
     public function empleado()
     {
         return $this->belongsTo(Empleado::class, 'id_empleado');
     }
 
+    /**
+     * Relación de cita con su estado actual.
+     */
     public function estado()
     {
         return $this->belongsTo(Estado::class, 'id_estado');
     }
 
+    /**
+     * Historial de cambios de estado o acciones sobre la cita.
+     */
     public function historial()
     {
         return $this->hasMany(HistorialCita::class, 'id_cita');
