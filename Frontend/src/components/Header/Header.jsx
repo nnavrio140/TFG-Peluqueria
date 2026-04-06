@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faStar } from '@fortawesome/free-solid-svg-icons'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 import './Header.css'
+import logoImg from '../../img/Logo.webp'
 
-function Logo({ simple }) {
+function Logo() {
   return (
-    <div className={`cabecera__marca ${simple ? 'cabecera__marca--simple' : ''}`}>
-      <FontAwesomeIcon icon={faStar} />
-      <span className="cabecera__marca-texto">Barber</span>
+    <div className="cabecera__marca">
+      <img src={logoImg} alt="Logo JBarber" className="cabecera__logo-img" />
     </div>
   )
 }
@@ -27,7 +27,7 @@ function Header({ simple = false }) {
     return (
       <header className="cabecera cabecera--simple">
         <div className="cabecera__contenedor cabecera__contenedor--simple">
-          <Logo simple />
+          <Logo />
         </div>
       </header>
     )

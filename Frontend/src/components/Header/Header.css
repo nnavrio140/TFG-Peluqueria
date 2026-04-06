@@ -1,103 +1,120 @@
+/* HEADER */
 .cabecera {
-  background: linear-gradient(135deg, #0d0c10 0%, #1b1b24 42%, #0f0f14 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+  background: rgba(7, 6, 9, 0.92);
+  border-bottom: 1px solid rgba(248, 226, 164, 0.18);
   padding: 18px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
 .cabecera__contenedor {
-  max-width: 1116px;
+  max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
 }
 
+/* 🔥 MENU SIN CAJA */
 .cabecera__menu {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+
+  width: auto;
+  height: auto;
+
+  border: none;
+  border-radius: 0;
+  background: transparent;
+
+  color: #f8e3a4;
   cursor: pointer;
+
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.cabecera__menu:hover,
+.cabecera__menu:focus-visible {
+  transform: translateY(-1px);
+  opacity: 0.7;
 }
 
 .cabecera__menu svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 }
 
+/* NAV */
 .cabecera__navegacion {
+  flex: 1;
   display: flex;
-  gap: 28px;
+  justify-content: center;
+  gap: 40px;
   align-items: center;
 }
 
 .cabecera__navegacion a {
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(248, 226, 164, 0.95);
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 0.82rem;
-  letter-spacing: 0.18em;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  transition: color 0.2s ease;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 .cabecera__navegacion a:hover,
 .cabecera__navegacion a:focus-visible {
-  color: #f8e3a4;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 223, 136, 0.35);
 }
 
-.cabecera__navegacion svg {
-  width: 14px;
-  height: 14px;
-}
-
+/* 🔥 MARCA SIN CAJA */
 .cabecera__marca {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 18px;
-  border: 1px solid rgba(248, 226, 164, 0.25);
-  border-radius: 999px;
-  background: rgba(248, 226, 164, 0.08);
+  gap: 12px;
+
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-.cabecera__marca svg {
-  color: #f8e3a4;
+.cabecera__logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .cabecera__marca-texto {
   color: #f8e3a4;
   font-weight: 700;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
+/* SIMPLE */
 .cabecera--simple {
-  padding: 22px 24px;
+  padding: 18px 24px;
 }
 
 .cabecera__contenedor--simple {
-  max-width: 1116px;
+  max-width: 1320px;
   margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.cabecera__marca--simple {
-  width: fit-content;
-}
-
+/* RESPONSIVE */
 @media (max-width: 860px) {
   .cabecera__contenedor {
     flex-wrap: wrap;
@@ -108,6 +125,6 @@
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 18px;
+    gap: 16px;
   }
 }

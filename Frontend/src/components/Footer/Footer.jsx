@@ -9,7 +9,7 @@ import './Footer.css'
 
 function Footer() {
   return (
-    <footer className="pie">
+    <footer id="contacto" className="pie">
       <div className="pie__contenedor">
         <h2 className="pie__titulo">CONTACTANOS</h2>
         <p className="pie__texto">
@@ -47,7 +47,10 @@ function Footer() {
               <FontAwesomeIcon icon={faClock} />
             </div>
             <strong>Horario</strong>
-            <p>Mon - Fri: 10:00 - 14:00 / 16:00 - 20:00<br />Sat: 10:00 - 14:00</p>
+            <p>
+              Mon - Fri: 10:00 - 14:00 / 16:00 - 20:00
+              <br />Sat: 10:00 - 14:00
+            </p>
           </article>
         </div>
 
