@@ -1,0 +1,152 @@
+/* BASE */
+.home {
+  background: #000;
+  color: #f3f0ec;
+  font-family: sans-serif;
+}
+
+/* ================= LOGO ================= */
+
+.hero {
+  display: flex;
+  justify-content: center;
+  padding: 90px 20px 60px;
+}
+
+.logo {
+  width: 260px;
+}
+
+/* ================= SERVICIOS ================= */
+
+.servicios {
+  text-align: center;
+  padding: 0 20px 70px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.titulo {
+  color: #d4af37;
+  font-size: 1.2rem;
+  letter-spacing: 0.35em;
+  margin-bottom: 50px;
+}
+
+/* 🔥 GRID ARREGLADO (COLUMNAS IGUALES) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* CLAVE */
+  gap: 30px;
+  margin-bottom: 45px;
+}
+
+/* CARD */
+.card {
+  border: 1px solid rgba(212, 175, 55, 0.6);
+  padding: 32px 24px;
+  background: rgba(255, 255, 255, 0.02);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ICONOS IGUALES SIEMPRE */
+.icon-wrap {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-wrap img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+/* TITULO */
+.card h3 {
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+
+/* TEXTO */
+.card p {
+  font-size: 0.85rem;
+  color: #bbb;
+  line-height: 1.6;
+}
+
+/* BOTÓN */
+.btn {
+  display: inline-block;
+  padding: 10px 30px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.6);
+
+  color: #d4af37;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+
+  cursor: pointer;
+  background: transparent;
+}
+
+/* ================= STATS ================= */
+
+.stats {
+  background: #1a1a1a;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 50px 20px;
+  text-align: center;
+}
+
+/* 🔥 CADA BLOQUE IGUAL */
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ICONOS IGUALES */
+.stat img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+/* NÚMERO */
+.stat strong {
+  font-size: 2.2rem;
+  color: #d4af37;
+  margin-bottom: 6px;
+}
+
+/* TEXTO */
+.stat span {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: #ffffff;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

@@ -1,0 +1,111 @@
+.services {
+  background: #0a0a0a;
+  color: white;
+  padding: 90px 20px;
+  text-align: center;
+}
+
+/* HEADER */
+.services__tag {
+  color: #d8b858;
+  font-size: 12px;
+  letter-spacing: 6px;
+  margin-bottom: 10px;
+}
+
+.services__title {
+  font-size: 32px;
+  margin-bottom: 60px;
+}
+
+/* 4 CARDS */
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* CARD */
+.card {
+  border: 1px solid #d8b858;
+  background: #0c0c0c;
+  padding: 40px 25px;
+}
+
+.card img {
+  width: 55px;
+  margin-bottom: 20px;
+}
+
+.card h3 {
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #ddd;
+  line-height: 1.5;
+}
+
+/* PRECIOS (IMPORTANTE 2x2 COMO IMAGEN) */
+.prices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  max-width: 700px;
+  margin: 70px auto 40px;
+}
+
+/* CAJAS ABAJO */
+.price {
+  background: #1f1f1f;
+  border: 1px solid #333;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* TEXTO IZQUIERDA */
+.price h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.price p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* PRECIO */
+.price span {
+  font-weight: bold;
+  color: white;
+}
+
+/* BOTON */
+.btn-wrapper {
+  margin-top: 30px;
+}
+
+.btn {
+  background: #d8b858;
+  color: black;
+  padding: 12px 30px;
+  border-radius: 25px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .services__grid,
+  .prices {
+    grid-template-columns: 1fr;
+  }
+}
