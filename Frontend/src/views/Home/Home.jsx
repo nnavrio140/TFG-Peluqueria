@@ -1,10 +1,11 @@
-import './Home.css'
+import "./Home.css";
+import ServiceCard from "../../components/ServiceCard/ServiceCard";
 
 function Home() {
   return (
     <div className="home">
 
-      {/* LOGO */}
+      {/* HERO / LOGO */}
       <div className="hero">
         <img src="/img/Logo.webp" alt="logo" className="logo" />
       </div>
@@ -12,41 +13,39 @@ function Home() {
       {/* SERVICIOS */}
       <div className="servicios">
 
-        <div className="titulo">NUESTROS SERVICIOS</div>
+        <div className="titulo">
+          NUESTROS SERVICIOS
+        </div>
 
         <div className="grid">
 
-          <div className="card">
-            <div className="icon-wrap">
-              <img src="/img/tijeras.webp" alt="" />
-            </div>
-            <h3>CORTE & BARBA</h3>
-            <p>Corte clásico o moderno con acabado perfecto.</p>
-          </div>
+          <ServiceCard
+            icon="/img/tijeras.webp"
+            title="CORTE & BARBA"
+            text="Corte clásico o moderno acompañado de perfilado de barba. Precisión, estilo y acabados impecables."
+          />
 
-          <div className="card">
-            <div className="icon-wrap">
-              <img src="/img/navaja.webp" alt="" />
-            </div>
-            <h3>AFEITADO NORMAL</h3>
-            <p>Afeitado tradicional con navaja.</p>
-          </div>
+          <ServiceCard
+            icon="/img/navaja.webp"
+            title="AFEITADO NORMAL"
+            text="Afeitado tradicional con navaja, productos de calidad para una experiencia relajante y profesional."
+          />
 
-          <div className="card">
-            <div className="icon-wrap">
-              <img src="/img/bigote.webp" alt="" />
-            </div>
-            <h3>DÍA ESPECIAL</h3>
-            <p>Servicio premium para eventos.</p>
-          </div>
+          <ServiceCard
+            icon="/img/bigote.webp"
+            title="DÍA ESPECIAL"
+            text="Servicio para eventos especiales: corte, barba y estilizado para que luzcas perfecto en tu gran día."
+          />
 
         </div>
 
-        <div className="btn">RESERVA AHORA</div>
+        <div className="btn">
+          RESERVA AHORA
+        </div>
 
       </div>
 
-      {/* STATS CON ICONOS */}
+      {/* STATS */}
       <div className="stats">
 
         <div className="stat">
@@ -70,7 +69,7 @@ function Home() {
       </div>
 
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

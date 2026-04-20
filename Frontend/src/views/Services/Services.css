@@ -1,111 +1,127 @@
 .services {
-  background: #0a0a0a;
-  color: white;
-  padding: 90px 20px;
-  text-align: center;
+  background: #000;
+  color: #f3f0ec;
+  font-family: sans-serif;
 }
 
-/* HEADER */
-.services__tag {
-  color: #d8b858;
-  font-size: 12px;
-  letter-spacing: 6px;
-  margin-bottom: 10px;
+/* ================= HEADER ================= */
+
+.services__header {
+  text-align: center;
+  padding: 70px 20px 80px;
 }
 
 .services__title {
-  font-size: 32px;
-  margin-bottom: 60px;
+  font-size: 6rem;
+  letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
-/* 4 CARDS */
+/* ================= GRID SERVICIOS ================= */
+
 .services__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
-  max-width: 900px;
-  margin: auto;
+
+  column-gap: 120px;  /* 🔥 más limpio que 140 */
+  row-gap: 50px;
+
+  max-width: 1000px;
+  margin: 0 auto 130px;
+  padding: 0 20px;
 }
 
-/* CARD */
-.card {
-  border: 1px solid #d8b858;
-  background: #0c0c0c;
-  padding: 40px 25px;
-}
+/* ⚠️ IMPORTANTE:
+   Ya NO usamos .card aquí porque lo gestiona ServiceCard
+*/
 
-.card img {
-  width: 55px;
-  margin-bottom: 20px;
-}
+/* ================= PRECIOS ================= */
 
-.card h3 {
-  font-size: 14px;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-}
-
-.card p {
-  font-size: 14px;
-  color: #ddd;
-  line-height: 1.5;
-}
-
-/* PRECIOS (IMPORTANTE 2x2 COMO IMAGEN) */
 .prices {
+  width: 100%;
+  background: #1a1a1a;
+  padding: 100px 20px;
+}
+
+.prices__container {
+  max-width: 1200px;
+  margin: 0 auto;
+
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  max-width: 700px;
-  margin: 70px auto 40px;
+
+  column-gap: 160px; /* 🔥 más compacto */
+  row-gap: 50px;
 }
 
-/* CAJAS ABAJO */
+/* ITEM */
 .price {
-  background: #1f1f1f;
-  border: 1px solid #333;
-  padding: 15px 20px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+}
+
+/* HEADER DEL PRECIO */
+.price__top {
+  display: flex;
   align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
-/* TEXTO IZQUIERDA */
+/* TITULO */
 .price h4 {
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  color: #f3f0ec;
   margin: 0;
-  font-size: 14px;
+  white-space: nowrap;
 }
 
-.price p {
-  margin: 5px 0 0;
-  font-size: 12px;
-  color: #aaa;
+/* LINEA DORADA */
+.line {
+  flex: 1;
+  height: 1px;
+  background: rgba(212, 175, 55, 0.4);
 }
 
 /* PRECIO */
 .price span {
-  font-weight: bold;
-  color: white;
+  font-size: 1.4rem;
+  color: #f3f0ec;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-/* BOTON */
-.btn-wrapper {
-  margin-top: 30px;
+/* DESCRIPCIÓN */
+.price p {
+  font-size: 0.78rem;
+  color: #bbb;
+  margin-top: 6px;
+  line-height: 1.5;
 }
 
-.btn {
-  background: #d8b858;
-  color: black;
-  padding: 12px 30px;
-  border-radius: 25px;
-  text-decoration: none;
-  display: inline-block;
-}
+/* ================= RESPONSIVE ================= */
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
-  .services__grid,
-  .prices {
+
+  .services__header {
+    padding: 50px 20px;
+  }
+
+  .services__title {
+    font-size: 3.2rem;
+    letter-spacing: 0.1em;
+  }
+
+  .services__grid {
     grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 40px;
+  }
+
+  .prices__container {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 40px;
   }
 }

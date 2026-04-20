@@ -1,102 +1,86 @@
-/* BASE */
 .home {
   background: #000;
   color: #f3f0ec;
   font-family: sans-serif;
+
+  /* 🔥 sistema de espaciado */
+  --space-xl: 140px;
+  --space-lg: 100px;
+  --space-md: 70px;
+  --space-sm: 40px;
 }
 
-/* ================= LOGO ================= */
+/* ================= HERO ================= */
 
 .hero {
   display: flex;
   justify-content: center;
-  padding: 90px 20px 60px;
+  padding: var(--space-xl) 20px var(--space-lg);
 }
 
+/* 🔥 LOGO MÁS PROTAGONISTA */
 .logo {
-  width: 260px;
+  width: 380px;
 }
 
 /* ================= SERVICIOS ================= */
 
 .servicios {
   text-align: center;
-  padding: 0 20px 70px;
+  padding: 0 20px var(--space-xl);
   max-width: 1100px;
   margin: 0 auto;
 }
 
+/* TITULO */
 .titulo {
   color: #d4af37;
-  font-size: 1.2rem;
-  letter-spacing: 0.35em;
-  margin-bottom: 50px;
+  font-size: 3rem;
+  letter-spacing: 0.05em;
+
+  margin-bottom: var(--space-md);
+  font-weight: 500;
 }
 
-/* 🔥 GRID ARREGLADO (COLUMNAS IGUALES) */
+/* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* CLAVE */
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  margin-bottom: 45px;
+
+  margin-bottom: var(--space-md);
 }
 
-/* CARD */
-.card {
-  border: 1px solid rgba(212, 175, 55, 0.6);
-  padding: 32px 24px;
-  background: rgba(255, 255, 255, 0.02);
+/* ================= BOTÓN ================= */
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* ICONOS IGUALES SIEMPRE */
-.icon-wrap {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 18px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.icon-wrap img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-}
-
-/* TITULO */
-.card h3 {
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
-  margin-bottom: 12px;
-}
-
-/* TEXTO */
-.card p {
-  font-size: 0.85rem;
-  color: #bbb;
-  line-height: 1.6;
-}
-
-/* BOTÓN */
 .btn {
   display: inline-block;
-  padding: 10px 30px;
+  padding: 14px 40px;
 
-  border-radius: 999px;
-  border: 1px solid rgba(212, 175, 55, 0.6);
+  background: #d4af37;
+  color: #000;
 
-  color: #d4af37;
   font-size: 0.75rem;
   letter-spacing: 0.25em;
 
+  border: 1px solid #d4af37;
+  border-radius: 6px;
+
   cursor: pointer;
-  background: transparent;
+
+  transition: all 0.25s ease;
+  transform: translateY(0);
+}
+
+/* hover elegante */
+.btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
+}
+
+/* click */
+.btn:active {
+  transform: translateY(-1px);
 }
 
 /* ================= STATS ================= */
@@ -105,28 +89,31 @@
   background: #1a1a1a;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  padding: 50px 20px;
+
+  padding: var(--space-lg) 20px;
+
   text-align: center;
+  gap: 10px;
 }
 
-/* 🔥 CADA BLOQUE IGUAL */
+/* ITEM */
 .stat {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* ICONOS IGUALES */
+/* ICONOS */
 .stat img {
-  width: 30px;
-  height: 30px;
+  width: 65px;
+  height: 65px;
   object-fit: contain;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 /* NÚMERO */
 .stat strong {
-  font-size: 2.2rem;
+  font-size: 2.6rem;
   color: #d4af37;
   margin-bottom: 6px;
 }
@@ -141,12 +128,22 @@
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
+
+  .logo {
+    width: 300px;
+  }
+
+  .titulo {
+    font-size: 2rem;
+  }
+
   .grid {
     grid-template-columns: 1fr;
+    gap: 25px;
   }
 
   .stats {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 25px;
   }
 }

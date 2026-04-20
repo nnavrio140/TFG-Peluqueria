@@ -1,88 +1,87 @@
 import "./Services.css";
+import ServiceCard from "../../components/ServiceCard/ServiceCard";
 
 function Services() {
   return (
     <div className="services">
 
-      {/* HEADER */}
+      {/* TITULO */}
       <div className="services__header">
-        <p className="services__tag">SERVICIOS</p>
-        <h1 className="services__title">
-          Cortes, afeitados y estilo a medida
-        </h1>
+        <h1 className="services__title">SERVICIOS</h1>
       </div>
 
-      {/* 4 CARDS */}
+      {/* CARDS */}
       <div className="services__grid">
 
-        <div className="card">
-          <img src="/img/tijeras.webp" alt="" />
-          <h3>CORTE & BARBA</h3>
-          <p>Corte clásico o moderno combinado con arreglo y perfilado de barba.</p>
-        </div>
+        <ServiceCard
+          icon="/img/corte_barba.webp"
+          title="CORTE & BARBA"
+          text="Corte clásico o moderno combinado con arreglo y perfilado de barba. Trabajamos cada detalle para lograr un estilo preciso."
+        />
 
-        <div className="card">
-          <img src="/img/navaja.webp" alt="" />
-          <h3>AFEITADO</h3>
-          <p>Afeitado tradicional con navaja y toalla caliente para una experiencia relajante.</p>
-        </div>
+        <ServiceCard
+          icon="/img/navaja.webp"
+          title="AFEITADO"
+          text="Afeitado tradicional con navaja y toalla caliente. Experiencia relajante y profesional."
+        />
 
-        <div className="card">
-          <img src="/img/cuchilla.webp" alt="" />
-          <h3>CORTE</h3>
-          <p>Corte de cabello preciso, limpio y adaptado a tu estilo personal.</p>
-        </div>
+        <ServiceCard
+          icon="/img/tijeras.webp"
+          title="CORTE"
+          text="Corte de cabello con técnica precisa y acabado moderno."
+        />
 
-        <div className="card">
-          <img src="/img/tijeras.webp" alt="" />
-          <h3>CORTE & TINTE</h3>
-          <p>Corte y coloración profesional para renovar completamente tu imagen.</p>
-        </div>
+        <ServiceCard
+          icon="/img/peinado.webp"
+          title="CORTE & TINTE"
+          text="Coloración y corte profesional adaptado a tu estilo."
+        />
 
       </div>
 
-      {/* PRECIOS (2x2 CAJAS COMO IMAGEN) */}
+      {/* PRECIOS (NO TOCAMOS TU ESTRUCTURA) */}
       <div className="prices">
 
-        <div className="price">
-          <div>
-            <h4>CORTE & BARBA</h4>
-            <p>Corte clásico o moderno adaptado a tu estilo.</p>
-          </div>
-          <span>12€</span>
-        </div>
+        <div className="prices__container">
 
-        <div className="price">
-          <div>
-            <h4>CORTE</h4>
+          <div className="price">
+            <div className="price__top">
+              <h4>CORTE & BARBA</h4>
+              <div className="line"></div>
+              <span>12€</span>
+            </div>
+            <p>Corte clásico o moderno adaptado a tu estilo. Incluye asesoría personalizada.</p>
+          </div>
+
+          <div className="price">
+            <div className="price__top">
+              <h4>CORTE</h4>
+              <div className="line"></div>
+              <span>8€</span>
+            </div>
             <p>Afeitado tradicional con toalla caliente.</p>
           </div>
-          <span>8€</span>
-        </div>
 
-        <div className="price">
-          <div>
-            <h4>CORTE & TINTE</h4>
+          <div className="price">
+            <div className="price__top">
+              <h4>CORTE & TINTE</h4>
+              <div className="line"></div>
+              <span>20€</span>
+            </div>
             <p>Perfilado y definición de barba con navaja.</p>
           </div>
-          <span>20€</span>
-        </div>
 
-        <div className="price">
-          <div>
-            <h4>AFEITADO</h4>
+          <div className="price">
+            <div className="price__top">
+              <h4>AFEITADO</h4>
+              <div className="line"></div>
+              <span>6€</span>
+            </div>
             <p>Tratamiento facial completo para la piel.</p>
           </div>
-          <span>6€</span>
+
         </div>
 
-      </div>
-
-      {/* BOTON */}
-      <div className="btn-wrapper">
-        <a href="#contacto" className="btn">
-          RESERVA TU CITA
-        </a>
       </div>
 
     </div>
