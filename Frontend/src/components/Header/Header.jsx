@@ -11,16 +11,10 @@ function Header() {
     <header className="cabecera">
       <div className="cabecera__contenedor">
 
-        {/* LOGO */}
         <Link to="/" className="cabecera__marca">
-          <img
-            src="/img/Logo.webp"
-            alt="Logo"
-            className="cabecera__logo-img"
-          />
+          <img src="/img/Logo.webp" alt="Logo"className="cabecera__logo-img" />
         </Link>
 
-        {/* NAV */}
         <nav className="cabecera__navegacion">
           <Link to="/servicios">Servicios</Link>
           <Link to="/">Sobre Nosotros</Link>
@@ -32,8 +26,7 @@ function Header() {
         <div className="cabecera__auth">
           {isLogged ? (
             <button className="cabecera__btn">
-              <FontAwesomeIcon icon={faUser} />
-              Usuario
+              <FontAwesomeIcon icon={faUser} /> Usuario
             </button>
           ) : (
             <>

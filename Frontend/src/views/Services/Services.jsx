@@ -5,12 +5,10 @@ function Services() {
   return (
     <div className="services">
 
-      {/* TITULO */}
-      <div className="services__header">
-        <h1 className="services__title">SERVICIOS</h1>
+      <div className="section__header">
+        <h1 className="section__title">SERVICIOS</h1>
       </div>
 
-      {/* CARDS */}
       <div className="services__grid">
 
         <ServiceCard
@@ -39,7 +37,6 @@ function Services() {
 
       </div>
 
-      {/* PRECIOS (NO TOCAMOS TU ESTRUCTURA) */}
       <div className="prices">
 
         <div className="prices__container">

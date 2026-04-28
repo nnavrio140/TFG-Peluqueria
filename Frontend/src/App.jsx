@@ -5,6 +5,7 @@ import Footer from "./components/Footer/Footer";
 
 import Home from "./views/Home/Home";
 import Services from "./views/Services/Services";
+import Register from "./views/Register/Register";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/servicios" element={<Services />} />
+        <Route path="/registro" element={<Register />} />
       </Routes>
 
       <Footer />

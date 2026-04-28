@@ -4,18 +4,7 @@
   font-family: sans-serif;
 }
 
-/* ================= HEADER ================= */
 
-.services__header {
-  text-align: center;
-  padding: 70px 20px 80px;
-}
-
-.services__title {
-  font-size: 6rem;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-}
 
 /* ================= GRID SERVICIOS ================= */
 
@@ -23,17 +12,13 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 
-  column-gap: 120px;  /* 🔥 más limpio que 140 */
+  column-gap: 120px;
   row-gap: 50px;
 
   max-width: 1000px;
   margin: 0 auto 130px;
   padding: 0 20px;
 }
-
-/* ⚠️ IMPORTANTE:
-   Ya NO usamos .card aquí porque lo gestiona ServiceCard
-*/
 
 /* ================= PRECIOS ================= */
 
@@ -50,17 +35,15 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 
-  column-gap: 160px; /* 🔥 más compacto */
+  column-gap: 160px;
   row-gap: 50px;
 }
 
-/* ITEM */
 .price {
   display: flex;
   flex-direction: column;
 }
 
-/* HEADER DEL PRECIO */
 .price__top {
   display: flex;
   align-items: center;
@@ -68,7 +51,6 @@
   width: 100%;
 }
 
-/* TITULO */
 .price h4 {
   font-size: 0.85rem;
   letter-spacing: 0.25em;
@@ -77,14 +59,12 @@
   white-space: nowrap;
 }
 
-/* LINEA DORADA */
 .line {
   flex: 1;
   height: 1px;
   background: rgba(212, 175, 55, 0.4);
 }
 
-/* PRECIO */
 .price span {
   font-size: 1.4rem;
   color: #f3f0ec;
@@ -92,7 +72,6 @@
   white-space: nowrap;
 }
 
-/* DESCRIPCIÓN */
 .price p {
   font-size: 0.78rem;
   color: #bbb;
@@ -102,13 +81,10 @@
 
 /* ================= RESPONSIVE ================= */
 
+/* 768px */
 @media (max-width: 768px) {
 
-  .services__header {
-    padding: 50px 20px;
-  }
-
-  .services__title {
+  .section__title {
     font-size: 3.2rem;
     letter-spacing: 0.1em;
   }

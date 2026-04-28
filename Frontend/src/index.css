@@ -48,15 +48,12 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  font-family: var(--sans);
+  background: #070605;
 }
 
 * {
   box-sizing: border-box;
-}
-
-body {
-  min-height: 100vh;
-  background: #070605;
 }
 
 #root {
@@ -100,4 +97,62 @@ code {
   font-size: 15px;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* ============================= */
+/* 🔥 DESIGN SYSTEM - HEADERS   */
+/* ============================= */
+
+.section__header {
+  text-align: center;
+  padding: 70px 20px 80px;
+  background: radial-gradient(circle, #2a2a2a, #0f0f0f);
+  color: white;
+}
+
+.section__title {
+  font-size: 6rem;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* ============================= */
+/* 📱 RESPONSIVE TITLES         */
+/* ============================= */
+
+@media (max-width: 1400px) {
+  .section__title {
+    font-size: 5rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .section__title {
+    font-size: 4.2rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .section__title {
+    font-size: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section__title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section__title {
+    font-size: 2.2rem;
+    letter-spacing: 0.02em;
+  }
+}
+
+@media (max-width: 360px) {
+  .section__title {
+    font-size: 1.9rem;
+  }
 }
