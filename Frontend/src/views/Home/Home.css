@@ -3,23 +3,20 @@
   color: #f3f0ec;
   font-family: sans-serif;
 
-  /* 🔥 sistema de espaciado */
   --space-xl: 140px;
   --space-lg: 100px;
   --space-md: 70px;
   --space-sm: 40px;
 }
 
-/* ================= HERO ================= */
-
-.hero {
-  display: flex;
-  justify-content: center;
-  padding: var(--space-xl) 20px var(--space-lg);
+/* 🔥 HEADER CON LOGO */
+.home__header {
+  padding: 160px 20px 120px;
+  margin-bottom: 80px;
 }
 
-/* 🔥 LOGO MÁS PROTAGONISTA */
-.logo {
+/* LOGO */
+.home__logo {
   width: 380px;
 }
 
@@ -32,12 +29,11 @@
   margin: 0 auto;
 }
 
-/* TITULO */
-.titulo {
+/* TITULO (consistente con system) */
+.home__title {
   color: #d4af37;
   font-size: 3rem;
   letter-spacing: 0.05em;
-
   margin-bottom: var(--space-md);
   font-weight: 500;
 }
@@ -47,7 +43,6 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-
   margin-bottom: var(--space-md);
 }
 
@@ -69,16 +64,13 @@
   cursor: pointer;
 
   transition: all 0.25s ease;
-  transform: translateY(0);
 }
 
-/* hover elegante */
 .btn:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
 }
 
-/* click */
 .btn:active {
   transform: translateY(-1px);
 }
@@ -96,14 +88,12 @@
   gap: 10px;
 }
 
-/* ITEM */
 .stat {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* ICONOS */
 .stat img {
   width: 65px;
   height: 65px;
@@ -111,35 +101,31 @@
   margin-bottom: 14px;
 }
 
-/* NÚMERO */
 .stat strong {
   font-size: 2.6rem;
   color: #d4af37;
   margin-bottom: 6px;
 }
 
-/* TEXTO */
 .stat span {
   font-size: 0.75rem;
   letter-spacing: 0.25em;
-  color: #ffffff;
 }
 
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
 
-  .logo {
-    width: 300px;
+  .home__logo {
+    width: 280px;
   }
 
-  .titulo {
+  .home__title {
     font-size: 2rem;
   }
 
   .grid {
     grid-template-columns: 1fr;
-    gap: 25px;
   }
 
   .stats {

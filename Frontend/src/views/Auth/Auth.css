@@ -4,9 +4,8 @@
   flex-direction: column;
   font-family: "Segoe UI", sans-serif;
   background: #000;
+  font-size: 17px;
 }
-
-
 
 .register-box {
   flex: 1;
@@ -26,44 +25,46 @@
 
 .form-wrapper {
   width: 100%;
-  max-width: 340px;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .google-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   background: #d4b15a;
   color: #000;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 12px;
+  border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  font-size: 15px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 
 label {
-  font-size: 12px;
+  font-size: 13px;
   color: #ccc;
   text-align: left;
 }
 
 input {
-  height: 35px;
+  height: 42px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   background: #e0e0e0;
-  padding: 5px 10px;
+  padding: 8px 12px;
+  font-size: 14px;
 }
 
 input:focus {
@@ -75,24 +76,39 @@ button {
   width: 100%;
   background: #d4b15a;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 12px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   transition: 0.15s ease;
-  margin-top: 6px;
+  margin-top: 8px;
+  font-size: 15px;
 }
 
 button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+/* 👇 ESPACIADO CORREGIDO */
+.actions {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-btn {
+  margin-top: 18px;
 }
 
 .login-text {
-  font-size: 12px;
+  font-size: 13px;
   text-align: center;
   color: #ccc;
-  margin: 6px 0;
+  margin: 6px 0 0 0;
+}
+
+.login-btn {
+  margin-top: 4px;
 }
 
 .logo-section {
@@ -103,22 +119,33 @@ button:hover {
 }
 
 .logo {
-  width: 430px;
-  max-width: 90%;
+  width: 500px;
+  max-width: 95%;
   object-fit: contain;
 }
 
 /* 1600px */
 @media (max-width: 1600px) {
   .register-box {
-    padding: 0 250px;
+    padding: 0 300px;
   }
 }
 
 /* 1400px */
 @media (max-width: 1400px) {
   .register-box {
-    padding: 0 200px;
+    padding: 0 240px;
+  }
+
+  .logo {
+    width: 460px;
+  }
+}
+
+/* 1200px */
+@media (max-width: 1200px) {
+  .register-box {
+    padding: 0 140px;
   }
 
   .logo {
@@ -126,21 +153,26 @@ button:hover {
   }
 }
 
-/* 1200px */
-@media (max-width: 1200px) {
+/* 1024px */
+@media (max-width: 1024px) {
   .register-box {
-    padding: 0 120px;
+    padding: 0 70px;
   }
 
   .logo {
     width: 360px;
   }
+
+  .section__title {
+    font-size: 5.5rem;
+  }
 }
 
-/* 1024px */
-@media (max-width: 1024px) {
+/* 900px */
+@media (max-width: 900px) {
   .register-box {
-    padding: 0 60px;
+    padding: 45px 35px;
+    gap: 30px;
   }
 
   .logo {
@@ -148,23 +180,7 @@ button:hover {
   }
 
   .section__title {
-    font-size: 5rem;
-  }
-}
-
-/* 900px */
-@media (max-width: 900px) {
-  .register-box {
-    padding: 40px 30px;
-    gap: 25px;
-  }
-
-  .logo {
-    width: 280px;
-  }
-
-  .section__title {
-    font-size: 4rem;
+    font-size: 4.5rem;
   }
 }
 
@@ -172,16 +188,16 @@ button:hover {
 @media (max-width: 768px) {
   .register-box {
     flex-direction: column;
-    padding: 40px 20px;
-    gap: 30px;
+    padding: 45px 25px;
+    gap: 35px;
   }
 
   .logo {
-    width: 240px;
+    width: 260px;
   }
 
   .section__title {
-    font-size: 2.8rem;
+    font-size: 3.2rem;
     text-align: center;
   }
 }
@@ -189,7 +205,7 @@ button:hover {
 /* 480px */
 @media (max-width: 480px) {
   .register-box {
-    padding: 20px 15px;
+    padding: 25px 18px;
   }
 
   .form-wrapper {
@@ -197,21 +213,21 @@ button:hover {
   }
 
   .logo {
-    width: 180px;
+    width: 200px;
   }
 
   .register__title {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
   }
 }
 
 /* 360px */
 @media (max-width: 360px) {
   .logo {
-    width: 150px;
+    width: 170px;
   }
 
   .register__title {
-    font-size: 1.9rem;
+    font-size: 2rem;
   }
 }

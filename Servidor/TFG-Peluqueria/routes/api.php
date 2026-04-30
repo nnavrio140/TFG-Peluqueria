@@ -10,33 +10,34 @@ use App\Http\Controllers\Api\AuthController;
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-| Rutas de la API para:
-| - autenticación (login, me, logout)
-| - servicios
-| - empleados y horarios
-| - gestión de citas y disponibilidad
 */
 
+// 🔓 Auth públicas (login y registro)
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
-// Rutas protegidas por autenticación
+// 🔓 Servicios públicos (para tu React sin login)
+Route::get('/servicios', [ServicioController::class, 'index']);
+
+// 🔒 Rutas protegidas (requieren login con Sanctum)
 Route::middleware('auth:sanctum')->group(function () {
+
+    // Auth
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    //Servicios
-    Route::get('/servicios', [ServicioController::class, 'index']);
+    // Servicios (solo admin / gestión)
     Route::post('/servicios', [ServicioController::class, 'store']);
     Route::get('/servicios/{servicio}', [ServicioController::class, 'show']);
     Route::put('/servicios/{servicio}', [ServicioController::class, 'update']);
     Route::delete('/servicios/{servicio}', [ServicioController::class, 'destroy']);
 
-    //Empleados
+    // Empleados
     Route::get('/empleados', [EmpleadoController::class, 'index']);
     Route::get('/empleados/{empleado}', [EmpleadoController::class, 'show']);
     Route::get('/empleados/{empleado}/horarios', [EmpleadoController::class, 'horarios']);
 
-    //Citas
+    // Citas
     Route::get('/citas', [CitaController::class, 'index']);
     Route::post('/citas', [CitaController::class, 'store']);
     Route::get('/citas/disponibilidad', [CitaController::class, 'disponibilidad']);

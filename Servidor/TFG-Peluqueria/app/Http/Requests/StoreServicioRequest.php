@@ -31,6 +31,7 @@ class StoreServicioRequest extends FormRequest
     {
         return [
             'nombre_servicio' => 'required|string|max:50',
+            'descripcion_corta' => 'required|string|max:150',
             'descripcion' => 'required|string',
             'precio' => 'required|numeric',
             'duracion' => 'required|integer',
@@ -45,6 +46,9 @@ class StoreServicioRequest extends FormRequest
             'nombre_servicio.required' => 'El nombre del servicio es obligatorio.',
             'nombre_servicio.string' => 'El nombre del servicio debe ser una cadena de texto.',
             'nombre_servicio.max' => 'El nombre del servicio no debe exceder los 50 caracteres.',
+            'descripcion_corta.required' => 'La descripción corta es obligatoria.',
+            'descripcion_corta.string' => 'La descripción corta debe ser una cadena de texto.',
+            'descripcion_corta.max' => 'La descripción corta no debe exceder los 150 caracteres.',
             'descripcion.required' => 'La descripción es obligatoria.',
             'descripcion.string' => 'La descripción debe ser una cadena de texto.',
             'precio.required' => 'El precio es obligatorio.',

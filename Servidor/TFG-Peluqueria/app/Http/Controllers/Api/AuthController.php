@@ -38,6 +38,41 @@ class AuthController extends Controller
     }
 
     /**
+     * Crea una nueva cuenta de usuario.
+     * Recibe: nombre, email, password
+     */
+    public function register(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        try {
+            $user = User::create([
+                'nombre' => $request->nombre,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role_id' => 2, // Por defecto, rol de cliente (ajusta según tu tabla de roles)
+            ]);
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'message' => 'Usuario registrado correctamente',
+                'token' => $token,
+                'user' => $user
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al registrar el usuario',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Elimina el token actual y cierra la sesión del usuario.
      */
     public function logout(Request $request)
@@ -48,3 +83,5 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => 'Sesión cerrada correctamente']);
+    }
+}

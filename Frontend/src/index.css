@@ -105,8 +105,9 @@ code {
 
 .section__header {
   text-align: center;
-  padding: 70px 20px 80px;
-  background: radial-gradient(circle, #2a2a2a, #0f0f0f);
+  padding: 140px 20px 80px;
+
+  background: url("/img/lowfade.webp") center/cover no-repeat;
   color: white;
 }
 

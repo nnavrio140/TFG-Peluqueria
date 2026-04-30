@@ -4,7 +4,9 @@
   font-family: sans-serif;
 }
 
-
+.services .section__header {
+  margin-bottom: 60px;
+}
 
 /* ================= GRID SERVICIOS ================= */
 
@@ -39,6 +41,16 @@
   row-gap: 50px;
 }
 
+/* ================= TITULOS ================= */
+
+.section__title {
+  font-size: 4.5rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+/* ================= PRICE ITEM ================= */
+
 .price {
   display: flex;
   flex-direction: column;
@@ -51,27 +63,34 @@
   width: 100%;
 }
 
+/* NOMBRE SERVICIO */
 .price h4 {
-  font-size: 0.85rem;
-  letter-spacing: 0.25em;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0;
   color: #f3f0ec;
   margin: 0;
   white-space: nowrap;
+  text-transform: uppercase;
 }
 
+/* LINEA DORADA */
 .line {
   flex: 1;
   height: 1px;
   background: rgba(212, 175, 55, 0.4);
 }
 
+/* PRECIO */
 .price span {
   font-size: 1.4rem;
   color: #f3f0ec;
   font-weight: 600;
+  letter-spacing: 0;
   white-space: nowrap;
 }
 
+/* DESCRIPCION */
 .price p {
   font-size: 0.78rem;
   color: #bbb;
@@ -81,12 +100,10 @@
 
 /* ================= RESPONSIVE ================= */
 
-/* 768px */
 @media (max-width: 768px) {
 
   .section__title {
     font-size: 3.2rem;
-    letter-spacing: 0.1em;
   }
 
   .services__grid {

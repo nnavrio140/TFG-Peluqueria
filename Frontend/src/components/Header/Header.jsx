@@ -5,24 +5,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
-  const isLogged = false; // luego lo conectas a auth real
+  const isLogged = false;
 
   return (
     <header className="cabecera">
       <div className="cabecera__contenedor">
 
         <Link to="/" className="cabecera__marca">
-          <img src="/img/Logo.webp" alt="Logo"className="cabecera__logo-img" />
+          <img src="/img/Logo.webp" alt="Logo" className="cabecera__logo-img" />
         </Link>
 
         <nav className="cabecera__navegacion">
           <Link to="/servicios">Servicios</Link>
-          <Link to="/">Sobre Nosotros</Link>
-          <Link to="/">Blog</Link>
-          <Link to="/">Contacto</Link>
+          <Link to="/sobre-nosotros">Sobre Nosotros</Link>
+          <Link to="/blog">Blog</Link>
+          <Link to="/contacto">Contacto</Link>
         </nav>
 
-        {/* AUTH */}
         <div className="cabecera__auth">
           {isLogged ? (
             <button className="cabecera__btn">
@@ -35,7 +34,7 @@ function Header() {
                 Iniciar sesión
               </Link>
 
-              <Link to="/registro" className="cabecera__btn">
+              <Link to="/registro" className="cabecera__btn cabecera__btn--gold">
                 <FontAwesomeIcon icon={faUserPlus} />
                 Crear cuenta
               </Link>

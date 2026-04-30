@@ -1,84 +1,73 @@
+import { useEffect, useState } from "react";
 import "./Services.css";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
 
 function Services() {
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/TFG-Peluqueria/public/api/servicios")
+      .then((res) => res.json())
+      .then((data) => {
+        setServices(data.data);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
+
+  const getServiceImage = (name) => {
+    switch (name) {
+      case "Corte & Barba":
+        return "/img/corte_barba.webp";
+      case "Afeitado":
+        return "/img/navaja.webp";
+      case "Corte":
+        return "/img/tijeras.webp";
+      case "Corte & Teñido":
+        return "/img/peinado.webp";
+      default:
+        return "/img/default.webp";
+    }
+  };
+
   return (
     <div className="services">
 
+      {/* HEADER */}
       <div className="section__header">
         <h1 className="section__title">SERVICIOS</h1>
       </div>
 
+      {/* CARDS */}
       <div className="services__grid">
-
-        <ServiceCard
-          icon="/img/corte_barba.webp"
-          title="CORTE & BARBA"
-          text="Corte clásico o moderno combinado con arreglo y perfilado de barba. Trabajamos cada detalle para lograr un estilo preciso."
-        />
-
-        <ServiceCard
-          icon="/img/navaja.webp"
-          title="AFEITADO"
-          text="Afeitado tradicional con navaja y toalla caliente. Experiencia relajante y profesional."
-        />
-
-        <ServiceCard
-          icon="/img/tijeras.webp"
-          title="CORTE"
-          text="Corte de cabello con técnica precisa y acabado moderno."
-        />
-
-        <ServiceCard
-          icon="/img/peinado.webp"
-          title="CORTE & TINTE"
-          text="Coloración y corte profesional adaptado a tu estilo."
-        />
-
+        {services.map((service) => (
+          <ServiceCard
+            key={service.id}
+            icon={getServiceImage(service.nombre)}
+            title={service.nombre}
+            text={service.descripcion}
+          />
+        ))}
       </div>
 
+      {/* PRICES */}
       <div className="prices">
-
         <div className="prices__container">
 
-          <div className="price">
-            <div className="price__top">
-              <h4>CORTE & BARBA</h4>
-              <div className="line"></div>
-              <span>12€</span>
-            </div>
-            <p>Corte clásico o moderno adaptado a tu estilo. Incluye asesoría personalizada.</p>
-          </div>
+          {services.map((service) => (
+            <div className="price" key={service.id}>
 
-          <div className="price">
-            <div className="price__top">
-              <h4>CORTE</h4>
-              <div className="line"></div>
-              <span>8€</span>
-            </div>
-            <p>Afeitado tradicional con toalla caliente.</p>
-          </div>
+              <div className="price__top">
+                <h4>{service.nombre}</h4>
+                <div className="line"></div>
+                <span>{service.precio}€</span>
+              </div>
 
-          <div className="price">
-            <div className="price__top">
-              <h4>CORTE & TINTE</h4>
-              <div className="line"></div>
-              <span>20€</span>
-            </div>
-            <p>Perfilado y definición de barba con navaja.</p>
-          </div>
+              <p>{service.descripcion_corta}</p>
 
-          <div className="price">
-            <div className="price__top">
-              <h4>AFEITADO</h4>
-              <div className="line"></div>
-              <span>6€</span>
             </div>
-            <p>Tratamiento facial completo para la piel.</p>
-          </div>
+          ))}
 
         </div>
-
       </div>
 
     </div>
