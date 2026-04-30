@@ -1,21 +1,21 @@
+
 /* ================= HEADER ================= */
 
 .cabecera {
   width: 100%;
-
-  /* 🔥 CAMBIO CLAVE */
   background: transparent;
   border-bottom: none;
 
   padding: 18px 24px;
 
-  position: absolute; /* 🔥 antes sticky */
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 50;
 }
 
-/* 🔥 GRID AJUSTADO */
+/* ================= CONTAINER ================= */
+
 .cabecera__contenedor {
   max-width: 1400px;
   margin: 0 auto;
@@ -91,21 +91,25 @@
   flex-shrink: 0;
 }
 
-/* BOTONES */
+/* ================= BOTONES ================= */
+
 .cabecera__btn {
   background: transparent;
   color: #f8e3a4;
 
   border: 1px solid rgba(248, 226, 164, 0.4);
-  padding: 7px 13px;
+
+  padding: 10px 16px;
+  min-height: 40px;
 
   border-radius: 6px;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
 
   text-decoration: none;
@@ -125,9 +129,84 @@
   font-size: 12px;
 }
 
-/* ============================= */
-/* 📱 RESPONSIVE ORIGINAL  */
-/* ============================= */
+/* ================= USER MENU ================= */
+
+.user-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* 🔥 BOTÓN USUARIO MÁS GRANDE */
+.user-menu .cabecera__btn {
+  min-width: 200px;
+  height: 44px;
+  font-size: 0.82rem;
+  border-radius: 8px;
+}
+
+/* ================= DROPDOWN (2 BLOQUES) ================= */
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+
+  min-width: 200px;
+
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(248, 226, 164, 0.25);
+  border-radius: 10px;
+
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 999;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* BLOQUE 1 (INFO USUARIO opcional si quieres luego) */
+.dropdown__header {
+  padding: 10px;
+  border-bottom: 1px solid rgba(248, 226, 164, 0.15);
+  margin-bottom: 8px;
+
+  font-size: 0.75rem;
+  color: rgba(248, 226, 164, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* BLOQUE 2 (ACCIONES) */
+.dropdown__item {
+  background: transparent;
+  border: none;
+
+  color: #f8e3a4;
+  padding: 12px;
+
+  text-align: left;
+  cursor: pointer;
+
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  border-radius: 6px;
+
+  transition: 0.2s;
+}
+
+.dropdown__item:hover {
+  background: rgba(248, 226, 164, 0.12);
+  color: #fff;
+}
+
+/* ================= RESPONSIVE ================= */
 
 @media (max-width: 1200px) {
   .cabecera__navegacion {
@@ -135,8 +214,8 @@
   }
 
   .cabecera__btn {
-    padding: 6px 10px;
-    font-size: 0.68rem;
+    padding: 8px 12px;
+    font-size: 0.7rem;
   }
 }
 
@@ -151,7 +230,6 @@
 }
 
 @media (max-width: 768px) {
-
   .cabecera__contenedor {
     grid-template-columns: 1fr;
     row-gap: 14px;
@@ -174,7 +252,6 @@
 }
 
 @media (max-width: 480px) {
-
   .cabecera__navegacion {
     flex-direction: column;
     gap: 10px;
@@ -182,7 +259,6 @@
 
   .cabecera__btn {
     width: 100%;
-    justify-content: center;
   }
 
   .cabecera__auth {

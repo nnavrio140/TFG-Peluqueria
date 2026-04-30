@@ -1,25 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { authService } from "../../services/authService";
+
+import { AuthContext } from "../../context/AuthContext";
 
 const Register = () => {
+  const { register, loginWithGoogle } = useContext(AuthContext);
+
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Validaciones básicas
+    // 🔹 VALIDACIONES
     if (!nombre || !email || !password || !passwordConfirm) {
       setError("Por favor completa todos los campos");
       return;
@@ -38,9 +42,15 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await authService.register(nombre, email, password, passwordConfirm);
-      console.log("Registro exitoso");
-      navigate("/"); // Redirigir a home tras registro exitoso
+      await register(nombre, email, password, passwordConfirm);
+
+      // limpiar form
+      setNombre("");
+      setEmail("");
+      setPassword("");
+      setPasswordConfirm("");
+
+      navigate("/"); // redirigir al dashboard
     } catch (err) {
       setError(err.message || "Error en el registro");
     } finally {
@@ -61,71 +71,70 @@ const Register = () => {
         <div className="form-section">
           <div className="form-wrapper">
 
-            <button className="google-btn" type="button">
+            {/* 🔵 BOTÓN GOOGLE */}
+            <button
+              className="google-btn"
+              type="button"
+              onClick={loginWithGoogle}
+            >
               <FontAwesomeIcon icon={faGoogle} />
               <span>Iniciar sesión con Google</span>
             </button>
 
-            {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
+            {error && (
+              <div style={{ color: "red", marginBottom: "10px" }}>
+                {error}
+              </div>
+            )}
 
             <form className="form" onSubmit={handleSubmit}>
 
               <label>Nombre de usuario</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                required
               />
 
               <label>Email</label>
-              <input 
-                type="email" 
+              <input
+                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
 
               <label>Contraseña</label>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
 
               <label>Confirmar contraseña</label>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
-                required
               />
 
-            </form>
-
-            {/* ACCIONES */}
-            <div className="actions">
-
-              <button 
+              <button
                 className="create-btn"
-                onClick={handleSubmit}
+                type="submit"
                 disabled={loading}
-                type="button"
               >
                 {loading ? "Creando cuenta..." : "Crear cuenta"}
               </button>
 
-              <p className="login-text">
-                ¿Ya tienes cuenta?
-              </p>
+            </form>
+
+            <div className="actions">
+              <p className="login-text">¿Ya tienes cuenta?</p>
 
               <Link to="/login">
                 <button className="login-btn" type="button">
                   Iniciar sesión
                 </button>
               </Link>
-
             </div>
 
           </div>

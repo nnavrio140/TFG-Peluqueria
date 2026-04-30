@@ -9,5 +9,9 @@ RUN a2enmod rewrite
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Establecer DocumentRoot a la carpeta public
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -i "s|DocumentRoot /var/www/html|DocumentRoot ${APACHE_DOCUMENT_ROOT}|g" /etc/apache2/sites-available/000-default.conf
+
 # Establecer directorio de trabajo
 WORKDIR /var/www/html

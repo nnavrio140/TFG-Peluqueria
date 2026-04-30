@@ -6,7 +6,7 @@ function Services() {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/TFG-Peluqueria/public/api/servicios")
+    fetch("http://localhost:8080/api/servicios")
       .then((res) => res.json())
       .then((data) => {
         setServices(data.data);

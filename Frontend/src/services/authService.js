@@ -1,118 +1,83 @@
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = "http://localhost:8080/api";
 
 export const authService = {
-  // Registro de nuevo usuario
+  // 🔹 REGISTRO
   register: async (nombre, email, password, passwordConfirmation) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nombre,
-          email,
-          password,
-          password_confirmation: passwordConfirmation,
-        }),
-      });
+    const response = await fetch(`${API_BASE_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nombre,
+        email,
+        password,
+        password_confirmation: passwordConfirmation,
+      }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Error en el registro');
-      }
-
-      // Guardar el token en localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      return data;
-    } catch (error) {
-      console.error('Error en registro:', error);
-      throw error;
+    if (!response.ok) {
+      throw new Error(data.message || "Error en el registro");
     }
+
+    return data;
   },
 
-  // Login de usuario
+  // 🔹 LOGIN
   login: async (email, password) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+    const response = await fetch(`${API_BASE_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Error en el login');
-      }
-
-      // Guardar el token en localStorage
-      localStorage.setItem('token', data.token);
-
-      return data;
-    } catch (error) {
-      console.error('Error en login:', error);
-      throw error;
+    if (!response.ok) {
+      throw new Error(data.message || "Error en el login");
     }
+
+    return data;
   },
 
-  // Obtener datos del usuario autenticado
+  // 🔹 USUARIO ACTUAL
   getMe: async (token) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/me`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+    const response = await fetch(`${API_BASE_URL}/me`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error('No autorizado');
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Error obteniendo datos del usuario:', error);
-      throw error;
+    if (!response.ok) {
+      throw new Error("No autorizado");
     }
+
+    return await response.json();
   },
 
-  // Logout
-  logout: async (token) => {
-    try {
-      await fetch(`${API_BASE_URL}/logout`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+  // 🔹 LOGOUT
+  logout: async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-      // Limpiar localStorage
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-    } catch (error) {
-      console.error('Error en logout:', error);
-      throw error;
-    }
+    await fetch(`${API_BASE_URL}/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    localStorage.removeItem("token"); // elimina token local
   },
 
-  // Obtener token del localStorage
-  getToken: () => {
-    return localStorage.getItem('token');
-  },
+  // 🔹 TOKEN
+  getToken: () => localStorage.getItem("token"),
 
-  // Verificar si el usuario está autenticado
-  isAuthenticated: () => {
-    return !!localStorage.getItem('token');
+  // 🔵 LOGIN GOOGLE
+  googleLogin: () => {
+    window.location.href = `${API_BASE_URL}/auth/google`;
   },
 };

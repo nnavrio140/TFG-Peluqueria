@@ -12,10 +12,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+
+        // 🔥 NECESARIO PARA SANCTUM + REACT (SPA AUTH)
+        $middleware->statefulApi();
+
+        // 🔥 CORS (tu middleware personalizado)
         $middleware->api(prepend: [
             \App\Http\Middleware\CorsMiddleware::class,
         ]);
 
+        // 🔐 ALIAS DE MIDDLEWARES PERSONALIZADOS
         $middleware->alias([
             'admin_or_employee' => \App\Http\Middleware\IsAdminOrEmployee::class,
             'admin' => \App\Http\Middleware\IsAdmin::class,
@@ -23,4 +29,5 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->create();
