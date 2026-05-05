@@ -146,64 +146,71 @@
   border-radius: 8px;
 }
 
-/* ================= DROPDOWN (2 BLOQUES) ================= */
-
+/* ================= DROPDOWN ================= */
 .dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   right: 0;
 
-  min-width: 200px;
+  width: 100%;
+  min-width: unset;
 
-  background: rgba(0, 0, 0, 0.95);
-  border: 1px solid rgba(248, 226, 164, 0.25);
-  border-radius: 10px;
+  background: #1a1a1a;
 
-  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: none; /* 🔥 clave para quitar el corte */
+
+  border-radius: 0 0 10px 10px;
+  padding: 4px;
 
   display: flex;
   flex-direction: column;
 
   z-index: 999;
 
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
 }
 
-/* BLOQUE 1 (INFO USUARIO opcional si quieres luego) */
-.dropdown__header {
-  padding: 10px;
-  border-bottom: 1px solid rgba(248, 226, 164, 0.15);
-  margin-bottom: 8px;
-
-  font-size: 0.75rem;
-  color: rgba(248, 226, 164, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-/* BLOQUE 2 (ACCIONES) */
+/* ================= ITEM BASE ================= */
 .dropdown__item {
+  width: 100%;
+
   background: transparent;
   border: none;
 
-  color: #f8e3a4;
-  padding: 12px;
+  color: #eaeaea; /* 🔥 color normal (NO rojo) */
+  padding: 10px 14px;
 
   text-align: left;
   cursor: pointer;
 
   font-size: 0.78rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+
+  display: flex;
+  align-items: center;
 
   border-radius: 6px;
 
-  transition: 0.2s;
+  transition: all 0.2s ease;
 }
 
+/* HOVER NORMAL */
 .dropdown__item:hover {
-  background: rgba(248, 226, 164, 0.12);
+  background: rgba(255, 255, 255, 0.06);
   color: #fff;
+}
+
+/* ================= SOLO LOGOUT ================= */
+.dropdown__item--logout {
+  color: #ff4d4f;
+}
+
+/* HOVER LOGOUT */
+.dropdown__item--logout:hover {
+  background: rgba(255, 77, 79, 0.12);
+  color: #ff6b6b;
 }
 
 /* ================= RESPONSIVE ================= */

@@ -1,44 +1,38 @@
 import { useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { authService } from "../../services/authService";
 
 export default function GoogleSuccess() {
   const { setToken, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const completeGoogleLogin = async () => {
       try {
-        // Llamamos al endpoint del backend que devuelve JSON con token y usuario
-        const response = await fetch("http://localhost:8080/api/auth/google/callback", {
-          credentials: "include", // si el backend usa cookies
-        });
+        const params = new URLSearchParams(location.search);
+        const token = params.get("token");
 
-        if (!response.ok) throw new Error("No se pudo iniciar sesión");
-
-        const data = await response.json();
-
-        if (!data.token) {
-          return navigate("/login");
+        if (!token) {
+          return navigate("/login", { replace: true });
         }
 
-        // Guardar token en localStorage y en AuthContext
-        localStorage.setItem("token", data.token);
-        setToken(data.token);
+        localStorage.setItem("token", token);
+        setToken(token);
 
-        // Guardar usuario en AuthContext
-        setUser(data.user || null);
+        const user = await authService.getMe(token);
+        setUser(user);
 
-        // Redirigir al home
-        navigate("/");
+        navigate("/", { replace: true });
       } catch (error) {
         console.error(error);
-        navigate("/login");
+        navigate("/login", { replace: true });
       }
     };
 
     completeGoogleLogin();
-  }, []);
+  }, [location.search, navigate, setToken, setUser]);
 
-  return <p>Iniciando sesión con Google...</p>;
+  return null;
 }

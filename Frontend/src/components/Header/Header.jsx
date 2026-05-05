@@ -14,11 +14,11 @@ function Header() {
   const menuRef = useRef(null);
 
   const handleLogout = async () => {
-    await logout(); // ahora borra token y state
+    await logout();
     setOpenMenu(false);
   };
 
-  // 🔹 Cerrar menú al hacer click fuera
+  // Cerrar menú al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -33,7 +33,6 @@ function Header() {
     };
   }, []);
 
-  // 🔹 Evitar flash login/logout mientras carga
   if (loading) return null;
 
   return (
@@ -55,7 +54,6 @@ function Header() {
 
         {/* AUTH */}
         <div className="cabecera__auth">
-
           {user ? (
             <div className="user-menu" ref={menuRef}>
 
@@ -70,8 +68,9 @@ function Header() {
               {openMenu && (
                 <div className="dropdown">
 
+                  {/* 🔥 SOLO ESTE ES ROJO */}
                   <button
-                    className="dropdown__item"
+                    className="dropdown__item dropdown__item--logout"
                     onClick={handleLogout}
                   >
                     Cerrar sesión
@@ -94,7 +93,6 @@ function Header() {
               </Link>
             </>
           )}
-
         </div>
 
       </div>

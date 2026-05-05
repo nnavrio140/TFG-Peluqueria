@@ -87,11 +87,10 @@ class AuthController extends Controller
             // Crear token de acceso
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            // Devolver JSON (el frontend lo captura y redirige al home)
-            return response()->json([
-                'token' => $token,
-                'user' => $user
-            ]);
+            $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+            $redirectUrl = $frontendUrl . '/login/success?token=' . urlencode($token);
+
+            return redirect()->away($redirectUrl);
 
         } catch (\Exception $e) {
             return response()->json([

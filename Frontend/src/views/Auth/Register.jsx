@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 
@@ -8,7 +8,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { AuthContext } from "../../context/AuthContext";
 
 const Register = () => {
-  const { register, loginWithGoogle } = useContext(AuthContext);
+  const { register, loginWithGoogle, user } = useContext(AuthContext);
 
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
@@ -18,6 +18,12 @@ const Register = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
