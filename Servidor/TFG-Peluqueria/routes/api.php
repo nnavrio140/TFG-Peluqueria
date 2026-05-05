@@ -12,32 +12,37 @@ use App\Http\Controllers\Api\AuthController;
 |--------------------------------------------------------------------------
 */
 
-// 🔓 Auth públicas
+// 🔓 AUTH públicas
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-// 🔵 GOOGLE LOGIN (ESTO TE FALTABA)
+// 🔵 GOOGLE LOGIN
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 
-// 🔓 Servicios públicos
+// 🔓 SERVICIOS públicos
 Route::get('/servicios', [ServicioController::class, 'index']);
 
-// 🔒 Rutas protegidas
+// 🔓 EMPLEADOS (FUERA DE AUTH PARA PRUEBAS)
+Route::get('/empleados', [EmpleadoController::class, 'index']);
+
+// 🔒 RUTAS PROTEGIDAS
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    // Servicios protegidos
     Route::post('/servicios', [ServicioController::class, 'store']);
     Route::get('/servicios/{servicio}', [ServicioController::class, 'show']);
     Route::put('/servicios/{servicio}', [ServicioController::class, 'update']);
     Route::delete('/servicios/{servicio}', [ServicioController::class, 'destroy']);
 
-    Route::get('/empleados', [EmpleadoController::class, 'index']);
+    // EMPLEADOS (protegido también si lo quieres luego)
     Route::get('/empleados/{empleado}', [EmpleadoController::class, 'show']);
     Route::get('/empleados/{empleado}/horarios', [EmpleadoController::class, 'horarios']);
 
+    // CITAS
     Route::get('/citas', [CitaController::class, 'index']);
     Route::post('/citas', [CitaController::class, 'store']);
     Route::get('/citas/disponibilidad', [CitaController::class, 'disponibilidad']);

@@ -1,0 +1,58 @@
+.about {
+  background: #000;
+  color: #f3f0ec;
+  font-family: sans-serif;
+}
+
+/* ================= HEADER ================= */
+
+.about__header {
+  position: relative;
+  background: url("/img/bg-barber.webp") center/cover no-repeat;
+  padding: 140px 20px;
+  text-align: center;
+}
+
+/* overlay oscuro para que el texto se lea bien */
+.about__header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.about__header h1 {
+  position: relative;
+  z-index: 1;
+}
+
+/* ================= EMPLEADOS SECTION ================= */
+
+.about__barbers-section {
+  background: #212121;
+  padding: 100px 0;
+}
+
+/* GRID */
+.about__barbers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+  .about__barbers {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about__header {
+    padding: 100px 20px;
+  }
+}

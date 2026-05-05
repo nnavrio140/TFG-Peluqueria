@@ -10,6 +10,7 @@ import Services from "./views/Services/Services";
 import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
 import GoogleSuccess from "./views/Auth/GoogleSuccess"; 
+import About from "./views/About/About";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/servicios" element={<Services />} />
+            <Route path="/sobre-nosotros" element={<About />} />
           </Route>
 
           {/* RUTAS SIN HEADER */}
