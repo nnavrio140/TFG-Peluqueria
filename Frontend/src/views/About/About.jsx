@@ -28,14 +28,14 @@ function About() {
   return (
     <div className="about">
 
-      <div className="section__header about__header">
+      {/* HEADER (igual que Services) */}
+      <div className="section__header">
         <h1 className="section__title">SOBRE NOSOTROS</h1>
       </div>
 
+      {/* BARBERS */}
       <div className="about__barbers-section">
-
         <div className="about__barbers">
-
           {barbers.map((barber) => (
             <BarberCard
               key={barber.id}
@@ -43,9 +43,7 @@ function About() {
               image={getBarberImage(barber.id)}
             />
           ))}
-
         </div>
-
       </div>
 
     </div>

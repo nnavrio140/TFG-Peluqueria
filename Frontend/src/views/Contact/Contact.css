@@ -1,0 +1,145 @@
+.contact {
+  background: #000;
+  color: #f3f0ec;
+}
+
+/* ================= MAPA ARRIBA ================= */
+
+.contact__mapTop {
+  width: 100%;
+  padding: 0 60px;     /* 👈 más margen lateral */
+  margin-top: 40px;    /* 👈 más espacio arriba */
+  margin-bottom: 100px;
+}
+
+.contact__mapTop iframe {
+  width: 100%;
+  height: 420px;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.45);
+}
+
+/* ================= MAIN 2 COLUMNAS ================= */
+
+.contact__main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 90px;
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 60px 120px; /* 👈 más aire lateral y abajo */
+  align-items: stretch;
+}
+
+/* ================= IZQUIERDA (IMAGEN) ================= */
+
+.contact__info {
+  border-radius: 10px;
+  overflow: hidden;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  transition: 0.25s ease;
+}
+
+.contact__info:hover {
+  transform: translateY(-3px);
+}
+
+.contact__image {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ================= FORM ================= */
+
+.contact__form {
+  background: #1c1c1c;
+  padding: 40px;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transition: 0.25s ease;
+}
+
+.contact__form:hover {
+  transform: translateY(-3px);
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form__row {
+  display: flex;
+  gap: 15px;
+}
+
+.form__row input {
+  flex: 1;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  background: #e5e5e5;
+  color: #000;
+  font-size: 14px;
+}
+
+.form textarea {
+  min-height: 140px;
+  resize: none;
+}
+
+/* BOTÓN */
+.form button {
+  width: 100%;
+  background: #d4b15a;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  transition: 0.15s ease;
+}
+
+.form button:hover {
+  opacity: 0.85;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+  .contact__main {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 20px 80px;
+  }
+
+  .contact__mapTop {
+    padding: 0 20px;
+  }
+
+  .contact__mapTop iframe {
+    height: 300px;
+  }
+
+  .form__row {
+    flex-direction: column;
+  }
+}

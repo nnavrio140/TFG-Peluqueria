@@ -4,28 +4,6 @@
   font-family: sans-serif;
 }
 
-/* ================= HEADER ================= */
-
-.about__header {
-  position: relative;
-  background: url("/img/bg-barber.webp") center/cover no-repeat;
-  padding: 140px 20px;
-  text-align: center;
-}
-
-/* overlay oscuro para que el texto se lea bien */
-.about__header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-}
-
-.about__header h1 {
-  position: relative;
-  z-index: 1;
-}
-
 /* ================= EMPLEADOS SECTION ================= */
 
 .about__barbers-section {
@@ -33,7 +11,8 @@
   padding: 100px 0;
 }
 
-/* GRID */
+/* ================= GRID DESKTOP ================= */
+
 .about__barbers {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -42,6 +21,7 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 20px;
+  justify-items: center; 
 }
 
 /* ================= RESPONSIVE ================= */
@@ -50,9 +30,26 @@
   .about__barbers {
     grid-template-columns: 1fr;
     gap: 40px;
+    justify-items: center;
   }
 
-  .about__header {
-    padding: 100px 20px;
+  .about__barbers > * {
+    width: 100%;
+    max-width: 420px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .about__barbers-section {
+    padding: 70px 0;
+  }
+
+  .about__barbers {
+    gap: 30px;
+    padding: 0 15px;
+  }
+
+  .about__barbers > * {
+    max-width: 100%;
   }
 }

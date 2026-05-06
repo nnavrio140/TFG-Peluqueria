@@ -11,6 +11,7 @@ import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
 import GoogleSuccess from "./views/Auth/GoogleSuccess"; 
 import About from "./views/About/About";
+import Contact from "./views/Contact/Contact";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/servicios" element={<Services />} />
             <Route path="/sobre-nosotros" element={<About />} />
+            <Route path="/contacto" element={<Contact />} />
           </Route>
 
           {/* RUTAS SIN HEADER */}

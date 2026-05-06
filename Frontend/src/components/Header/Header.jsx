@@ -10,7 +10,6 @@ import { AuthContext } from "../../context/AuthContext";
 function Header() {
   const { user, logout, loading } = useContext(AuthContext);
   const [openMenu, setOpenMenu] = useState(false);
-
   const menuRef = useRef(null);
 
   const handleLogout = async () => {
@@ -18,7 +17,6 @@ function Header() {
     setOpenMenu(false);
   };
 
-  // Cerrar menú al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -27,10 +25,7 @@ function Header() {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   if (loading) return null;
@@ -44,16 +39,22 @@ function Header() {
           <img src="/img/Logo.webp" alt="Logo" className="cabecera__logo-img" />
         </Link>
 
-        {/* NAV */}
+        {/* NAV (SIN ICONOS) */}
         <nav className="cabecera__navegacion">
+
           <Link to="/servicios">Servicios</Link>
+
           <Link to="/sobre-nosotros">Sobre Nosotros</Link>
+
           <Link to="/blog">Blog</Link>
+
           <Link to="/contacto">Contacto</Link>
+
         </nav>
 
-        {/* AUTH */}
+        {/* AUTH (CON ICONOS) */}
         <div className="cabecera__auth">
+
           {user ? (
             <div className="user-menu" ref={menuRef}>
 
@@ -62,20 +63,17 @@ function Header() {
                 onClick={() => setOpenMenu(!openMenu)}
               >
                 <FontAwesomeIcon icon={faUser} />
-                {user.nombre}
+                <span>{user.nombre}</span>
               </button>
 
               {openMenu && (
                 <div className="dropdown">
-
-                  {/* 🔥 SOLO ESTE ES ROJO */}
                   <button
                     className="dropdown__item dropdown__item--logout"
                     onClick={handleLogout}
                   >
                     Cerrar sesión
                   </button>
-
                 </div>
               )}
 
@@ -84,15 +82,16 @@ function Header() {
             <>
               <Link to="/login" className="cabecera__btn">
                 <FontAwesomeIcon icon={faUser} />
-                Iniciar sesión
+                <span>Login</span>
               </Link>
 
               <Link to="/registro" className="cabecera__btn cabecera__btn--gold">
                 <FontAwesomeIcon icon={faUserPlus} />
-                Crear cuenta
+                <span>Registro</span>
               </Link>
             </>
           )}
+
         </div>
 
       </div>
