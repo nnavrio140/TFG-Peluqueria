@@ -16,19 +16,26 @@
   - Contacto
   - CRUD usuario y citas
   - CRUD Perfil
-## Arquitectura/Tecnología
- - Frontend:
-   - Figma para prototipado
-   - React
-   - Module CSS
-   - Librerias: esto hay que completarlo..
- - Backend:
-   - Laravel
-   - ORM: Eloquent
-   - Base de datos: MySql
- - Despliegue:
-   - Docker
-   - AWS Amazon
+## Arquitectura / Tecnología
+
+### Frontend
+- Figma para el diseño y prototipado de la interfaz.
+- React como librería principal para la construcción de la interfaz de usuario.
+- CSS Modules para el estilado modular de componentes.
+
+#### Librerías
+- Font Awesome Icons para el uso de iconos en la interfaz.
+- React Toastify para mostrar notificaciones al usuario (éxito, error, avisos).
+- Axios para la comunicación con el backend mediante peticiones HTTP.
+
+### Backend
+- Laravel como framework principal del backend.
+- Eloquent ORM para la gestión de la base de datos mediante modelos.
+- MySQL como sistema de gestión de base de datos relacional.
+
+### Despliegue
+- Docker para la creación de un entorno de desarrollo y producción contenerizado.
+- AWS (Amazon Web Services) para el despliegue y alojamiento de la aplicación.
 ## [Esquema entida-relación](https://github.com/nnavrio140/TFG-Peluqueria/wiki/Modelo-Entidad-Relaci%C3%B3n)
 
 ## [Documentación técnica](https://github.com/nnavrio140/TFG-Peluqueria/wiki/DOCUMENTACI%C3%93N-T%C3%89CNICA)
