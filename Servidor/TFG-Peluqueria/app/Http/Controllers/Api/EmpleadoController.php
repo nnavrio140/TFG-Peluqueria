@@ -10,18 +10,27 @@ use App\Models\Empleado;
 class EmpleadoController extends Controller
 {
     /**
-     * Devuelve la lista de empleados activos con sus datos básicos y horarios.
-     * Esto sirve para que React muestre qué peluqueros existen.
+     * Lista empleados activos.
+     * Opcionalmente filtra por servicio usando ?servicio_id=XX
      */
     public function index()
     {
-        $empleados = Empleado::with(['usuario', 'horarios'])->where('activo', true)->get();
+        $query = Empleado::with(['usuario', 'horarios'])->where('activo', true);
 
+        // Filtrar por servicio si viene el query
+        if ($servicioId = request()->query('servicio_id')) {
+            $query->whereHas('citas', function($q) use ($servicioId) {
+                $q->where('id_servicio', $servicioId);
+            });
+        }
+
+        $empleados = $query->get();
         return EmpleadoResource::collection($empleados);
     }
 
     /**
-     * Devuelve el detalle de un empleado. El load es para incluir el usuario y horarios relacionados.
+     * Devuelve el detalle de un empleado.
+     * Incluye usuario y horarios relacionados.
      */
     public function show(Empleado $empleado)
     {
@@ -30,7 +39,7 @@ class EmpleadoController extends Controller
 
     /**
      * Devuelve solo los horarios de un empleado.
-     * Útil para validar disponibilidad en el frontend.
+     * Útil para validar disponibilidad en React.
      */
     public function horarios(Empleado $empleado)
     {

@@ -12,7 +12,7 @@ class ServicioController extends Controller
 {
     /**
      * Devuelve todos los servicios disponibles.
-     * Usado por la pantalla de selección de servicio en React.
+     * Usado en React para la pantalla de selección de servicio.
      */
     public function index()
     {
@@ -22,14 +22,17 @@ class ServicioController extends Controller
 
     /**
      * Crea un servicio nuevo.
-     * Este endpoint es para administración si se quiere añadir un servicio.
+     * Endpoint de administración para añadir servicios.
      */
     public function store(StoreServicioRequest $request)
     {
-        //Comprobamos y guardamos el servicio
         $validated = $request->validated();
         $servicio = Servicio::create($validated);
-        return response()->json(['message' => 'Servicio creado correctamente','data' => $servicio], 201);
+
+        return response()->json([
+            'message' => 'Servicio creado correctamente',
+            'data' => new ServicioResource($servicio)
+        ], 201);
     }
 
     /**
@@ -41,13 +44,17 @@ class ServicioController extends Controller
     }
 
     /**
-     * Actualiza los datos de un servicio.
+     * Actualiza los datos de un servicio existente.
      */
     public function update(StoreServicioRequest $request, Servicio $servicio)
     {
         $validated = $request->validated();
         $servicio->update($validated);
-        return response()->json(['message' => 'Servicio actualizado correctamente','data' => new ServicioResource($servicio)], 200);
+
+        return response()->json([
+            'message' => 'Servicio actualizado correctamente',
+            'data' => new ServicioResource($servicio)
+        ], 200);
     }
 
     /**
@@ -56,7 +63,9 @@ class ServicioController extends Controller
     public function destroy(Servicio $servicio)
     {
         $servicio->delete();
-        return response()->json(['message' => 'Servicio eliminado correctamente'], 200);
-    }
 
+        return response()->json([
+            'message' => 'Servicio eliminado correctamente'
+        ], 200);
+    }
 }
