@@ -59,7 +59,7 @@ function Header() {
             <div className="user-menu" ref={menuRef}>
 
               <button
-                className="cabecera__btn"
+                className={`cabecera__btn cabecera__btn--user ${openMenu ? 'cabecera__btn--active' : ''}`}
                 onClick={() => setOpenMenu(!openMenu)}
               >
                 <FontAwesomeIcon icon={faUser} />
@@ -67,7 +67,7 @@ function Header() {
               </button>
 
               {openMenu && (
-                <div className="dropdown">
+                <div className="dropdown dropdown--user">
                   <button
                     className="dropdown__item dropdown__item--logout"
                     onClick={handleLogout}
