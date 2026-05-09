@@ -9,8 +9,8 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
-        Rol::firstOrCreate(['slug' => 'admin', 'nombre_rol' => 'Administrador', 'descripcion' => 'Acceso total al sistema',]);
-        Rol::firstOrCreate(['slug' => 'empleado','nombre_rol' => 'Empleado','descripcion' => 'Empleado que atiende citas']);
-        Rol::firstOrCreate(['slug' => 'usuario','nombre_rol' => 'Usuario','descripcion' => 'Usuario cliente',]);
+        Rol::firstOrCreate(['slug' => 'admin'], ['nombre_rol' => 'Administrador', 'descripcion' => 'Acceso total al sistema']);
+        Rol::firstOrCreate(['slug' => 'empleado'], ['nombre_rol' => 'Empleado', 'descripcion' => 'Empleado que gestiona citas']);
+        Rol::firstOrCreate(['slug' => 'usuario'], ['nombre_rol' => 'Usuario', 'descripcion' => 'Cliente del sistema']);
     }
 }

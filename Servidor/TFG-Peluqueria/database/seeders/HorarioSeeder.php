@@ -4,42 +4,36 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Horario;
+use App\Models\Empleado;
 
 class HorarioSeeder extends Seeder
 {
     public function run(): void
     {
-        // Días laborales
-        $dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+        $dias = ['lunes','martes','miercoles','jueves','viernes'];
+        $empleados = Empleado::all();
 
-        // EMPLEADO 1 → menos horas (jefe)
-        foreach ($dias as $dia) {
-            Horario::firstOrCreate([
-                'dia_semana' => $dia,
-                'hora_inicio' => '9:00',
-                'hora_fin' => '16:00',
-                'id_empleado' => 1,
-            ]);
-        }
+        foreach ($empleados as $index => $empleado) {
+            foreach ($dias as $dia) {
 
-        // EMPLEADO 2 → jornada completa
-        foreach ($dias as $dia) {
-            Horario::firstOrCreate([
-                'dia_semana' => $dia,
-                'hora_inicio' => '09:00',
-                'hora_fin' => '18:00',
-                'id_empleado' => 2,
-            ]);
-        }
-
-        // EMPLEADO 3 → jornada completa 
-        foreach ($dias as $dia) {
-            Horario::firstOrCreate([
-                'dia_semana' => $dia,
-                'hora_inicio' => '10:00',
-                'hora_fin' => '19:00',
-                'id_empleado' => 3,
-            ]);
+                Horario::firstOrCreate(
+                    ['empleado_id' => $empleado->id, 'dia_semana' => $dia],
+                    [
+                        'hora_inicio' => match($index){
+                            0 => '09:00',
+                            1 => '09:00',
+                            2 => '10:00',
+                            default => '09:00'
+                        },
+                        'hora_fin' => match($index){
+                            0 => '16:00',
+                            1 => '18:00',
+                            2 => '19:00',
+                            default => '18:00'
+                        }
+                    ]
+                );
+            }
         }
     }
 }

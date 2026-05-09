@@ -8,15 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('estados', function (Blueprint $table) {
+        Schema::create('festivos', function (Blueprint $table) {
 
             $table->id();
 
-            $table->string('nombre_estado');
+            $table->date('fecha');
 
-            $table->string('slug')->unique();
+            $table->string('nombre');
 
-            $table->text('descripcion')->nullable();
+            $table->boolean('activo')->default(true);
+
+            $table->boolean('recurrente')->default(false);
 
             $table->timestamps();
         });
@@ -24,6 +26,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('estados');
+        Schema::dropIfExists('festivos');
     }
 };

@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\Horario;
 use App\Models\User;
-
+use App\Models\Cita;
 
 class Empleado extends Model
 {
@@ -17,33 +16,18 @@ class Empleado extends Model
         'user_id',
     ];
 
-    // Relación 1:1
-    // Un empleado pertenece a un usuario
-    /**
-     * Relación de empleado con su usuario correspondiente.
-     */
     public function usuario()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Relación 1:N
-    // Un empleado puede tener varios horarios
-    /**
-     * Horarios de trabajo del empleado.
-     */
     public function horarios()
     {
-        return $this->hasMany(Horario::class, 'id_empleado');
+        return $this->hasMany(Horario::class, 'empleado_id');
     }
 
-    // Relación 1:N
-    // Un empleado puede atender muchas citas
-    /**
-     * Citas que tiene asignadas este empleado.
-     */
     public function citas()
     {
-        return $this->hasMany(Cita::class, 'id_empleado');
+        return $this->hasMany(Cita::class, 'empleado_id');
     }
 }

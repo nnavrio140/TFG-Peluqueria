@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Rol;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioSeeder extends Seeder
 {
@@ -14,15 +14,9 @@ class UsuarioSeeder extends Seeder
         $adminRole = Rol::where('slug', 'admin')->first();
         $empleadoRole = Rol::where('slug', 'empleado')->first();
 
-        User::firstOrCreate(['nombre' => 'admin', 'email' => 'admin@admin.com', 'password' => bcrypt('1234'), 'role_id' => $adminRole->id]);
-        User::firstOrCreate(['nombre' => 'Juanje Gutierrez', 'email' => 'juanje@admin.com', 'password' => bcrypt('1234'), 'role_id' => $empleadoRole->id]);
-        User::firstOrCreate(['nombre' => 'Nicolas Navarrete', 'email' => 'nico@admin.com', 'password' => bcrypt('1234'), 'role_id' => $empleadoRole->id]);
-        User::firstOrCreate(['nombre' => 'Antonio Villalba', 'email' => 'antonio@admin.com', 'password' => bcrypt('1234'), 'role_id' => $empleadoRole->id]);
-
-
-        User::factory()->count(10)->create();
-
-    
-
+        User::firstOrCreate(['email' => 'admin@admin.com'], ['nombre' => 'admin', 'password' => Hash::make('1234'), 'role_id' => $adminRole->id]);
+        User::firstOrCreate(['email' => 'juanje@admin.com'], ['nombre' => 'Juanje Gutierrez', 'password' => Hash::make('1234'), 'role_id' => $empleadoRole->id]);
+        User::firstOrCreate(['email' => 'nico@admin.com'], ['nombre' => 'Nicolas Navarrete', 'password' => Hash::make('1234'), 'role_id' => $empleadoRole->id]);
+        User::firstOrCreate(['email' => 'antonio@admin.com'], ['nombre' => 'Antonio Villalba', 'password' => Hash::make('1234'), 'role_id' => $empleadoRole->id]);
     }
 }

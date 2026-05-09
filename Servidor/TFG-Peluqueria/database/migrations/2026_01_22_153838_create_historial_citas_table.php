@@ -6,23 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('historial_citas', function (Blueprint $table) {
+
             $table->id();
-            $table->dateTime('fecha');
-            $table->foreignId('id_cita')->constrained('citas');
-            $table->foreignId('id_estado')->constrained('estados');
+
+            $table->foreignId('cita_id')
+                ->constrained('citas')
+                ->onDelete('cascade');
+
+            $table->foreignId('estado_id')
+                ->constrained('estados');
+
+            $table->timestamp('cambiado_en')->useCurrent();
+
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('historial_citas');

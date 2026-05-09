@@ -4,32 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 use App\Models\Cita;
 use App\Models\Estado;
 
 class HistorialCita extends Model
 {
-    protected $fillable = [
-        'fecha',
-        'id_cita',
-        'id_estado',
-    ];
-
-    // Necesario si tiene factory
     use HasFactory;
 
-    // Relación N:1
-    // Un historial pertenece a una cita
+    protected $fillable = [
+        'fecha',
+        'cita_id',
+        'estado_id',
+    ];
+
     public function cita()
     {
-        return $this->belongsTo(Cita::class, 'id_cita');
+        return $this->belongsTo(Cita::class);
     }
 
-    // Relación N:1
-    // Un historial referencia un estado
     public function estado()
     {
-        return $this->belongsTo(Estado::class, 'id_estado', 'id_estado');
+        return $this->belongsTo(Estado::class);
     }
 }

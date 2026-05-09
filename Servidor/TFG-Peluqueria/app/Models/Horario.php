@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\Empleado;
 
 class Horario extends Model
@@ -12,14 +11,11 @@ class Horario extends Model
         'dia_semana',
         'hora_inicio',
         'hora_fin',
-        'id_empleado',
+        'empleado_id',
     ];
 
-    // Relación N:1
-    // Un horario pertenece a un empleado
     public function empleado()
     {
-        return $this->belongsTo(Empleado::class, 'id_empleado');
+        return $this->belongsTo(Empleado::class);
     }
 }
-
