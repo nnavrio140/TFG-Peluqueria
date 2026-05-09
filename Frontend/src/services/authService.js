@@ -1,11 +1,27 @@
 const API_BASE_URL = "http://localhost:8080/api";
 
+const parseJsonResponse = async (response) => {
+  const text = await response.text();
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    return JSON.parse(text);
+  }
+
+  throw new Error(
+    `Respuesta inesperada del servidor (${response.status} ${response.statusText}, content-type: ${contentType}): ${text.slice(0, 200)}`
+  );
+};
+
 export const authService = {
   // 🔹 REGISTRO
   register: async (nombre, email, password, passwordConfirmation) => {
     const response = await fetch(`${API_BASE_URL}/register`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       body: JSON.stringify({
         nombre,
         email,
@@ -14,7 +30,7 @@ export const authService = {
       }),
     });
 
-    const data = await response.json();
+    const data = await parseJsonResponse(response);
 
     if (!response.ok) {
       throw new Error(data.message || "Error en el registro");
@@ -27,11 +43,14 @@ export const authService = {
   login: async (email, password) => {
     const response = await fetch(`${API_BASE_URL}/login`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       body: JSON.stringify({ email, password }),
     });
 
-    const data = await response.json();
+    const data = await parseJsonResponse(response);
 
     if (!response.ok) {
       throw new Error(data.message || "Error en el login");
@@ -47,6 +66,7 @@ export const authService = {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
     });
 
@@ -54,7 +74,7 @@ export const authService = {
       throw new Error("No autorizado");
     }
 
-    return await response.json();
+    return await parseJsonResponse(response);
   },
 
   // 🔹 LOGOUT
@@ -67,6 +87,7 @@ export const authService = {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
     });
 
