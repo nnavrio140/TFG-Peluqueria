@@ -1,49 +1,66 @@
-.barber__card {
-  text-align: center;
+.barber__card{
+  text-align:center;
+  width:100%;
+  max-width:360px;
+  margin:0 auto;
+  transition:transform .3s ease;
+}
+
+.barber__card:hover{
+  transform:translateY(-6px);
 }
 
 /* ================= IMAGEN ================= */
 
-.barber__img {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  filter: grayscale(100%);
-  transition: 0.3s ease;
+.barber__imgWrapper{
+  width:100%;
+  height:420px;
+  overflow:hidden;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 
-.barber__card:hover .barber__img {
-  filter: grayscale(0%);
-  transform: scale(1.03);
+.barber__img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:grayscale(100%);
+  transition:.35s ease;
+}
+
+.barber__card:hover .barber__img{
+  filter:grayscale(0%);
+  transform:scale(1.05);
 }
 
 /* ================= NOMBRE ================= */
 
-.barber__name {
-  margin-top: 20px;
-  font-size: 0.95rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+.barber__name{
+  margin-top:18px;
+  font-size:1.05rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#f3f0ec;
 }
 
 /* ================= REDES ================= */
 
-.barber__socials {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 22px; 
+.barber__socials{
+  margin-top:12px;
+  display:flex;
+  justify-content:center;
+  gap:24px;
 }
 
-.barber__socials a {
-  color: #d4af37;
-  font-size: 0.95rem;
-  transition: 0.25s ease;
-  display: flex;
-  align-items: center;
+.barber__socials a{
+  color:#d4af37;
+  font-size:1.05rem;
+  transition:.25s ease;
+  display:flex;
+  align-items:center;
 }
 
-.barber__socials a:hover {
-  color: #fff;
-  transform: translateY(-3px) scale(1.05);
+.barber__socials a:hover{
+  color:#fff;
+  transform:translateY(-3px) scale(1.1);
 }

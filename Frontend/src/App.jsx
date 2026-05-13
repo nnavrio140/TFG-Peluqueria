@@ -12,6 +12,7 @@ import Login from "./views/Auth/Login";
 import GoogleSuccess from "./views/Auth/GoogleSuccess"; 
 import About from "./views/About/About";
 import Contact from "./views/Contact/Contact";
+import Reserva from "./views/Reserva/Reserva";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/servicios" element={<Services />} />
             <Route path="/sobre-nosotros" element={<About />} />
             <Route path="/contacto" element={<Contact />} />
+            <Route path="/reserva" element={<Reserva />} />
           </Route>
 
           {/* RUTAS SIN HEADER */}

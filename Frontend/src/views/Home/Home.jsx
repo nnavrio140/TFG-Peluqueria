@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import "./Home.css";
+import { Link } from "react-router-dom";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
 
 function Home() {
+
   const [services, setServices] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/servicios")
       .then((res) => res.json())
       .then((data) => {
-        console.log("SERVICIOS API:", data.data); // 👈 DEBUG IMPORTANTE
-
+        console.log("SERVICIOS API:", data.data);
         setServices(data.data.slice(0, 3));
       })
       .catch((error) => console.error("Error:", error));
@@ -50,28 +51,28 @@ function Home() {
 
         </div>
 
-        <div className="btn">
+        <Link to="/reserva" className="btn">
           RESERVA AHORA
-        </div>
+        </Link>
 
       </div>
 
       <div className="stats">
 
         <div className="stat">
-          <img src="/img/cuchilla.webp" />
+          <img src="/img/cuchilla.webp" alt="afeitados" />
           <strong>2500</strong>
           <span>AFEITADOS</span>
         </div>
 
         <div className="stat">
-          <img src="/img/tijeras.webp" />
+          <img src="/img/tijeras.webp" alt="cortes" />
           <strong>4500</strong>
           <span>CORTES</span>
         </div>
 
         <div className="stat">
-          <img src="/img/peluqueros.webp" />
+          <img src="/img/peluqueros.webp" alt="peluqueros" />
           <strong>3</strong>
           <span>PELUQUEROS</span>
         </div>

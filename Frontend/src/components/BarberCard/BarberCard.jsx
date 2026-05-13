@@ -1,16 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookF, faTwitter, faInstagram, faTiktok } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookF, faInstagram, faTiktok } from "@fortawesome/free-brands-svg-icons";
 import "./BarberCard.css";
 
 function BarberCard({ barber, image }) {
   return (
     <div className="barber__card">
 
-      <img
-        src={image}
-        alt={barber.nombre}
-        className="barber__img"
-      />
+      <div className="barber__imgWrapper">
+        <img
+          src={image}
+          alt={barber.nombre}
+          className="barber__img"
+        />
+      </div>
 
       <h3 className="barber__name">
         {barber.nombre}
@@ -22,7 +24,7 @@ function BarberCard({ barber, image }) {
           <FontAwesomeIcon icon={faFacebookF} />
         </a>
 
-        <a href="https://twitter.com" target="_blank" rel="noreferrer">
+        <a href="https://tiktok.com" target="_blank" rel="noreferrer">
           <FontAwesomeIcon icon={faTiktok} />
         </a>
 

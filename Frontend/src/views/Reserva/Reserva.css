@@ -1,0 +1,243 @@
+/* ================================================= */
+/* RESERVA BASE */
+/* ================================================= */
+
+.reserva{
+  background:#212121;
+  color:#f3f0ec;
+  width:100%;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ================================================= */
+/* STEP GENERAL */
+/* ================================================= */
+
+.reserva__step{
+  width:100%;
+  padding:0 0 80px;
+  box-sizing:border-box;
+}
+
+/* ================================================= */
+/* STEP 1 */
+/* ================================================= */
+
+.reserva__servicesStep{
+  width:100%;
+  min-height:100vh;
+  background:transparent;
+}
+
+.reserva__servicesGrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:50px 120px;
+  max-width:1000px;
+  margin:0 auto;
+  padding:50px 20px;
+  align-items:stretch;
+  box-sizing:border-box;
+}
+
+.reserva__serviceItem{
+  display:block;
+  cursor:pointer;
+  transition:transform .25s ease;
+}
+
+.reserva__serviceItem:hover{
+  transform:translateY(-6px);
+}
+
+/* ================================================= */
+/* SERVICE CARD */
+/* ================================================= */
+
+.service-card{
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  color:#f3f0ec;
+  border:1px solid rgba(212,175,55,.6);
+  padding:45px 30px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  transition:all .3s ease;
+  width:100%;
+  height:100%;
+  min-height:260px;
+  box-sizing:border-box;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.service-card:hover{
+  transform:translateY(-6px);
+  border-color:#d4af37;
+  background:rgba(0,0,0,.5);
+}
+
+.service-card__icon{
+  width:95px;
+  height:95px;
+  margin-bottom:22px;
+}
+
+.service-card__icon img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.service-card__title{
+  font-size:.9rem;
+  letter-spacing:.18em;
+  margin-bottom:12px;
+}
+
+.service-card__text{
+  font-size:.9rem;
+  color:#bbb;
+  line-height:1.6;
+}
+
+/* ================================================= */
+/* STEP 2 */
+/* ================================================= */
+
+.reserva__grid-barbers{
+  width:100%;
+  max-width:1200px;
+  margin:60px auto 0;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(260px,320px));
+  justify-content:center;
+  gap:80px;
+  padding:0 20px;
+  box-sizing:border-box;
+}
+
+.reserva__click{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+  cursor:pointer;
+}
+
+.reserva__grid-barbers>.reserva__click>*{
+  width:100%;
+  max-width:320px;
+}
+
+/* ================================================= */
+/* STEP 3 / 4 */
+/* ================================================= */
+
+.reserva__grid-simple{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+  width:100%;
+  max-width:900px;
+  margin:50px auto 0;
+  padding:0 20px;
+  box-sizing:border-box;
+}
+
+/* ================================================= */
+/* BOTON VOLVER */
+/* ================================================= */
+
+.reserva__back{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:60px auto 0;
+  width:fit-content;
+  min-width:170px;
+  padding:14px 34px;
+  background:#c9a26d;
+  color:#111;
+  border:none;
+  border-radius:999px;
+  font-size:.95rem;
+  font-weight:700;
+  letter-spacing:.05em;
+  cursor:pointer;
+  transition:all .25s ease;
+}
+
+.reserva__back:hover{
+  transform:translateY(-2px);
+  background:#d8b07a;
+}
+
+/* ================================================= */
+/* CONFIRMACION */
+/* ================================================= */
+
+.reserva__confirm{
+  text-align:center;
+}
+
+.reserva__summary{
+  background:#111;
+  padding:25px;
+  border-radius:12px;
+  max-width:400px;
+  margin:30px auto;
+}
+
+.reserva__confirmBtn{
+  background:#c9a26d;
+  border:none;
+  padding:14px 28px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* ================================================= */
+/* RESPONSIVE */
+/* ================================================= */
+
+@media (max-width:1100px){
+
+  .reserva__grid-barbers{
+    grid-template-columns:repeat(2,minmax(260px,320px));
+  }
+}
+
+@media (max-width:768px){
+
+  .section__header{
+    min-height:320px;
+    padding:100px 20px 60px;
+  }
+
+  .reserva__servicesGrid{
+    grid-template-columns:1fr;
+    gap:40px;
+  }
+
+  .reserva__grid-barbers{
+    grid-template-columns:1fr;
+    gap:40px;
+  }
+
+  .reserva__grid-simple{
+    grid-template-columns:1fr;
+  }
+
+  .reserva__step{
+    padding:0 0 60px;
+  }
+
+  .reserva__back{
+    min-width:140px;
+  }
+}

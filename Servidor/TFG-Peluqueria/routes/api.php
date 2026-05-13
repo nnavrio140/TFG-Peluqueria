@@ -16,38 +16,39 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 
-#SERVICIOS públicos
+#SERVICIOS públicas
 Route::get('/servicios', [ServicioController::class, 'index']);
+Route::get('/servicios/{servicio}', [ServicioController::class, 'show']);
 
-#EMPLEADOS públicos
+#EMPLEADOS públicas
 Route::get('/empleados', [EmpleadoController::class, 'index']);
+Route::get('/empleados/{empleado}', [EmpleadoController::class, 'show']);
+Route::get('/empleados/{empleado}/horarios', [EmpleadoController::class, 'horarios']);
 
-#CONTACTO público
+#DISPONIBILIDAD pública
+Route::get('/disponibilidad', [CitaController::class, 'disponibilidad']);
+Route::get('/dias-disponibles', [CitaController::class, 'diasDisponibles']);
+
+#CONTACTO pública
 Route::post('/contact', [ContactController::class, 'store']);
 
-# RUTAS PROTEGIDAS
+#RUTAS PROTEGIDAS
 Route::middleware('auth:sanctum')->group(function () {
 
-    # AUTH
+    #AUTH
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    # SERVICIOS (CRUD)
-    Route::post('/servicios', [ServicioController::class, 'store']);
-    Route::get('/servicios/{servicio}', [ServicioController::class, 'show']);
-    Route::put('/servicios/{servicio}', [ServicioController::class, 'update']);
-    Route::delete('/servicios/{servicio}', [ServicioController::class, 'destroy']);
-
-    # EMPLEADOS
-    Route::get('/empleados/{empleado}', [EmpleadoController::class, 'show']);
-    Route::get('/empleados/{empleado}/horarios', [EmpleadoController::class, 'horarios']);
-
-    # CITAS
+    #CITAS
     Route::get('/citas', [CitaController::class, 'index']);
     Route::post('/citas', [CitaController::class, 'store']);
-    Route::get('/citas/disponibilidad', [CitaController::class, 'disponibilidad']);
     Route::get('/citas/{cita}', [CitaController::class, 'show']);
     Route::put('/citas/{cita}', [CitaController::class, 'update']);
     Route::delete('/citas/{cita}', [CitaController::class, 'destroy']);
+
+    #SERVICIOS (ADMIN)
+    Route::post('/servicios', [ServicioController::class, 'store']);
+    Route::put('/servicios/{servicio}', [ServicioController::class, 'update']);
+    Route::delete('/servicios/{servicio}', [ServicioController::class, 'destroy']);
 
 });
