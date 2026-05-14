@@ -10,29 +10,44 @@ class HorarioSeeder extends Seeder
 {
     public function run(): void
     {
-        $dias = ['lunes','martes','miercoles','jueves','viernes'];
+        $dias = [
+            'lunes',
+            'martes',
+            'miercoles',
+            'jueves',
+            'viernes',
+            'sabado',
+            'domingo'
+        ];
+
         $empleados = Empleado::all();
 
-        foreach ($empleados as $index => $empleado) {
+        foreach ($empleados as $empleado) {
+
             foreach ($dias as $dia) {
 
-                Horario::firstOrCreate(
-                    ['empleado_id' => $empleado->id, 'dia_semana' => $dia],
-                    [
-                        'hora_inicio' => match($index){
-                            0 => '09:00',
-                            1 => '09:00',
-                            2 => '10:00',
-                            default => '09:00'
-                        },
-                        'hora_fin' => match($index){
-                            0 => '16:00',
-                            1 => '18:00',
-                            2 => '19:00',
-                            default => '18:00'
-                        }
-                    ]
-                );
+                if (in_array($dia, ['sabado', 'domingo'])) {
+                    continue;
+                }
+
+                $bloques = [
+                    ['hora_inicio' => '10:00', 'hora_fin' => '14:00'],
+                    ['hora_inicio' => '16:00', 'hora_fin' => '20:00'],
+                ];
+
+                foreach ($bloques as $bloque) {
+                    Horario::updateOrCreate(
+                        [
+                            'empleado_id' => $empleado->id,
+                            'dia_semana' => $dia,
+                            'hora_inicio' => $bloque['hora_inicio'],
+                            'hora_fin' => $bloque['hora_fin'],
+                        ],
+                        [
+                            'activo' => true,
+                        ]
+                    );
+                }
             }
         }
     }

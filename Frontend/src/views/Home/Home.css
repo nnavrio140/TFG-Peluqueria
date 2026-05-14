@@ -9,13 +9,11 @@
   --space-sm: 40px;
 }
 
-/* 🔥 HEADER CON LOGO */
 .home__header {
   padding: 160px 20px 120px;
   margin-bottom: 80px;
 }
 
-/* LOGO */
 .home__logo {
   width: 380px;
 }
@@ -29,7 +27,7 @@
   margin: 0 auto;
 }
 
-/* TITULO (consistente con system) */
+/* TITULO */
 .home__title {
   color: #d4af37;
   font-size: 3rem;
@@ -51,28 +49,32 @@
 .btn {
   display: inline-block;
   padding: 14px 40px;
-
   background: #d4af37;
   color: #000;
-
   font-size: 0.75rem;
-  letter-spacing: 0.25em;
-
+  letter-spacing: 0.10rem;
+  font-weight: 600;
   border: 1px solid #d4af37;
   border-radius: 6px;
-
   cursor: pointer;
-
   transition: all 0.25s ease;
+  text-decoration: none;
 }
 
 .btn:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
+  text-decoration: none;
 }
 
 .btn:active {
   transform: translateY(-1px);
+}
+
+.btn:visited,
+.btn:focus {
+  text-decoration: none;
+  color: #000;
 }
 
 /* ================= STATS ================= */
@@ -81,9 +83,7 @@
   background: #1a1a1a;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
   padding: var(--space-lg) 20px;
-
   text-align: center;
   gap: 10px;
 }
@@ -109,7 +109,7 @@
 
 .stat span {
   font-size: 0.75rem;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.10rem;
 }
 
 /* ================= RESPONSIVE ================= */

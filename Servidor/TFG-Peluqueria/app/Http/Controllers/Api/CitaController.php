@@ -8,15 +8,14 @@ use App\Http\Resources\CitaResource;
 use App\Models\Cita;
 use App\Models\Empleado;
 use App\Models\Estado;
+use App\Models\Festivo;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class CitaController extends Controller
 {
-    /**
-     * Devuelve todas las citas visibles para el usuario actual.
-     */
     public function index()
     {
         $usuario = Auth::user();
@@ -31,7 +30,7 @@ class CitaController extends Controller
         if (!$usuario->isAdmin()) {
 
             if ($usuario->isEmployee() && $usuario->empleado) {
-                $consulta->where('id_empleado', $usuario->empleado->id);
+                $consulta->where('empleado_id', $usuario->empleado->id);
             } else {
                 $consulta->where('user_id', $usuario->id);
             }
@@ -40,13 +39,9 @@ class CitaController extends Controller
         return CitaResource::collection($consulta->get());
     }
 
-    /**
-     * Crear cita.
-     */
     public function store(StoreCitaRequest $request)
     {
         $usuario = Auth::user();
-
         $datos = $request->validated();
 
         $servicio = Servicio::findOrFail($datos['id_servicio']);
@@ -55,12 +50,7 @@ class CitaController extends Controller
         $fecha = $datos['fecha'];
         $horaInicio = $datos['hora_inicio'];
 
-        $this->verificarDisponibilidad(
-            $empleado,
-            $servicio,
-            $fecha,
-            $horaInicio
-        );
+        $this->verificarDisponibilidad($empleado, $servicio, $fecha, $horaInicio);
 
         $idEstado = $datos['id_estado']
             ?? Estado::where('nombre_estado', 'Pendiente')->first()?->id
@@ -74,17 +64,12 @@ class CitaController extends Controller
             'fecha' => $fecha,
             'hora_inicio' => $horaInicio,
             'user_id' => $idUsuario,
-            'id_servicio' => $servicio->id,
-            'id_empleado' => $empleado->id,
-            'id_estado' => $idEstado,
+            'servicio_id' => $servicio->id,
+            'empleado_id' => $empleado->id,
+            'estado_id' => $idEstado,
         ]);
 
-        $cita->load([
-            'servicio',
-            'empleado.usuario',
-            'estado',
-            'usuario'
-        ]);
+        $cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']);
 
         return response()->json([
             'message' => 'Cita creada correctamente',
@@ -92,32 +77,18 @@ class CitaController extends Controller
         ], 201);
     }
 
-    /**
-     * Mostrar cita.
-     */
     public function show(Cita $cita)
     {
-        $cita->load([
-            'servicio',
-            'empleado.usuario',
-            'estado',
-            'usuario'
-        ]);
+        $cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']);
 
         return new CitaResource($cita);
     }
 
-    /**
-     * Actualizar cita.
-     */
     public function update(StoreCitaRequest $request, Cita $cita)
     {
         $usuario = Auth::user();
 
-        if (
-            !$usuario->isAdmin()
-            && $cita->user_id !== $usuario->id
-        ) {
+        if (!$usuario->isAdmin() && $cita->user_id !== $usuario->id) {
             return response()->json([
                 'message' => 'No tienes permiso para modificar esta cita.'
             ], 403);
@@ -131,13 +102,7 @@ class CitaController extends Controller
         $fecha = $datos['fecha'];
         $horaInicio = $datos['hora_inicio'];
 
-        $this->verificarDisponibilidad(
-            $empleado,
-            $servicio,
-            $fecha,
-            $horaInicio,
-            $cita->id
-        );
+        $this->verificarDisponibilidad($empleado, $servicio, $fecha, $horaInicio, $cita->id);
 
         $idUsuario = isset($datos['user_id']) && $usuario->isAdmin()
             ? $datos['user_id']
@@ -149,17 +114,12 @@ class CitaController extends Controller
             'fecha' => $fecha,
             'hora_inicio' => $horaInicio,
             'user_id' => $idUsuario,
-            'id_servicio' => $servicio->id,
-            'id_empleado' => $empleado->id,
-            'id_estado' => $idEstado,
+            'servicio_id' => $servicio->id,
+            'empleado_id' => $empleado->id,
+            'estado_id' => $idEstado,
         ]);
 
-        $cita->load([
-            'servicio',
-            'empleado.usuario',
-            'estado',
-            'usuario'
-        ]);
+        $cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']);
 
         return response()->json([
             'message' => 'Cita actualizada correctamente',
@@ -167,17 +127,11 @@ class CitaController extends Controller
         ]);
     }
 
-    /**
-     * Eliminar cita.
-     */
     public function destroy(Cita $cita)
     {
         $usuario = Auth::user();
 
-        if (
-            !$usuario->isAdmin()
-            && $cita->user_id !== $usuario->id
-        ) {
+        if (!$usuario->isAdmin() && $cita->user_id !== $usuario->id) {
             return response()->json([
                 'message' => 'No tienes permiso para eliminar esta cita.'
             ], 403);
@@ -190,9 +144,6 @@ class CitaController extends Controller
         ]);
     }
 
-    /**
-     * Horarios disponibles.
-     */
     public function disponibilidad(Request $request)
     {
         $datos = $request->validate([
@@ -215,9 +166,6 @@ class CitaController extends Controller
         ]);
     }
 
-    /**
-     * Días disponibles para calendario React.
-     */
     public function diasDisponibles(Request $request)
     {
         $datos = $request->validate([
@@ -250,9 +198,9 @@ class CitaController extends Controller
         ]);
     }
 
-    // -------------------------------------------------
-    // MÉTODOS PRIVADOS
-    // -------------------------------------------------
+    // =========================
+    // 🔥 MÉTODOS PRIVADOS
+    // =========================
 
     private function verificarDisponibilidad(
         Empleado $empleado,
@@ -261,9 +209,9 @@ class CitaController extends Controller
         $horaInicio,
         $ignoreId = null
     ) {
-        $horario = $this->obtenerHorarioDelDia($empleado, $fecha);
+        $horarios = $this->obtenerHorariosDelDia($empleado, $fecha);
 
-        if (!$horario) {
+        if ($horarios->isEmpty()) {
             abort(422, 'El empleado no trabaja ese día.');
         }
 
@@ -271,64 +219,86 @@ class CitaController extends Controller
             abort(422, 'No puedes reservar en una fecha pasada.');
         }
 
-        if (
-            !$this->espacioDisponible(
-                $empleado,
-                $servicio,
-                $fecha,
-                $horaInicio,
-                $ignoreId
-            )
-        ) {
+        if (!$this->espacioDisponible($empleado, $servicio, $fecha, $horaInicio, $ignoreId)) {
             abort(422, 'El horario seleccionado no está disponible.');
         }
     }
 
-    private function obtenerHorarioDelDia(Empleado $empleado, $fecha)
+    private function obtenerHorariosDelDia(Empleado $empleado, $fecha)
     {
+        if ($this->estaFestivo($fecha)) {
+            return collect();
+        }
+
         $diaSemana = $this->obtenerDiaSemana($fecha);
 
         return $empleado->horarios()
             ->where('dia_semana', $diaSemana)
-            ->first();
+            ->get();
+    }
+
+    private function obtenerDiaSemana($fecha)
+    {
+        $diasSemana = [
+            'domingo',
+            'lunes',
+            'martes',
+            'miercoles',
+            'jueves',
+            'viernes',
+            'sabado',
+        ];
+
+        return $diasSemana[Carbon::parse($fecha)->dayOfWeek];
+    }
+
+    private function estaFestivo($fecha)
+    {
+        $fechaFormateada = date('Y-m-d', strtotime($fecha));
+
+        return Festivo::activos()->get()->contains(function ($festivo) use ($fechaFormateada) {
+
+            if ($festivo->fecha === $fechaFormateada) {
+                return true;
+            }
+
+            if (
+                $festivo->recurrente &&
+                date('m-d', strtotime($festivo->fecha)) === date('m-d', strtotime($fechaFormateada))
+            ) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     private function obtenerHorariosDisponibles(
         Empleado $empleado,
         Servicio $servicio,
-        $fecha,
-        $paso = 20
+        $fecha
     ) {
-        $horario = $this->obtenerHorarioDelDia($empleado, $fecha);
+        $horariosDelDia = $this->obtenerHorariosDelDia($empleado, $fecha);
 
-        if (!$horario) {
+        if ($horariosDelDia->isEmpty()) {
             return [];
         }
 
-        $inicio = strtotime($fecha . ' ' . $horario->hora_inicio);
-        $fin = strtotime($fecha . ' ' . $horario->hora_fin);
-
-        $duracionSegundos = (int) $servicio->duracion * 60;
+        $duracion = (int) $servicio->duracion * 60;
+        $paso = max((int) $servicio->duracion, 1);
 
         $horarios = [];
 
-        for (
-            $hora = $inicio;
-            $hora + $duracionSegundos <= $fin;
-            $hora += $paso * 60
-        ) {
+        foreach ($horariosDelDia as $horario) {
+            $inicio = strtotime($fecha . ' ' . $horario->hora_inicio);
+            $fin = strtotime($fecha . ' ' . $horario->hora_fin);
 
-            $horaFormateada = date('H:i', $hora);
+            for ($hora = $inicio; $hora + $duracion <= $fin; $hora += $paso * 60) {
+                $horaFormateada = date('H:i', $hora);
 
-            if (
-                $this->espacioDisponible(
-                    $empleado,
-                    $servicio,
-                    $fecha,
-                    $horaFormateada
-                )
-            ) {
-                $horarios[] = $horaFormateada;
+                if ($this->espacioDisponible($empleado, $servicio, $fecha, $horaFormateada)) {
+                    $horarios[] = $horaFormateada;
+                }
             }
         }
 
@@ -342,39 +312,28 @@ class CitaController extends Controller
         $horaInicio,
         $ignoreId = null
     ) {
-        $horario = $this->obtenerHorarioDelDia($empleado, $fecha);
+        $horariosDelDia = $this->obtenerHorariosDelDia($empleado, $fecha);
 
-        if (!$horario) {
+        if ($horariosDelDia->isEmpty()) {
             return false;
         }
 
         $inicioCita = strtotime($fecha . ' ' . $horaInicio);
-
         $finCita = $inicioCita + ((int) $servicio->duracion * 60);
 
-        $inicioHorario = strtotime($fecha . ' ' . $horario->hora_inicio);
+        $esDentroDeHorario = $horariosDelDia->contains(function ($horario) use ($fecha, $inicioCita, $finCita) {
+            $inicioHorario = strtotime($fecha . ' ' . $horario->hora_inicio);
+            $finHorario = strtotime($fecha . ' ' . $horario->hora_fin);
 
-        $finHorario = strtotime($fecha . ' ' . $horario->hora_fin);
+            return $inicioCita >= $inicioHorario && $finCita <= $finHorario;
+        });
 
-        if (
-            $inicioCita < $inicioHorario
-            || $finCita > $finHorario
-        ) {
+        if (!$esDentroDeHorario) {
             return false;
         }
 
-        foreach (
-            $this->obtenerTiemposOcupados(
-                $empleado,
-                $fecha,
-                $ignoreId
-            ) as $tiempo
-        ) {
-
-            if (
-                $inicioCita < $tiempo['end']
-                && $finCita > $tiempo['start']
-            ) {
+        foreach ($this->obtenerTiemposOcupados($empleado, $fecha, $ignoreId) as $tiempo) {
+            if ($inicioCita < $tiempo['end'] && $finCita > $tiempo['start']) {
                 return false;
             }
         }
@@ -382,13 +341,10 @@ class CitaController extends Controller
         return true;
     }
 
-    private function obtenerTiemposOcupados(
-        Empleado $empleado,
-        $fecha,
-        $ignoreId = null
-    ) {
+    private function obtenerTiemposOcupados(Empleado $empleado, $fecha, $ignoreId = null)
+    {
         $consulta = Cita::with('servicio')
-            ->where('id_empleado', $empleado->id)
+            ->where('empleado_id', $empleado->id)
             ->where('fecha', $fecha);
 
         if ($ignoreId) {
@@ -400,7 +356,6 @@ class CitaController extends Controller
         foreach ($consulta->get() as $cita) {
 
             $inicio = strtotime($fecha . ' ' . $cita->hora_inicio);
-
             $fin = $inicio + ((int) $cita->servicio->duracion * 60);
 
             $tiempos[] = [
@@ -410,20 +365,5 @@ class CitaController extends Controller
         }
 
         return $tiempos;
-    }
-
-    private function obtenerDiaSemana($fecha)
-    {
-        $dias = [
-            'Domingo',
-            'Lunes',
-            'Martes',
-            'Miércoles',
-            'Jueves',
-            'Viernes',
-            'Sábado'
-        ];
-
-        return $dias[date('w', strtotime($fecha))];
     }
 }

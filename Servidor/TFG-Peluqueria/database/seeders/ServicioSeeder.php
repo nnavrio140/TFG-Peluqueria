@@ -11,31 +11,31 @@ class ServicioSeeder extends Seeder
     {
         Servicio::firstOrCreate([
             'nombre_servicio' => 'Corte & Barba',
-            'descripcion_corta' => 'Corte clásico o moderno adaptado a tu estilo. Incluye asesoría personalizada.',
+            'descripcion_corta' => 'Corte y arreglo de barba con acabado profesional.',
             'descripcion' => 'Corte clásico o moderno combinado con arreglo y perfilado de barba. Trabajamos cada detalle para lograr un estilo preciso, definido y a tu medida.',
             'precio' => 12.00,
-            'duracion' => 30
+            'duracion' => 40
         ]);
 
         Servicio::firstOrCreate([
             'nombre_servicio' => 'Corte',
-            'descripcion_corta' => 'Afeitado tradicional con toalla caliente para una experiencia suave y relajante.',
+            'descripcion_corta' => 'Corte de cabello moderno con acabado limpio y definido.',
             'descripcion' => 'Corte de cabello con técnica precisa y acabado profesional. Estilo limpio y definido para un look moderno, elegante y bien cuidado.',
             'precio' => 8.00,
-            'duracion' => 30
+            'duracion' => 20
         ]);
 
         Servicio::firstOrCreate([
             'nombre_servicio' => 'Corte & Teñido',
-            'descripcion_corta' => 'Perfilado y definición de barba con navaja para un acabado limpio y preciso.',
+            'descripcion_corta' => 'Corte y coloración profesional adaptados a tu estilo.',
             'descripcion' => 'Corte y coloración profesional adaptados a tu estilo. Acabado uniforme y duradero para realzar tu imagen y renovar tu look.',
             'precio' => 20.00,
-            'duracion' => 45
+            'duracion' => 60
         ]);
 
         Servicio::firstOrCreate([
             'nombre_servicio' => 'Afeitado',
-            'descripcion_corta' => 'Tratamiento facial completo para limpiar, hidratar y revitalizar la piel del rostro.',
+            'descripcion_corta' => 'Afeitado clásico con navaja y toalla caliente.',
             'descripcion' => 'Afeitado tradicional con navaja y toalla caliente. Productos de primera calidad para una experiencia relajante, segura y profesional.',
             'precio' => 6.00,
             'duracion' => 15
