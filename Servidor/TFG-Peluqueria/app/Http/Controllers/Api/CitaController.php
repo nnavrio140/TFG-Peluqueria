@@ -60,9 +60,15 @@ class CitaController extends Controller
             ? $datos['user_id']
             : $usuario->id;
 
+        // Calcular hora_fin basado en hora_inicio + duracion del servicio
+        $horaFin = Carbon::createFromFormat('H:i', $horaInicio)
+            ->addMinutes($servicio->duracion)
+            ->format('H:i:s');
+
         $cita = Cita::create([
             'fecha' => $fecha,
             'hora_inicio' => $horaInicio,
+            'hora_fin' => $horaFin,
             'user_id' => $idUsuario,
             'servicio_id' => $servicio->id,
             'empleado_id' => $empleado->id,

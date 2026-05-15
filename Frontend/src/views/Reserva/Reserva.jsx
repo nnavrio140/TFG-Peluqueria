@@ -1,7 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Reserva.css";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
 import BarberCard from "../../components/BarberCard/BarberCard";
+import { AuthContext } from "../../context/AuthContext";
 
 function Reserva() {
   const [step, setStep] = useState(1);
@@ -19,6 +23,10 @@ function Reserva() {
   const [horas, setHoras] = useState([]);
   const [hora, setHora] = useState(null);
   const [cargandoHoras, setCargandoHoras] = useState(false);
+  const [loadingCita, setLoadingCita] = useState(false);
+
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const diasDisponiblesSet = useMemo(
     () => new Set(dias || []),
@@ -191,22 +199,59 @@ function Reserva() {
       .finally(() => setCargandoHoras(false));
   }, [step, servicio, empleado, fecha]);
 
-  const crearCita = () => {
-    fetch("http://localhost:8080/api/citas", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id_servicio: servicio.id,
-        id_empleado: empleado.id,
-        fecha,
-        hora_inicio: hora,
-      }),
-    })
-      .then((res) => res.json())
-      .then(() => alert("Cita creada ✔"))
-      .catch(console.log);
+  const crearCita = async () => {
+    if (!token) {
+      toast.error("Necesitas iniciar sesión para reservar.");
+      return navigate("/login");
+    }
+
+    if (!servicio || !empleado || !fecha || !hora) {
+      toast.error("Selecciona servicio, barbero, fecha y hora.");
+      return;
+    }
+
+    setLoadingCita(true);
+
+    try {
+      const response = await fetch("http://localhost:8080/api/citas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id_servicio: servicio.id,
+          id_empleado: empleado.id,
+          fecha,
+          hora_inicio: hora,
+        }),
+      });
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        const text = await response.text();
+        throw new Error(
+          text || "Respuesta inesperada del servidor al crear la cita."
+        );
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message || data?.error || "Error al crear la cita."
+        );
+      }
+
+      toast.success(data.message || "Cita creada correctamente");
+      setTimeout(() => navigate("/"), 1200);
+    } catch (error) {
+      toast.error(error?.message || "No se pudo crear la cita.");
+      console.error("Error creando cita:", error);
+    } finally {
+      setLoadingCita(false);
+    }
   };
 
   return (
@@ -275,7 +320,7 @@ function Reserva() {
           </div>
 
           <button
-            className="reserva__back"
+            className="reserva__backButton"
             onClick={() => setStep(1)}
           >
             Volver
@@ -305,39 +350,32 @@ function Reserva() {
 
         {/* MES */}
         <div className="reserva__calendarHeader">
+            <button
+              type="button"
+              className="reserva__calendarNav"
+              onClick={() =>
+                setMonthOffset((prev) => Math.max(prev - 1, 0))
+              }
+              disabled={monthOffset === 0}
+            >
+              ‹
+            </button>
 
-          <button
-            type="button"
-            className="btn btn--ghost"
-            onClick={() =>
-              setMonthOffset((prev) => Math.max(prev - 1, 0))
-            }
-            disabled={monthOffset === 0}
-          >
-            ‹
-          </button>
+            <h2 className="reserva__calendarMonth">
+              {
+                calendarDates.find((d) => d.type === "day")
+                  ?.monthLabel || ""
+              }
+            </h2>
 
-          <h2 className="reserva__calendarMonth">
-            {
-              calendarDates.find((d) => d.type === "day")
-                ?.monthLabel || ""
-            }
-          </h2>
-
-          <button
-            type="button"
-            className="btn btn--ghost"
-            onClick={() => setMonthOffset((prev) => prev + 1)}
-          >
-            ›
-          </button>
-
-        </div>
-
-        <p className="reserva__calendarNote">
-          Selecciona un día disponible para continuar.
-        </p>
-
+            <button
+              type="button"
+              className="reserva__calendarNav"
+              onClick={() => setMonthOffset((prev) => prev + 1)}
+            >
+              ›
+            </button>
+          </div>
         {/* CALENDARIO */}
         <div className="reserva__calendarGrid">
 
@@ -439,7 +477,7 @@ function Reserva() {
 
     {/* BOTÓN VOLVER */}
     <button
-      className="btn btn--ghost reserva__back"
+      className="btn btn--ghost reserva__backButton"
       onClick={() => setStep(2)}
     >
       Volver
@@ -458,23 +496,23 @@ function Reserva() {
 
           <div className="reserva__summary">
             <p>Servicio: {servicio?.nombre}</p>
-            <p>Barbero: {empleado?.usuario?.nombre}</p>
+            <p>Barbero: {empleado?.nombre || empleado?.usuario?.nombre}</p>
             <p>Fecha: {fecha}</p>
             <p>Hora: {hora}</p>
           </div>
 
           <div className="reserva__confirmActions">
             <button
-              className="reserva__confirmButton"
+              className="reserva__confirmButton reserva__actionButton"
               type="button"
-              disabled={!hora}
+              disabled={!hora || loadingCita}
               onClick={crearCita}
             >
-              Confirmar cita
+              {loadingCita ? "Creando cita..." : "Confirmar cita"}
             </button>
 
             <button
-              className="reserva__back"
+              className="reserva__back reserva__actionButton"
               type="button"
               onClick={() => setStep(3)}
             >

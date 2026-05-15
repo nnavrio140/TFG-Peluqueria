@@ -4,6 +4,7 @@ import { AuthProvider } from "./context/AuthContext";
 
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 import Home from "./views/Home/Home";
 import Services from "./views/Services/Services";
@@ -26,7 +27,11 @@ function App() {
             <Route path="/servicios" element={<Services />} />
             <Route path="/sobre-nosotros" element={<About />} />
             <Route path="/contacto" element={<Contact />} />
-            <Route path="/reserva" element={<Reserva />} />
+            <Route path="/reserva" element={
+              <ProtectedRoute>
+                <Reserva />
+              </ProtectedRoute>
+            } />
           </Route>
 
           {/* RUTAS SIN HEADER */}

@@ -22,7 +22,6 @@ class StoreCitaRequest extends FormRequest
     /**
      * Reglas de validación para crear o actualizar una cita.
      * Confirma que los identificadores existen en las tablas correspondientes.
-     */
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */

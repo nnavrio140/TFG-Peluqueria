@@ -140,23 +140,35 @@
 .reserva__calendarHeader{
   max-width:940px;
   margin:40px auto 0;
-  padding:0 20px;
+  padding:12px 18px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:18px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(212,175,55,0.15);
+  border-radius:24px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
 }
 
 .reserva__calendarNav{
-  width:54px;
-  height:54px;
+  width:52px;
+  height:52px;
   border-radius:50%;
   border:none;
-  background:rgba(255,255,255,.08);
+  background:rgba(212,175,55,.12);
   color:#f3f0ec;
   cursor:pointer;
-  font-size:1.4rem;
+  font-size:1.35rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   transition:all .25s ease;
+}
+
+.reserva__calendarNav:hover:not(:disabled){
+  transform:scale(1.05);
+  background:rgba(212,175,55,.2);
 }
 
 .reserva__calendarNav:disabled{
@@ -168,9 +180,10 @@
   flex:1;
   text-align:center;
   color:#f3f0ec;
-  font-size:1.15rem;
-  font-weight:700;
-  letter-spacing:.04em;
+  font-size:1.2rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
 }
 
 .reserva__calendarLayout{
@@ -186,13 +199,6 @@
   min-width:0;
 }
 
-.reserva__calendarNote{
-  max-width:940px;
-  margin:8px auto 0;
-  padding:0 20px;
-  color:#ccc;
-  font-size:.95rem;
-}
 
 .reserva__hoursPanel{
   background:rgba(0,0,0,.35);
@@ -268,18 +274,31 @@
   min-height:120px;
 }
 
-.reserva__calendarDay:hover{
+.reserva__calendarDay:hover:not(.is-disabled){
   transform:translateY(-3px);
 }
 
-.reserva__calendarDay--active{
+.reserva__calendarDay.is-active{
   border-color:#d4af37;
-  background:rgba(212,175,55,.18);
-  box-shadow:0 0 0 1px rgba(212,175,55,.18);
+  background:linear-gradient(180deg, rgba(255,222,120,.18), rgba(212,175,55,.15));
+  box-shadow:0 12px 30px rgba(212,175,55,.15);
+  color:#fff;
 }
 
-.reserva__calendarDay--disabled{
-  opacity:.25;
+.reserva__calendarDay.is-active strong,
+.reserva__calendarDay.is-active span{
+  color:#fff;
+}
+
+.reserva__calendarDay.is-selected{
+  background:#d4af37;
+  border-color:#d4af37;
+  color:#121212;
+  box-shadow:0 0 0 1px rgba(255,255,255,.12);
+}
+
+.reserva__calendarDay.is-disabled{
+  opacity:.35;
   cursor:not-allowed;
   background:rgba(255,255,255,.06);
   border-color:rgba(255,255,255,.08);
@@ -359,8 +378,63 @@
 .reserva__confirmActions{
   display:flex;
   gap:16px;
+  align-items:center;
+  justify-content:center;
   flex-wrap:wrap;
   margin-top:24px;
+}
+
+.reserva__actionButton{
+  min-width:240px;
+  padding:14px 28px;
+  border-radius:999px;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+
+.reserva__confirmButton{
+  border:none;
+  border-radius:14px;
+  background:#d4af37;
+  color:#121212;
+  padding:14px 16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .25s ease;
+}
+
+.reserva__confirmButton:hover:not(:disabled){
+  transform:translateY(-1px);
+  box-shadow:0 10px 20px rgba(212,175,55,.2);
+}
+
+.reserva__confirmButton:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.reserva__back{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0;
+  width:fit-content;
+  min-width:170px;
+  padding:14px 34px;
+  background:#c9a26d;
+  color:#111;
+  border:none;
+  border-radius:999px;
+  font-size:.95rem;
+  font-weight:700;
+  letter-spacing:.05em;
+  cursor:pointer;
+  transition:all .25s ease;
+}
+
+.reserva__back:hover{
+  transform:translateY(-2px);
+  background:#d8b07a;
 }
 
 @media (max-width: 980px) {
@@ -403,7 +477,7 @@
 /* BOTON VOLVER */
 /* ================================================= */
 
-.reserva__back{
+.reserva__backButton{
   display:flex;
   justify-content:center;
   align-items:center;
@@ -422,7 +496,7 @@
   transition:all .25s ease;
 }
 
-.reserva__back:hover{
+.reserva__backButton:hover{
   transform:translateY(-2px);
   background:#d8b07a;
 }
