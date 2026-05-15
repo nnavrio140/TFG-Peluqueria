@@ -6,6 +6,7 @@ import "./Reserva.css";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
 import BarberCard from "../../components/BarberCard/BarberCard";
 import { AuthContext } from "../../context/AuthContext";
+import { SERVICIOS_ENDPOINTS, EMPLEADOS_ENDPOINTS, DISPONIBILIDAD_ENDPOINTS, CITAS_ENDPOINTS } from "../../services/endpoints";
 
 function Reserva() {
   const [step, setStep] = useState(1);
@@ -129,7 +130,7 @@ function Reserva() {
   }, [diasDisponiblesSet, monthOffset]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/servicios")
+    fetch(SERVICIOS_ENDPOINTS.INDEX)
       .then((res) => res.json())
       .then((data) => setServicios(data.data))
       .catch(console.log);
@@ -167,7 +168,7 @@ function Reserva() {
   useEffect(() => {
     if (step !== 2) return;
 
-    fetch("http://localhost:8080/api/empleados")
+    fetch(EMPLEADOS_ENDPOINTS.INDEX)
       .then((res) => res.json())
       .then((data) => setEmpleados(data.data || []))
       .catch(console.log);
@@ -177,7 +178,7 @@ function Reserva() {
     if (step !== 3 || !servicio || !empleado) return;
 
     fetch(
-      `http://localhost:8080/api/dias-disponibles?id_servicio=${servicio.id}&id_empleado=${empleado.id}`
+      `${DISPONIBILIDAD_ENDPOINTS.DIAS_DISPONIBLES}?id_servicio=${servicio.id}&id_empleado=${empleado.id}`
     )
       .then((res) => res.json())
       .then((data) => setDias(data.dias || []))
@@ -191,7 +192,7 @@ function Reserva() {
     setCargandoHoras(true);
 
     fetch(
-      `http://localhost:8080/api/disponibilidad?id_servicio=${servicio.id}&id_empleado=${empleado.id}&fecha=${fecha}`
+      `${DISPONIBILIDAD_ENDPOINTS.GET_DISPONIBILIDAD}?id_servicio=${servicio.id}&id_empleado=${empleado.id}&fecha=${fecha}`
     )
       .then((res) => res.json())
       .then((data) => setHoras(data.disponibilidad || []))
@@ -213,7 +214,7 @@ function Reserva() {
     setLoadingCita(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/citas", {
+      const response = await fetch(CITAS_ENDPOINTS.STORE, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

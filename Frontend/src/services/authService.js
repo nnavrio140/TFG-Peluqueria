@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080/api";
+import { AUTH_ENDPOINTS } from './endpoints.js';
 
 const parseJsonResponse = async (response) => {
   const text = await response.text();
@@ -16,7 +16,7 @@ const parseJsonResponse = async (response) => {
 export const authService = {
   // 🔹 REGISTRO
   register: async (nombre, email, password, passwordConfirmation) => {
-    const response = await fetch(`${API_BASE_URL}/register`, {
+    const response = await fetch(AUTH_ENDPOINTS.REGISTER, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const authService = {
 
   // 🔹 LOGIN
   login: async (email, password) => {
-    const response = await fetch(`${API_BASE_URL}/login`, {
+    const response = await fetch(AUTH_ENDPOINTS.LOGIN, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const authService = {
 
   // 🔹 USUARIO ACTUAL
   getMe: async (token) => {
-    const response = await fetch(`${API_BASE_URL}/me`, {
+    const response = await fetch(AUTH_ENDPOINTS.ME, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ export const authService = {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    await fetch(`${API_BASE_URL}/logout`, {
+    await fetch(AUTH_ENDPOINTS.LOGOUT, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -99,6 +99,6 @@ export const authService = {
 
   // 🔵 LOGIN GOOGLE
   googleLogin: () => {
-    window.location.href = `${API_BASE_URL}/auth/google`;
+    window.location.href = AUTH_ENDPOINTS.GOOGLE_LOGIN;
   },
 };

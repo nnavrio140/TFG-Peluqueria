@@ -44,6 +44,8 @@ function Header() {
 
           <Link to="/servicios">Servicios</Link>
 
+          <Link to="/citas">Citas</Link>
+
           <Link to="/sobre-nosotros">Sobre Nosotros</Link>
 
           <Link to="/blog">Blog</Link>

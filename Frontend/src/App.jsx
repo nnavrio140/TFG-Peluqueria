@@ -14,6 +14,7 @@ import GoogleSuccess from "./views/Auth/GoogleSuccess";
 import About from "./views/About/About";
 import Contact from "./views/Contact/Contact";
 import Reserva from "./views/Reserva/Reserva";
+import Blog from "./views/Blog/Blog";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/servicios" element={<Services />} />
             <Route path="/sobre-nosotros" element={<About />} />
             <Route path="/contacto" element={<Contact />} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="/reserva" element={
               <ProtectedRoute>
                 <Reserva />
@@ -39,7 +41,7 @@ function App() {
             <Route path="/registro" element={<Register />} />
             <Route path="/login" element={<Login />} />
 
-            {/* 🔵 CALLBACK GOOGLE */}
+            {/*CALLBACK GOOGLE */}
             <Route path="/login/success" element={<GoogleSuccess />} />
           </Route>
 

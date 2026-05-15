@@ -1,0 +1,33 @@
+.blog-card {
+  background: #000;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+}
+
+.blog-card__image-container {
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+}
+
+.blog-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.3s ease;
+}
+
+.blog-card:hover .blog-card__image {
+  transform: scale(1.05);
+}
+
+.blog-card__title {
+  padding: 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}

@@ -28,7 +28,7 @@ function About() {
   return (
     <div className="about">
 
-      {/* HEADER (igual que Services) */}
+      {/* HEADER */}
       <div className="section__header">
         <h1 className="section__title">SOBRE NOSOTROS</h1>
       </div>

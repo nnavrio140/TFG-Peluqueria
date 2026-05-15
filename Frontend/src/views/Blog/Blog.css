@@ -1,0 +1,96 @@
+.blog {
+  width: 100%;
+  background: #212121;
+  color: white;
+}
+
+/* SECTION */
+.blog__section {
+  max-width: 1200px;
+  margin: auto;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.blog__subtitle {
+  color: #c8a45d;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+}
+
+.blog__heading {
+  font-size: 3rem;
+  margin-bottom: 50px;
+}
+
+/* GRID */
+.blog__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* =========================
+   PAGINATION (PRO CLEAN)
+========================= */
+
+.blog__pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 60px;
+}
+
+.page-btn {
+  width: 44px;
+  height: 44px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(200,164,93,0.4);
+  background: #1a1a1a;
+
+  color: #c8a45d;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.page-btn:hover {
+  background: rgba(200,164,93,0.15);
+  transform: translateY(-2px);
+}
+
+.page-btn.active {
+  background: #c8a45d;
+  color: #111;
+  font-weight: bold;
+  transform: scale(1.1);
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .blog__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .blog__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blog__heading {
+    font-size: 2rem;
+  }
+
+  .blog__pagination li a {
+    width: 40px;
+    height: 40px;
+  }
+}
