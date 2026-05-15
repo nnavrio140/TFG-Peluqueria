@@ -15,6 +15,7 @@ import About from "./views/About/About";
 import Contact from "./views/Contact/Contact";
 import Reserva from "./views/Reserva/Reserva";
 import Blog from "./views/Blog/Blog";
+import Citas from "./views/Citas/Citas";
 
 function App() {
   return (
@@ -29,6 +30,11 @@ function App() {
             <Route path="/sobre-nosotros" element={<About />} />
             <Route path="/contacto" element={<Contact />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/citas" element={
+              <ProtectedRoute>
+                <Citas />
+              </ProtectedRoute>
+            } />
             <Route path="/reserva" element={
               <ProtectedRoute>
                 <Reserva />

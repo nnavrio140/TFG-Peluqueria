@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CONTACT_ENDPOINT } from "../../services/endpoints";
 
 function Contact() {
 
@@ -33,7 +34,7 @@ function Contact() {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:8080/api/contact",
+        CONTACT_ENDPOINT,
         formData,
         {
           headers: {

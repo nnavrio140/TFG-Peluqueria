@@ -1,79 +1,73 @@
-/**
- * API Endpoints Configuration
- * Centralized endpoint management for the TFG-Peluqueria application
- * Use with import.meta.env.VITE_API_BASE_URL as base URL
- */
+export const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+// AUTH
+export const LOGIN_ENDPOINT=`${API_BASE_URL}/login`;
+export const REGISTER_ENDPOINT=`${API_BASE_URL}/register`;
+export const LOGOUT_ENDPOINT=`${API_BASE_URL}/logout`;
+export const ME_ENDPOINT=`${API_BASE_URL}/me`;
+export const GOOGLE_LOGIN_ENDPOINT=`${API_BASE_URL}/auth/google`;
+export const GOOGLE_CALLBACK_ENDPOINT=`${API_BASE_URL}/auth/google/callback`;
 
-/**
- * AUTH Endpoints
- */
 export const AUTH_ENDPOINTS = {
-  LOGIN: `${API_BASE}/login`,
-  REGISTER: `${API_BASE}/register`,
-  LOGOUT: `${API_BASE}/logout`,
-  ME: `${API_BASE}/me`,
-  GOOGLE_LOGIN: `${API_BASE}/auth/google`,
-  GOOGLE_CALLBACK: `${API_BASE}/auth/google/callback`,
+  LOGIN: LOGIN_ENDPOINT,
+  REGISTER: REGISTER_ENDPOINT,
+  LOGOUT: LOGOUT_ENDPOINT,
+  ME: ME_ENDPOINT,
+  GOOGLE_LOGIN: GOOGLE_LOGIN_ENDPOINT,
+  GOOGLE_CALLBACK: GOOGLE_CALLBACK_ENDPOINT,
 };
 
-/**
- * SERVICIOS (Services) Endpoints
- */
+// SERVICIOS
+export const SERVICIOS_INDEX_ENDPOINT=`${API_BASE_URL}/servicios`;
+export const SERVICIOS_STORE_ENDPOINT=`${API_BASE_URL}/servicios`;
+export const SERVICIOS_SHOW_ENDPOINT=(id)=>`${API_BASE_URL}/servicios/${id}`;
+export const SERVICIOS_UPDATE_ENDPOINT=(id)=>`${API_BASE_URL}/servicios/${id}`;
+export const SERVICIOS_DELETE_ENDPOINT=(id)=>`${API_BASE_URL}/servicios/${id}`;
+
+export const SERVICIOS_ENDPOINT = SERVICIOS_INDEX_ENDPOINT;
 export const SERVICIOS_ENDPOINTS = {
-  INDEX: `${API_BASE}/servicios`,
-  STORE: `${API_BASE}/servicios`,
-  SHOW: (id) => `${API_BASE}/servicios/${id}`,
-  UPDATE: (id) => `${API_BASE}/servicios/${id}`,
-  DELETE: (id) => `${API_BASE}/servicios/${id}`,
+  INDEX: SERVICIOS_INDEX_ENDPOINT,
+  STORE: SERVICIOS_STORE_ENDPOINT,
+  SHOW: SERVICIOS_SHOW_ENDPOINT,
+  UPDATE: SERVICIOS_UPDATE_ENDPOINT,
+  DELETE: SERVICIOS_DELETE_ENDPOINT,
 };
 
-/**
- * EMPLEADOS (Barbers) Endpoints
- */
+// EMPLEADOS
+export const EMPLEADOS_INDEX_ENDPOINT=`${API_BASE_URL}/empleados`;
+export const EMPLEADOS_SHOW_ENDPOINT=(id)=>`${API_BASE_URL}/empleados/${id}`;
+export const EMPLEADOS_HORARIOS_ENDPOINT=(id)=>`${API_BASE_URL}/empleados/${id}/horarios`;
+
+export const EMPLEADOS_ENDPOINT = EMPLEADOS_INDEX_ENDPOINT;
 export const EMPLEADOS_ENDPOINTS = {
-  INDEX: `${API_BASE}/empleados`,
-  SHOW: (id) => `${API_BASE}/empleados/${id}`,
-  HORARIOS: (id) => `${API_BASE}/empleados/${id}/horarios`,
+  INDEX: EMPLEADOS_INDEX_ENDPOINT,
+  SHOW: EMPLEADOS_SHOW_ENDPOINT,
+  HORARIOS: EMPLEADOS_HORARIOS_ENDPOINT,
 };
 
-/**
- * CITAS (Appointments) Endpoints
- */
+// CITAS
+export const CITAS_INDEX_ENDPOINT=`${API_BASE_URL}/citas`;
+export const CITAS_STORE_ENDPOINT=`${API_BASE_URL}/citas`;
+export const CITAS_SHOW_ENDPOINT=(id)=>`${API_BASE_URL}/citas/${id}`;
+export const CITAS_UPDATE_ENDPOINT=(id)=>`${API_BASE_URL}/citas/${id}`;
+export const CITAS_DELETE_ENDPOINT=(id)=>`${API_BASE_URL}/citas/${id}`;
+
 export const CITAS_ENDPOINTS = {
-  INDEX: `${API_BASE}/citas`,
-  STORE: `${API_BASE}/citas`,
-  SHOW: (id) => `${API_BASE}/citas/${id}`,
-  UPDATE: (id) => `${API_BASE}/citas/${id}`,
-  DELETE: (id) => `${API_BASE}/citas/${id}`,
+  INDEX: CITAS_INDEX_ENDPOINT,
+  STORE: CITAS_STORE_ENDPOINT,
+  SHOW: CITAS_SHOW_ENDPOINT,
+  UPDATE: CITAS_UPDATE_ENDPOINT,
+  DELETE: CITAS_DELETE_ENDPOINT,
 };
 
-/**
- * DISPONIBILIDAD (Availability) Endpoints
- */
+// DISPONIBILIDAD
+export const DISPONIBILIDAD_ENDPOINT=`${API_BASE_URL}/disponibilidad`;
+export const DIAS_DISPONIBLES_ENDPOINT=`${API_BASE_URL}/dias-disponibles`;
 export const DISPONIBILIDAD_ENDPOINTS = {
-  GET_DISPONIBILIDAD: `${API_BASE}/disponibilidad`,
-  DIAS_DISPONIBLES: `${API_BASE}/dias-disponibles`,
+  GET_DISPONIBILIDAD: DISPONIBILIDAD_ENDPOINT,
+  DIAS_DISPONIBLES: DIAS_DISPONIBLES_ENDPOINT,
 };
 
-/**
- * CONTACTO (Contact) Endpoints
- */
-export const CONTACTO_ENDPOINTS = {
-  STORE: `${API_BASE}/contact`,
-};
-
-/**
- * Convenience export for all endpoints
- */
-export const ENDPOINTS = {
-  AUTH: AUTH_ENDPOINTS,
-  SERVICIOS: SERVICIOS_ENDPOINTS,
-  EMPLEADOS: EMPLEADOS_ENDPOINTS,
-  CITAS: CITAS_ENDPOINTS,
-  DISPONIBILIDAD: DISPONIBILIDAD_ENDPOINTS,
-  CONTACTO: CONTACTO_ENDPOINTS,
-};
-
-export default ENDPOINTS;
+// CONTACTO
+export const CONTACT_ENDPOINT=`${API_BASE_URL}/contact`;
+export const CONTACT_STORE_ENDPOINT=`${API_BASE_URL}/contact`;

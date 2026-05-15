@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
+import { SERVICIOS_ENDPOINT } from "../../services/endpoints";
 
 function Home() {
 
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/servicios")
+    fetch(SERVICIOS_ENDPOINT)
       .then((res) => res.json())
       .then((data) => {
         console.log("SERVICIOS API:", data.data);

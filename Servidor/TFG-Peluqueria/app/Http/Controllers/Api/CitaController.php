@@ -28,7 +28,6 @@ class CitaController extends Controller
         ]);
 
         if (!$usuario->isAdmin()) {
-
             if ($usuario->isEmployee() && $usuario->empleado) {
                 $consulta->where('empleado_id', $usuario->empleado->id);
             } else {
@@ -36,7 +35,33 @@ class CitaController extends Controller
             }
         }
 
-        return CitaResource::collection($consulta->get());
+        $citas = $consulta->get()->each(fn ($cita) => $this->sincronizarEstadoAutomatico($cita));
+
+        return CitaResource::collection($citas);
+    }
+
+    private function obtenerEstadoId(string $slug)
+    {
+        return Estado::where('slug', $slug)->first()?->id;
+    }
+
+    private function sincronizarEstadoAutomatico(Cita $cita)
+    {
+        if (!$cita->estado) {
+            $cita->load('estado');
+        }
+
+        $fechaHoraFin = Carbon::parse($cita->fecha . ' ' . $cita->hora_fin);
+        $estadoSlug = $fechaHoraFin->isPast() ? 'completada' : 'confirmada';
+
+        if ($cita->estado?->slug !== $estadoSlug) {
+            $nuevoEstadoId = $this->obtenerEstadoId($estadoSlug);
+            if ($nuevoEstadoId) {
+                $cita->estado_id = $nuevoEstadoId;
+                $cita->save();
+                $cita->load('estado');
+            }
+        }
     }
 
     public function store(StoreCitaRequest $request)
@@ -52,18 +77,17 @@ class CitaController extends Controller
 
         $this->verificarDisponibilidad($empleado, $servicio, $fecha, $horaInicio);
 
-        $idEstado = $datos['id_estado']
-            ?? Estado::where('nombre_estado', 'Pendiente')->first()?->id
-            ?? Estado::first()?->id;
-
         $idUsuario = isset($datos['user_id']) && $usuario->isAdmin()
             ? $datos['user_id']
             : $usuario->id;
 
-        // Calcular hora_fin basado en hora_inicio + duracion del servicio
         $horaFin = Carbon::createFromFormat('H:i', $horaInicio)
             ->addMinutes($servicio->duracion)
             ->format('H:i:s');
+
+        $idEstado = $this->obtenerEstadoId('confirmada')
+            ?? Estado::where('nombre_estado', 'Confirmada')->first()?->id
+            ?? Estado::first()?->id;
 
         $cita = Cita::create([
             'fecha' => $fecha,
@@ -74,6 +98,8 @@ class CitaController extends Controller
             'empleado_id' => $empleado->id,
             'estado_id' => $idEstado,
         ]);
+
+        $this->sincronizarEstadoAutomatico($cita);
 
         $cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']);
 
@@ -86,6 +112,7 @@ class CitaController extends Controller
     public function show(Cita $cita)
     {
         $cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']);
+        $this->sincronizarEstadoAutomatico($cita);
 
         return new CitaResource($cita);
     }
@@ -94,7 +121,10 @@ class CitaController extends Controller
     {
         $usuario = Auth::user();
 
-        if (!$usuario->isAdmin() && $cita->user_id !== $usuario->id) {
+        $puedeEditar = $usuario->isAdmin() || $cita->user_id === $usuario->id ||
+            ($usuario->isEmployee() && $usuario->empleado && $cita->empleado_id === $usuario->empleado->id);
+
+        if (!$puedeEditar) {
             return response()->json([
                 'message' => 'No tienes permiso para modificar esta cita.'
             ], 403);
@@ -114,11 +144,22 @@ class CitaController extends Controller
             ? $datos['user_id']
             : $cita->user_id;
 
-        $idEstado = $datos['id_estado'] ?? $cita->id_estado;
+        $horaFin = Carbon::createFromFormat('H:i', $horaInicio)
+            ->addMinutes($servicio->duracion)
+            ->format('H:i:s');
+
+        $estadoSlug = Carbon::parse($fecha . ' ' . $horaFin)->isPast()
+            ? 'completada'
+            : 'confirmada';
+
+        $idEstado = $this->obtenerEstadoId($estadoSlug)
+            ?? Estado::where('nombre_estado', ucfirst($estadoSlug))->first()?->id
+            ?? $cita->id_estado;
 
         $cita->update([
             'fecha' => $fecha,
             'hora_inicio' => $horaInicio,
+            'hora_fin' => $horaFin,
             'user_id' => $idUsuario,
             'servicio_id' => $servicio->id,
             'empleado_id' => $empleado->id,
@@ -126,6 +167,7 @@ class CitaController extends Controller
         ]);
 
         $cita->load(['servicio', 'empleado.usuario', 'estado', 'usuario']);
+        $this->sincronizarEstadoAutomatico($cita);
 
         return response()->json([
             'message' => 'Cita actualizada correctamente',
@@ -137,7 +179,10 @@ class CitaController extends Controller
     {
         $usuario = Auth::user();
 
-        if (!$usuario->isAdmin() && $cita->user_id !== $usuario->id) {
+        $puedeEliminar = $usuario->isAdmin() || $cita->user_id === $usuario->id ||
+            ($usuario->isEmployee() && $usuario->empleado && $cita->empleado_id === $usuario->empleado->id);
+
+        if (!$puedeEliminar) {
             return response()->json([
                 'message' => 'No tienes permiso para eliminar esta cita.'
             ], 403);

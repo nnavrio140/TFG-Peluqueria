@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "./About.css";
 import BarberCard from "../../components/BarberCard/BarberCard";
+import { EMPLEADOS_ENDPOINT } from "../../services/endpoints";
 
 function About() {
   const [barbers, setBarbers] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/empleados")
+    fetch(EMPLEADOS_ENDPOINT)
       .then((res) => res.json())
       .then((data) => setBarbers(data.data))
       .catch((err) => console.error(err));

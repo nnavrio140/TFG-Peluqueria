@@ -103,7 +103,7 @@ class AuthController extends Controller
     // USUARIO LOGUEADO
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json($request->user()->load(['rol', 'empleado']));
     }
 
     // LOGOUT

@@ -1,0 +1,249 @@
+/* ================================================= */
+/* BASE */
+/* ================================================= */
+
+.citas{
+  background:#212121;
+  min-height:100vh;
+  color:#f3f0ec;
+  padding-bottom:80px;
+}
+
+/* ================================================= */
+/* CALENDARIO WRAP */
+/* ================================================= */
+
+.citas__calendarWrap{
+  max-width:1000px;
+  margin:0 auto;
+  padding:0 20px;
+  box-sizing:border-box;
+}
+
+/* ================================================= */
+/* HEADER CALENDARIO */
+/* ================================================= */
+
+.citas__calendarHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-top:40px;
+
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(212,175,55,0.15);
+  border-radius:24px;
+
+  padding:14px 18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+.citas__calendarHeader h2{
+  flex:1;
+  text-align:center;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:1.1rem;
+  font-weight:800;
+}
+
+/* botones nav */
+.citas__calendarHeader button{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  border:none;
+  background:rgba(212,175,55,.12);
+  color:#f3f0ec;
+  font-size:1.3rem;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.citas__calendarHeader button:hover{
+  transform:scale(1.05);
+  background:rgba(212,175,55,.25);
+}
+
+/* ================================================= */
+/* GRID CALENDARIO */
+/* ================================================= */
+
+.citas__grid{
+  margin-top:25px;
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:12px;
+}
+
+/* weekday labels */
+.citas__weekday{
+  text-align:center;
+  font-size:.8rem;
+  color:#aaa;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding-bottom:6px;
+}
+
+/* empty cells */
+.citas__empty{
+  min-height:110px;
+}
+
+/* ================================================= */
+/* DÍAS */
+/* ================================================= */
+
+.citas__day{
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+
+  padding:18px 10px;
+  min-height:110px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.citas__day span{
+  font-size:.75rem;
+  opacity:.7;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.citas__day strong{
+  font-size:1.4rem;
+  font-weight:800;
+}
+
+/* hover */
+.citas__day:hover{
+  transform:translateY(-4px);
+  border-color:rgba(212,175,55,.4);
+}
+
+/* ================================================= */
+/* DÍAS CON CITAS */
+/* ================================================= */
+
+.citas__day.has-citas{
+  background:linear-gradient(
+    180deg,
+    rgba(212,175,55,.28),
+    rgba(212,175,55,.08)
+  );
+
+  border:1px solid #d4af37;
+  box-shadow:0 10px 25px rgba(212,175,55,.15);
+}
+
+/* ================================================= */
+/* MODAL */
+/* ================================================= */
+
+.citas__modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  z-index:999;
+}
+
+/* animación */
+.citas__modalContent{
+  background:#1a1a1a;
+  border:1px solid rgba(212,175,55,.2);
+  border-radius:24px;
+
+  padding:28px;
+  width:90%;
+  max-width:520px;
+
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+
+  animation:modalIn .18s ease;
+}
+
+@keyframes modalIn{
+  from{opacity:0; transform:scale(.95);}
+  to{opacity:1; transform:scale(1);}
+}
+
+/* ================================================= */
+/* CARDS MODAL */
+/* ================================================= */
+
+.citas__card{
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+
+  padding:14px;
+  margin-top:12px;
+}
+
+.citas__card p{
+  margin:6px 0;
+  color:#ddd;
+}
+
+/* ================================================= */
+/* BOTÓN MODAL */
+/* ================================================= */
+
+.citas__modalContent button{
+  margin-top:18px;
+  width:100%;
+  padding:12px;
+
+  border:none;
+  border-radius:12px;
+
+  background:#d4af37;
+  color:#111;
+
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.citas__modalContent button:hover{
+  transform:translateY(-2px);
+  background:#e0bc4a;
+}
+
+/* ================================================= */
+/* RESPONSIVE */
+/* ================================================= */
+
+@media (max-width:768px){
+  .citas__grid{
+    gap:8px;
+  }
+
+  .citas__day{
+    min-height:80px;
+    padding:12px 6px;
+  }
+
+  .citas__day strong{
+    font-size:1.1rem;
+  }
+
+  .citas__calendarHeader h2{
+    font-size:.95rem;
+  }
+}
