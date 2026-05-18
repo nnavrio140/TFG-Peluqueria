@@ -5,12 +5,20 @@ import { EMPLEADOS_ENDPOINT } from "../../services/endpoints";
 
 function About() {
   const [barbers, setBarbers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(EMPLEADOS_ENDPOINT)
       .then((res) => res.json())
-      .then((data) => setBarbers(data.data))
-      .catch((err) => console.error(err));
+      .then((data) => {
+        setBarbers(data.data || []);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const getBarberImage = (id) => {
@@ -36,15 +44,21 @@ function About() {
 
       {/* BARBERS */}
       <div className="about__barbers-section">
-        <div className="about__barbers">
-          {barbers.map((barber) => (
-            <BarberCard
-              key={barber.id}
-              barber={barber}
-              image={getBarberImage(barber.id)}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="about__loading">
+            Cargando barberos...
+          </div>
+        ) : (
+          <div className="about__barbers">
+            {barbers.map((barber) => (
+              <BarberCard
+                key={barber.id}
+                barber={barber}
+                image={getBarberImage(barber.id)}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
     </div>

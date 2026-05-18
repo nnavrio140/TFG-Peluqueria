@@ -45,24 +45,29 @@ class CitaController extends Controller
         return Estado::where('slug', $slug)->first()?->id;
     }
 
-    private function sincronizarEstadoAutomatico(Cita $cita)
-    {
-        if (!$cita->estado) {
+private function sincronizarEstadoAutomatico(Cita $cita)
+{
+    if (!$cita->estado) {
+        $cita->load('estado');
+    }
+
+    if (!$cita->fecha || !$cita->hora_fin) {
+        return;
+    }
+
+    $fechaHoraFin = Carbon::parse($cita->fecha . ' ' . $cita->hora_fin);
+    $estadoSlug = $fechaHoraFin->isPast() ? 'completada' : 'confirmada';
+
+    if ($cita->estado?->slug !== $estadoSlug) {
+        $nuevoEstadoId = $this->obtenerEstadoId($estadoSlug);
+
+        if ($nuevoEstadoId) {
+            $cita->estado_id = $nuevoEstadoId;
+            $cita->save();
             $cita->load('estado');
         }
-
-        $fechaHoraFin = Carbon::parse($cita->fecha . ' ' . $cita->hora_fin);
-        $estadoSlug = $fechaHoraFin->isPast() ? 'completada' : 'confirmada';
-
-        if ($cita->estado?->slug !== $estadoSlug) {
-            $nuevoEstadoId = $this->obtenerEstadoId($estadoSlug);
-            if ($nuevoEstadoId) {
-                $cita->estado_id = $nuevoEstadoId;
-                $cita->save();
-                $cita->load('estado');
-            }
-        }
     }
+}
 
     public function store(StoreCitaRequest $request)
     {
@@ -152,9 +157,9 @@ class CitaController extends Controller
             ? 'completada'
             : 'confirmada';
 
-        $idEstado = $this->obtenerEstadoId($estadoSlug)
+       $idEstado = $this->obtenerEstadoId($estadoSlug)
             ?? Estado::where('nombre_estado', ucfirst($estadoSlug))->first()?->id
-            ?? $cita->id_estado;
+            ?? $cita->estado_id;
 
         $cita->update([
             'fecha' => $fecha,
@@ -249,10 +254,6 @@ public function diasDisponibles(Request $request)
         'dias' => $diasDisponibles
     ]);
 }
-
-    // =========================
-    // 🔥 MÉTODOS PRIVADOS
-    // =========================
 
     private function verificarDisponibilidad(
         Empleado $empleado,

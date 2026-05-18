@@ -9,6 +9,21 @@
 .about__barbers-section {
   background: #212121;
   padding: 100px 0;
+  min-height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ================= LOADING ================= */
+
+.about__loading {
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #f3f0ec;
+  letter-spacing: 1px;
 }
 
 /* ================= GRID DESKTOP ================= */
@@ -18,9 +33,10 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 80px;
   max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 20px;
-  justify-items: center; 
+  justify-items: center;
 }
 
 /* ================= RESPONSIVE ================= */
@@ -34,13 +50,14 @@
 
   .about__barbers > * {
     width: 100%;
-    max-width: 420px; 
+    max-width: 420px;
   }
 }
 
 @media (max-width: 480px) {
   .about__barbers-section {
     padding: 70px 0;
+    min-height: 280px;
   }
 
   .about__barbers {
@@ -50,5 +67,10 @@
 
   .about__barbers > * {
     max-width: 100%;
+  }
+
+  .about__loading {
+    font-size: 18px;
+    padding: 0 20px;
   }
 }

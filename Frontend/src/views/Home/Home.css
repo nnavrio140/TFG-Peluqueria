@@ -36,6 +36,25 @@
   font-weight: 500;
 }
 
+/* ================= LOADING ================= */
+
+.home__loading-section {
+  min-height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.home__loading {
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #f3f0ec;
+  letter-spacing: 1px;
+}
+
 /* GRID */
 .grid {
   display: grid;
@@ -115,13 +134,21 @@
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
-
   .home__logo {
     width: 280px;
   }
 
   .home__title {
     font-size: 2rem;
+  }
+
+  .home__loading-section {
+    min-height: 260px;
+  }
+
+  .home__loading {
+    font-size: 18px;
+    padding: 0 20px;
   }
 
   .grid {

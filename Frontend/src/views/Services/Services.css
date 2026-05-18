@@ -8,6 +8,26 @@
   margin-bottom: 60px;
 }
 
+/* ================= LOADING ================= */
+
+.services__loading-section {
+  min-height: 350px;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 20px;
+}
+
+.services__loading {
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #f3f0ec;
+  letter-spacing: 1px;
+}
+
 /* ================= GRID SERVICIOS ================= */
 
 .services__grid {
@@ -101,7 +121,6 @@
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 768px) {
-
   .section__title {
     font-size: 3.2rem;
   }
@@ -116,5 +135,16 @@
     grid-template-columns: 1fr;
     column-gap: 0;
     row-gap: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .services__loading-section {
+    min-height: 280px;
+    padding: 70px 20px;
+  }
+
+  .services__loading {
+    font-size: 18px;
   }
 }

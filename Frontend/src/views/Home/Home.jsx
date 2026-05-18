@@ -8,6 +8,7 @@ import { SERVICIOS_ENDPOINT } from "../../services/endpoints";
 
 function Home() {
   const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,9 +29,14 @@ function Home() {
       .then((res) => res.json())
       .then((data) => {
         console.log("SERVICIOS API:", data.data);
-        setServices(data.data.slice(0, 3));
+        setServices((data.data || []).slice(0, 3));
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const getServiceImage = (name = "") => {
@@ -52,16 +58,24 @@ function Home() {
           NUESTROS MEJORES SERVICIOS
         </h2>
 
-        <div className="grid">
-          {services.map((service) => (
-            <ServiceCard
-              key={service.id}
-              icon={getServiceImage(service.nombre || service.nombre_servicio)}
-              title={service.nombre || service.nombre_servicio}
-              text={service.descripcion}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="home__loading-section">
+            <div className="home__loading">
+              Preparando nuestros servicios...
+            </div>
+          </div>
+        ) : (
+          <div className="grid">
+            {services.map((service) => (
+              <ServiceCard
+                key={service.id}
+                icon={getServiceImage(service.nombre || service.nombre_servicio)}
+                title={service.nombre || service.nombre_servicio}
+                text={service.descripcion}
+              />
+            ))}
+          </div>
+        )}
 
         <Link to="/reserva" className="btn">
           RESERVA AHORA

@@ -18,9 +18,11 @@ function Reserva() {
 
   const [servicios, setServicios] = useState([]);
   const [servicio, setServicio] = useState(null);
+  const [cargandoServicios, setCargandoServicios] = useState(true);
 
   const [empleados, setEmpleados] = useState([]);
   const [empleado, setEmpleado] = useState(null);
+  const [cargandoEmpleados, setCargandoEmpleados] = useState(false);
 
   const [dias, setDias] = useState([]);
   const [fecha, setFecha] = useState(null);
@@ -130,12 +132,17 @@ function Reserva() {
   }, [diasDisponiblesSet, monthOffset]);
 
   useEffect(() => {
+    setCargandoServicios(true);
+
     fetch(SERVICIOS_ENDPOINTS.INDEX)
       .then((res) => res.json())
       .then((data) => setServicios(data.data || []))
       .catch((error) => {
         console.error("Error cargando servicios:", error);
         toast.error("Error al cargar los servicios.");
+      })
+      .finally(() => {
+        setCargandoServicios(false);
       });
   }, []);
 
@@ -164,12 +171,17 @@ function Reserva() {
   useEffect(() => {
     if (step !== 2) return;
 
+    setCargandoEmpleados(true);
+
     fetch(EMPLEADOS_ENDPOINTS.INDEX)
       .then((res) => res.json())
       .then((data) => setEmpleados(data.data || []))
       .catch((error) => {
         console.error("Error cargando empleados:", error);
         toast.error("Error al cargar los barberos.");
+      })
+      .finally(() => {
+        setCargandoEmpleados(false);
       });
   }, [step]);
 
@@ -333,30 +345,38 @@ function Reserva() {
             <h1 className="section__title">ELIGE SERVICIO</h1>
           </div>
 
-          <div className="reserva__servicesGrid">
-            {servicios.map((s) => (
-              <div
-                key={s.id}
-                className="reserva__serviceItem"
-                onClick={() => {
-                  setServicio(s);
-                  setEmpleado(null);
-                  setFecha(null);
-                  setHora(null);
-                  setDias([]);
-                  setHoras([]);
-                  setMonthOffset(0);
-                  setStep(2);
-                }}
-              >
-                <ServiceCard
-                  icon={getServiceImage(s.nombre)}
-                  title={s.nombre}
-                  text={s.descripcion}
-                />
+          {cargandoServicios ? (
+            <div className="reserva__loading-section">
+              <div className="reserva__loading">
+                Cargando servicios...
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <div className="reserva__servicesGrid">
+              {servicios.map((s) => (
+                <div
+                  key={s.id}
+                  className="reserva__serviceItem"
+                  onClick={() => {
+                    setServicio(s);
+                    setEmpleado(null);
+                    setFecha(null);
+                    setHora(null);
+                    setDias([]);
+                    setHoras([]);
+                    setMonthOffset(0);
+                    setStep(2);
+                  }}
+                >
+                  <ServiceCard
+                    icon={getServiceImage(s.nombre)}
+                    title={s.nombre}
+                    text={s.descripcion}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -366,25 +386,33 @@ function Reserva() {
             <h1 className="section__title">ELIGE BARBERO</h1>
           </div>
 
-          <div className="reserva__grid-barbers">
-            {empleados.map((e) => (
-              <div
-                key={e.id}
-                className="reserva__click"
-                onClick={() => {
-                  setEmpleado(e);
-                  setFecha(null);
-                  setHora(null);
-                  setDias([]);
-                  setHoras([]);
-                  setMonthOffset(0);
-                  setStep(3);
-                }}
-              >
-                <BarberCard barber={e} image={getBarberImage(e.id)} />
+          {cargandoEmpleados ? (
+            <div className="reserva__loading-section">
+              <div className="reserva__loading">
+                Cargando barberos...
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <div className="reserva__grid-barbers">
+              {empleados.map((e) => (
+                <div
+                  key={e.id}
+                  className="reserva__click"
+                  onClick={() => {
+                    setEmpleado(e);
+                    setFecha(null);
+                    setHora(null);
+                    setDias([]);
+                    setHoras([]);
+                    setMonthOffset(0);
+                    setStep(3);
+                  }}
+                >
+                  <BarberCard barber={e} image={getBarberImage(e.id)} />
+                </div>
+              ))}
+            </div>
+          )}
 
           <button
             className="reserva__backButton"
@@ -402,83 +430,89 @@ function Reserva() {
             <h1 className="section__title">ELIGE FECHA</h1>
           </div>
 
-          {cargandoDias && (
-            <div className="reserva__empty">Cargando días disponibles...</div>
-          )}
-
-          {errorDisponibilidad && (
-            <div className="reserva__empty">{errorDisponibilidad}</div>
-          )}
-
-          <div className="reserva__calendarLayout">
-            <div className="reserva__calendarCol">
-              <div className="reserva__calendarHeader">
-                <button
-                  type="button"
-                  className="reserva__calendarNav"
-                  onClick={() =>
-                    setMonthOffset((prev) => Math.max(prev - 1, 0))
-                  }
-                  disabled={monthOffset === 0}
-                >
-                  ‹
-                </button>
-
-                <h2 className="reserva__calendarMonth">
-                  {calendarDates.find((d) => d.type === "day")?.monthLabel ||
-                    ""}
-                </h2>
-
-                <button
-                  type="button"
-                  className="reserva__calendarNav"
-                  onClick={() => setMonthOffset((prev) => prev + 1)}
-                >
-                  ›
-                </button>
-              </div>
-
-              <div className="reserva__calendarGrid">
-                {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map(
-                  (d) => (
-                    <div key={d} className="reserva__calendarWeekday">
-                      {d}
-                    </div>
-                  )
-                )}
-
-                {calendarDates.map((day) => {
-                  if (day.type === "empty") {
-                    return (
-                      <div
-                        key={day.key}
-                        className="reserva__calendarEmptyCell"
-                      />
-                    );
-                  }
-
-                  return (
-                    <button
-                      key={day.iso}
-                      type="button"
-                      title={day.status}
-                      className={`reserva__calendarDay ${
-                        day.available ? "is-active" : "is-disabled"
-                      } ${fecha === day.iso ? "is-selected" : ""}`}
-                      onClick={() => {
-                        if (!day.available) return;
-                        abrirModalHoras(day.iso);
-                      }}
-                      disabled={!day.available}
-                    >
-                      <span>{day.weekday}</span>
-                      <strong>{day.label}</strong>
-                    </button>
-                  );
-                })}
+          {cargandoDias ? (
+            <div className="reserva__loading-section">
+              <div className="reserva__loading">
+                Cargando días disponibles...
               </div>
             </div>
-          </div>
+          ) : (
+            <>
+              {errorDisponibilidad && (
+                <div className="reserva__empty">{errorDisponibilidad}</div>
+              )}
+
+              <div className="reserva__calendarLayout">
+                <div className="reserva__calendarCol">
+                  <div className="reserva__calendarHeader">
+                    <button
+                      type="button"
+                      className="reserva__calendarNav"
+                      onClick={() =>
+                        setMonthOffset((prev) => Math.max(prev - 1, 0))
+                      }
+                      disabled={monthOffset === 0}
+                    >
+                      ‹
+                    </button>
+
+                    <h2 className="reserva__calendarMonth">
+                      {calendarDates.find((d) => d.type === "day")?.monthLabel ||
+                        ""}
+                    </h2>
+
+                    <button
+                      type="button"
+                      className="reserva__calendarNav"
+                      onClick={() => setMonthOffset((prev) => prev + 1)}
+                    >
+                      ›
+                    </button>
+                  </div>
+
+                  <div className="reserva__calendarGrid">
+                    {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map(
+                      (d) => (
+                        <div key={d} className="reserva__calendarWeekday">
+                          {d}
+                        </div>
+                      )
+                    )}
+
+                    {calendarDates.map((day) => {
+                      if (day.type === "empty") {
+                        return (
+                          <div
+                            key={day.key}
+                            className="reserva__calendarEmptyCell"
+                          />
+                        );
+                      }
+
+                      return (
+                        <button
+                          key={day.iso}
+                          type="button"
+                          title={day.status}
+                          className={`reserva__calendarDay ${
+                            day.available ? "is-active" : "is-disabled"
+                          } ${fecha === day.iso ? "is-selected" : ""}`}
+                          onClick={() => {
+                            if (!day.available) return;
+                            abrirModalHoras(day.iso);
+                          }}
+                          disabled={!day.available}
+                        >
+                          <span>{day.weekday}</span>
+                          <strong>{day.label}</strong>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
           {fecha && (
             <div className="reserva__hoursModal" onClick={cerrarModalHoras}>

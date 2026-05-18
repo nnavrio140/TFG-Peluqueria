@@ -10,6 +10,7 @@ class Estado extends Model
     protected $table = 'estados';
 
     protected $fillable = [
+        'slug',
         'nombre_estado',
         'descripcion'
     ];

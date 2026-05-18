@@ -11,6 +11,8 @@ function Citas() {
   const { token, user } = useContext(AuthContext);
 
   const [citas, setCitas] = useState([]);
+  const [loadingCitas, setLoadingCitas] = useState(true);
+
   const [monthOffset, setMonthOffset] = useState(0);
   const [selected, setSelected] = useState(null);
 
@@ -38,11 +40,22 @@ function Citas() {
     return user?.empleado?.id || user?.id_empleado || user?.empleado_id || null;
   };
 
+  const getNombreEstado = (cita) => {
+    if (!cita?.estado) return "Sin estado";
+
+    if (typeof cita.estado === "string") {
+      return cita.estado;
+    }
+
+    return cita.estado.nombre_estado || cita.estado.nombre || "Sin estado";
+  };
+
   const roleSlug = getRoleSlug();
 
   useEffect(() => {
     const load = async () => {
       try {
+        setLoadingCitas(true);
         setApiError(null);
 
         const res = await fetch(CITAS_ENDPOINTS.INDEX, {
@@ -64,10 +77,16 @@ function Citas() {
       } catch (error) {
         setApiError("Error al cargar las citas.");
         setCitas([]);
+      } finally {
+        setLoadingCitas(false);
       }
     };
 
-    if (token && user) load();
+    if (token && user) {
+      load();
+    } else {
+      setLoadingCitas(false);
+    }
   }, [token, user]);
 
   useEffect(() => {
@@ -205,6 +224,8 @@ function Citas() {
   };
 
   const openEditCita = (cita) => {
+    if (savingCita) return;
+
     disponibilidadRequestIdRef.current += 1;
 
     setEditingCita(cita);
@@ -220,6 +241,23 @@ function Citas() {
   };
 
   const closeEdit = () => {
+    if (savingCita) return;
+
+    disponibilidadRequestIdRef.current += 1;
+
+    setEditingCita(null);
+
+    setFormValues({
+      fecha: "",
+      hora_inicio: "",
+    });
+
+    setHorasDisponibles([]);
+    setCargandoHoras(false);
+    setApiError(null);
+  };
+
+  const resetEditState = () => {
     disponibilidadRequestIdRef.current += 1;
 
     setEditingCita(null);
@@ -235,6 +273,8 @@ function Citas() {
   };
 
   const handleFormChange = (field, value) => {
+    if (savingCita) return;
+
     setFormValues((prev) => ({
       ...prev,
       [field]: value,
@@ -258,7 +298,7 @@ function Citas() {
   };
 
   const handleDeleteCita = async (cita) => {
-    if (deletingCitaId) return;
+    if (deletingCitaId || savingCita) return;
 
     setApiError(null);
     setDeletingCitaId(cita.id);
@@ -289,7 +329,7 @@ function Citas() {
       });
 
       if (editingCita?.id === cita.id) {
-        closeEdit();
+        resetEditState();
       }
     } catch (error) {
       setApiError("Error de conexión al eliminar la cita.");
@@ -353,7 +393,8 @@ function Citas() {
           : prev
       );
 
-      closeEdit();
+      setSelected(null);
+      resetEditState();
     } catch (error) {
       setApiError("Error de conexión al actualizar la cita.");
     } finally {
@@ -447,6 +488,8 @@ function Citas() {
   }, [monthOffset, citasMap]);
 
   const openDay = (iso) => {
+    if (savingCita) return;
+
     const data = citasMap.get(iso);
 
     if (data) {
@@ -457,6 +500,8 @@ function Citas() {
   };
 
   const closeModal = () => {
+    if (savingCita) return;
+
     setSelected(null);
     closeEdit();
   };
@@ -467,56 +512,80 @@ function Citas() {
         <h1 className="section__title">{pageTitle}</h1>
       </div>
 
-      <div className="citas__calendarWrap">
-        <div className="citas__calendarHeader">
-          <button type="button" onClick={() => setMonthOffset((p) => p - 1)}>
-            ‹
-          </button>
-
-          <h2>{calendar.find((d) => d.type === "day")?.monthLabel}</h2>
-
-          <button type="button" onClick={() => setMonthOffset((p) => p + 1)}>
-            ›
-          </button>
+      {loadingCitas ? (
+        <div className="citas__loading-section">
+          <div className="citas__loading">Cargando citas...</div>
         </div>
+      ) : (
+        <>
+          {apiError && !selected && (
+            <p className="citas__error citas__error--page">{apiError}</p>
+          )}
 
-        <div className="citas__grid">
-          {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((d) => (
-            <div key={d} className="citas__weekday">
-              {d}
-            </div>
-          ))}
-
-          {calendar.map((d, i) => {
-            if (d.type === "empty") {
-              return <div key={d.key || i} className="citas__empty" />;
-            }
-
-            return (
+          <div className="citas__calendarWrap">
+            <div className="citas__calendarHeader">
               <button
-                key={d.iso}
                 type="button"
-                className={`citas__day ${d.hasCitas ? "has-citas" : ""}`}
-                onClick={() => openDay(d.iso)}
+                onClick={() => setMonthOffset((p) => p - 1)}
+                disabled={savingCita}
               >
-                <span>{d.weekday}</span>
-                <strong>{d.label}</strong>
+                ‹
               </button>
-            );
-          })}
-        </div>
-      </div>
 
-      {roleSlug === "usuario" && (
-        <div className="citas__reservaWrap">
-          <Link to="/reserva" className="citas__reservaBtn">
-            RESERVA AHORA
-          </Link>
-        </div>
+              <h2>{calendar.find((d) => d.type === "day")?.monthLabel}</h2>
+
+              <button
+                type="button"
+                onClick={() => setMonthOffset((p) => p + 1)}
+                disabled={savingCita}
+              >
+                ›
+              </button>
+            </div>
+
+            <div className="citas__grid">
+              {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((d) => (
+                <div key={d} className="citas__weekday">
+                  {d}
+                </div>
+              ))}
+
+              {calendar.map((d, i) => {
+                if (d.type === "empty") {
+                  return <div key={d.key || i} className="citas__empty" />;
+                }
+
+                return (
+                  <button
+                    key={d.iso}
+                    type="button"
+                    className={`citas__day ${d.hasCitas ? "has-citas" : ""}`}
+                    onClick={() => openDay(d.iso)}
+                    disabled={savingCita}
+                  >
+                    <span>{d.weekday}</span>
+                    <strong>{d.label}</strong>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {roleSlug === "usuario" && (
+            <div className="citas__reservaWrap">
+              <Link to="/reserva" className="citas__reservaBtn">
+                RESERVA AHORA
+              </Link>
+            </div>
+          )}
+        </>
       )}
 
       {selected && (
-        <div className="citas__modal" onClick={closeModal}>
+        <div
+          className={`citas__modal ${savingCita ? "is-saving" : ""}`}
+          onClick={closeModal}
+        >
           <div
             className="citas__modalContent"
             onClick={(e) => e.stopPropagation()}
@@ -550,7 +619,7 @@ function Citas() {
                 </p>
 
                 <p>
-                  <b>Estado:</b> {cita.estado || "Sin estado"}
+                  <b>Estado:</b> {getNombreEstado(cita)}
                 </p>
 
                 {canManageCita(cita) && (
@@ -650,7 +719,7 @@ function Citas() {
                         onClick={closeEdit}
                         disabled={savingCita}
                       >
-                        Cancelar
+                        {savingCita ? "Guardando..." : "Cancelar"}
                       </button>
                     </div>
                   </form>
@@ -658,8 +727,8 @@ function Citas() {
               </div>
             ))}
 
-            <button type="button" onClick={closeModal}>
-              Cerrar
+            <button type="button" onClick={closeModal} disabled={savingCita}>
+              {savingCita ? "Guardando..." : "Cerrar"}
             </button>
           </div>
         </div>

@@ -9,9 +9,7 @@ class EstadoSeeder extends Seeder
 {
     public function run(): void
     {
-        Estado::firstOrCreate(['slug' => 'pendiente'], ['nombre_estado' => 'Pendiente', 'descripcion' => 'Aún no gestionada']);
-        Estado::firstOrCreate(['slug' => 'confirmada'], ['nombre_estado' => 'Confirmada', 'descripcion' => 'Confirmada por usuario o empleado']);
-        Estado::firstOrCreate(['slug' => 'cancelada'], ['nombre_estado' => 'Cancelada', 'descripcion' => 'Ha sido cancelada']);
-        Estado::firstOrCreate(['slug' => 'completada'], ['nombre_estado' => 'Completada', 'descripcion' => 'Servicio realizado']);
+        Estado::firstOrCreate(['slug' => 'confirmada'], ['nombre_estado' => 'Confirmada', 'descripcion' => 'La cita está activa y pendiente de realizarse']);
+        Estado::firstOrCreate(['slug' => 'completada'], ['nombre_estado' => 'Completada', 'descripcion' => 'La cita ya ha finalizado correctamente']);
     }
 }
