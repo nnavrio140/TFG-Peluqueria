@@ -5,27 +5,39 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 50;
+  z-index: 999;
+  box-sizing: border-box;
 }
 
 /* ================= CONTAINER ================= */
 
 .cabecera__contenedor {
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  position: relative;
 }
 
 /* ================= LOGO ================= */
+
+.cabecera__marca {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  z-index: 1001;
+}
 
 .cabecera__logo-img {
   width: 52px;
   height: 52px;
   border-radius: 50%;
   border: 2px solid rgba(248, 226, 164, 0.35);
+  object-fit: cover;
   transition: 0.25s ease;
 }
 
@@ -34,28 +46,39 @@
   border-color: #f8e3a4;
 }
 
+/* ================= MENÚ DESKTOP ================= */
+
+.cabecera__menu {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 36px;
+}
+
 /* ================= NAV ================= */
 
 .cabecera__navegacion {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex: 1;
-  gap: 32px;
+  gap: 28px;
 }
 
 .cabecera__navegacion a {
   display: flex;
   align-items: center;
-  gap: 8px;
 
   color: rgba(248, 226, 164, 0.95);
   text-decoration: none;
   text-transform: uppercase;
 
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
 
-  transition: 0.25s;
+  transition: 0.25s ease;
 }
 
 .cabecera__navegacion a:hover {
@@ -66,12 +89,15 @@
 
 .cabecera__auth {
   display: flex;
+  align-items: center;
   gap: 10px;
+  margin-left: 28px;
 }
 
 .cabecera__btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 
   background: transparent;
@@ -84,6 +110,10 @@
   text-decoration: none;
   cursor: pointer;
 
+  font-size: 0.85rem;
+  line-height: 1;
+  white-space: nowrap;
+
   transition: 0.25s ease;
 }
 
@@ -91,14 +121,57 @@
   background: rgba(248, 226, 164, 0.08);
 }
 
-/* ================= DROPDOWN ================= */
+.cabecera__btn--gold {
+  background: rgba(212, 177, 90, 0.15);
+  border-color: rgba(212, 177, 90, 0.65);
+}
+
+.cabecera__btn--gold:hover {
+  background: rgba(212, 177, 90, 0.28);
+}
+
+/* ================= HAMBURGUESA ================= */
+
+.cabecera__hamburguesa {
+  display: none;
+
+  width: 42px;
+  height: 42px;
+
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.35);
+  color: #f8e3a4;
+
+  border: 1px solid rgba(248, 226, 164, 0.45);
+  border-radius: 8px;
+
+  cursor: pointer;
+  font-size: 1.15rem;
+
+  z-index: 1001;
+  transition: 0.25s ease;
+}
+
+.cabecera__hamburguesa:hover {
+  background: rgba(248, 226, 164, 0.12);
+}
+
+/* ================= DROPDOWN USUARIO ================= */
 
 .user-menu {
   position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  width: max-content;
+  min-width: 145px;
 }
 
 .cabecera__btn--user {
+  width: 100%;
   text-transform: capitalize;
+  justify-content: center;
 }
 
 .cabecera__btn--active {
@@ -110,31 +183,42 @@
 .dropdown {
   position: absolute;
   top: 100%;
+  left: 0;
   right: 0;
+
+  width: 100%;
   min-width: 100%;
 
   background: #222222;
   border: 1px solid rgba(248, 226, 164, 0.2);
   border-top: none;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
+
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   overflow: hidden;
-  z-index: 1000;
+  z-index: 1002;
 }
 
 .dropdown__item {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 100%;
+
   background: transparent;
   border: none;
+
   color: #f8e3a4;
-  padding: 12px 16px;
+  padding: 12px 14px;
+
   cursor: pointer;
-  text-align: left;
-  font-size: 0.95rem;
+  text-align: center;
+  font-size: 0.9rem;
+  white-space: nowrap;
+
   transition: 0.2s ease;
   margin: 0;
 }
@@ -152,75 +236,228 @@
   color: #ff6b6b;
 }
 
+/* ================= RESPONSIVE 1200 ================= */
 
-
-/* ================= RESPONSIVE ================= */
-
-@media (max-width: 900px) {
-
-  .cabecera__navegacion {
-    gap: 18px;
+@media (max-width: 1200px) {
+  .cabecera {
+    padding: 16px 20px;
   }
 
-  .cabecera__navegacion a {
-    font-size: 0.75rem;
-    gap: 6px;
-  }
-
-  .cabecera__btn {
-    padding: 8px 10px;
-    font-size: 0.75rem;
-  }
-
-  .cabecera__logo-img {
-    width: 44px;
-    height: 44px;
-  }
-
-  .dropdown {
-    min-width: 100%;
-  }
-}
-
-@media (max-width: 700px) {
-
-  .cabecera__contenedor {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .cabecera__marca {
-    align-self: center;
+  .cabecera__menu {
+    margin-left: 26px;
   }
 
   .cabecera__navegacion {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
+    gap: 20px;
   }
 
   .cabecera__navegacion a {
-    font-size: 0.75rem;
+    font-size: 0.76rem;
+    letter-spacing: 0.11em;
   }
 
   .cabecera__auth {
-    justify-content: center;
-    width: 100%;
+    margin-left: 20px;
   }
 
   .cabecera__btn {
-    padding: 8px 10px;
-    font-size: 0.75rem;
+    padding: 9px 11px;
+    font-size: 0.78rem;
+  }
+
+  .cabecera__logo-img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .user-menu {
+    min-width: 135px;
+  }
+}
+
+/* ================= RESPONSIVE 950 ================= */
+
+@media (max-width: 950px) {
+  .cabecera__navegacion {
+    gap: 14px;
+  }
+
+  .cabecera__navegacion a {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  .cabecera__btn span {
+    display: none;
+  }
+
+  .cabecera__btn {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+  }
+
+  .cabecera__btn--user span {
+    display: inline;
+  }
+
+  .cabecera__btn--user {
+    width: 100%;
+    height: auto;
+    padding: 9px 11px;
+  }
+
+  .user-menu {
+    min-width: 125px;
+  }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 760px) {
+  .cabecera {
+    padding: 14px 16px;
+  }
+
+  .cabecera__contenedor {
+    align-items: center;
+  }
+
+  .cabecera__logo-img {
+    width: 46px;
+    height: 46px;
+  }
+
+  .cabecera__hamburguesa {
+    display: flex;
+  }
+
+  .cabecera__menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+
+    width: min(82vw, 360px);
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    margin-left: 0;
+    padding: 92px 24px 28px;
+
+    background: rgba(8, 8, 8, 0.98);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    border-left: 1px solid rgba(248, 226, 164, 0.18);
+    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.65);
+
+    transition: right 0.28s ease;
+    z-index: 1000;
+  }
+
+  .cabecera__menu--activo {
+    right: 0;
+  }
+
+  .cabecera__navegacion {
+    width: 100%;
+    flex: initial;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+
+    gap: 0;
+  }
+
+  .cabecera__navegacion a {
+    width: 100%;
+    padding: 16px 0;
+
+    border-bottom: 1px solid rgba(248, 226, 164, 0.12);
+
+    font-size: 0.9rem;
+    letter-spacing: 0.14em;
+  }
+
+  .cabecera__auth {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 24px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .cabecera__btn,
+  .cabecera__btn--user {
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 13px 14px;
+    font-size: 0.9rem;
+  }
+
+  .cabecera__btn span,
+  .cabecera__btn--user span {
+    display: inline;
+  }
+
+  .user-menu {
+    width: 100%;
+    min-width: 100%;
   }
 
   .dropdown {
+    position: static;
+    width: 100%;
     min-width: 100%;
-    right: auto;
-    transform: none;
+
+    border-top: 1px solid rgba(248, 226, 164, 0.15);
+    border-radius: 0 0 6px 6px;
+    box-shadow: none;
   }
 
   .dropdown__item {
-    font-size: 0.9rem;
-    padding: 10px 14px;
+    text-align: center;
+    padding: 13px 14px;
+  }
+}
+
+/* ================= MOBILE PEQUEÑO ================= */
+
+@media (max-width: 420px) {
+  .cabecera {
+    padding: 12px 14px;
+  }
+
+  .cabecera__menu {
+    width: 86vw;
+    padding: 86px 20px 24px;
+  }
+
+  .cabecera__logo-img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .cabecera__hamburguesa {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cabecera__navegacion a {
+    font-size: 0.82rem;
+    letter-spacing: 0.11em;
   }
 }

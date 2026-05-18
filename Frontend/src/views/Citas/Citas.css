@@ -2,248 +2,528 @@
 /* BASE */
 /* ================================================= */
 
-.citas{
-  background:#212121;
-  min-height:100vh;
-  color:#f3f0ec;
-  padding-bottom:80px;
+.citas {
+  background: #212121;
+  min-height: 100vh;
+  color: #f3f0ec;
+  padding-bottom: 80px;
+  overflow-x: hidden;
 }
 
 /* ================================================= */
 /* CALENDARIO WRAP */
 /* ================================================= */
 
-.citas__calendarWrap{
-  max-width:1000px;
-  margin:0 auto;
-  padding:0 20px;
-  box-sizing:border-box;
+.citas__calendarWrap {
+  display: block;
+  width: 100%;
+  max-width: 1040px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 /* ================================================= */
 /* HEADER CALENDARIO */
 /* ================================================= */
 
-.citas__calendarHeader{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-  margin-top:40px;
-
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(212,175,55,0.15);
-  border-radius:24px;
-
-  padding:14px 18px;
-  box-shadow:0 10px 30px rgba(0,0,0,.2);
+.citas__calendarHeader {
+  max-width: 940px;
+  margin: 40px auto 0;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
-.citas__calendarHeader h2{
-  flex:1;
-  text-align:center;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  font-size:1.1rem;
-  font-weight:800;
+.citas__calendarHeader h2 {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  color: #f3f0ec;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-/* botones nav */
-.citas__calendarHeader button{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  border:none;
-  background:rgba(212,175,55,.12);
-  color:#f3f0ec;
-  font-size:1.3rem;
-  cursor:pointer;
-  transition:.25s ease;
+.citas__calendarHeader button {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(212, 175, 55, 0.12);
+  color: #f3f0ec;
+  cursor: pointer;
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
 }
 
-.citas__calendarHeader button:hover{
-  transform:scale(1.05);
-  background:rgba(212,175,55,.25);
+.citas__calendarHeader button:hover {
+  transform: scale(1.05);
+  background: rgba(212, 175, 55, 0.2);
 }
 
 /* ================================================= */
 /* GRID CALENDARIO */
 /* ================================================= */
 
-.citas__grid{
-  margin-top:25px;
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:12px;
+.citas__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* weekday labels */
-.citas__weekday{
-  text-align:center;
-  font-size:.8rem;
-  color:#aaa;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  padding-bottom:6px;
+.citas__weekday,
+.citas__empty {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+  font-size: 0.8rem;
 }
 
-/* empty cells */
-.citas__empty{
-  min-height:110px;
+.citas__empty {
+  background: transparent;
 }
 
 /* ================================================= */
 /* DÍAS */
 /* ================================================= */
 
-.citas__day{
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:18px;
-
-  padding:18px 10px;
-  min-height:110px;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-
-  cursor:pointer;
-  transition:.25s ease;
+.citas__day {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  color: #f3f0ec;
+  padding: 18px 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-height: 120px;
 }
 
-.citas__day span{
-  font-size:.75rem;
-  opacity:.7;
-  text-transform:uppercase;
-  letter-spacing:.08em;
+.citas__day span {
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f3f0ec;
+  opacity: 0.85;
 }
 
-.citas__day strong{
-  font-size:1.4rem;
-  font-weight:800;
+.citas__day strong {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #f3f0ec;
 }
 
-/* hover */
-.citas__day:hover{
-  transform:translateY(-4px);
-  border-color:rgba(212,175,55,.4);
+.citas__day:hover {
+  transform: translateY(-3px);
 }
 
 /* ================================================= */
 /* DÍAS CON CITAS */
 /* ================================================= */
 
-.citas__day.has-citas{
-  background:linear-gradient(
+.citas__day.has-citas {
+  border-color: #d4af37;
+  background: linear-gradient(
     180deg,
-    rgba(212,175,55,.28),
-    rgba(212,175,55,.08)
+    rgba(255, 222, 120, 0.18),
+    rgba(212, 175, 55, 0.15)
   );
+  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.15);
+  color: #fff;
+}
 
-  border:1px solid #d4af37;
-  box-shadow:0 10px 25px rgba(212,175,55,.15);
+.citas__day.has-citas strong,
+.citas__day.has-citas span {
+  color: #fff;
+  opacity: 1;
 }
 
 /* ================================================= */
 /* MODAL */
 /* ================================================= */
 
-.citas__modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  z-index:999;
+.citas__modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 999;
+  padding: 60px 20px 24px;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
-/* animación */
-.citas__modalContent{
-  background:#1a1a1a;
-  border:1px solid rgba(212,175,55,.2);
-  border-radius:24px;
-
-  padding:28px;
-  width:90%;
-  max-width:520px;
-
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-
-  animation:modalIn .18s ease;
+.citas__modalContent {
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100vh - 84px);
+  overflow-y: auto;
+  background: #1a1a1a;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 24px;
+  padding: 28px 24px;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.65);
+  animation: modalIn 0.18s ease;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212, 175, 55, 0.55) rgba(255, 255, 255, 0.06);
 }
 
-@keyframes modalIn{
-  from{opacity:0; transform:scale(.95);}
-  to{opacity:1; transform:scale(1);}
+.citas__modalContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.citas__modalContent::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+}
+
+.citas__modalContent::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.55);
+  border-radius: 20px;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.citas__modalContent h3 {
+  margin: 0 0 22px;
+  color: #f3f0ec;
+  font-size: 1.35rem;
+  font-weight: 800;
 }
 
 /* ================================================= */
 /* CARDS MODAL */
 /* ================================================= */
 
-.citas__card{
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
-
-  padding:14px;
-  margin-top:12px;
+.citas__card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 18px;
+  margin-top: 12px;
+  color: #ccc;
 }
 
-.citas__card p{
-  margin:6px 0;
-  color:#ddd;
+.citas__card p {
+  margin: 6px 0;
+  color: #ddd;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.citas__card b {
+  color: #f3f0ec;
 }
 
 /* ================================================= */
-/* BOTÓN MODAL */
+/* BOTONES DE ACCIONES */
 /* ================================================= */
 
-.citas__modalContent button{
-  margin-top:18px;
-  width:100%;
-  padding:12px;
-
-  border:none;
-  border-radius:12px;
-
-  background:#d4af37;
-  color:#111;
-
-  font-weight:700;
-  cursor:pointer;
-  transition:.25s ease;
+.citas__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
 }
 
-.citas__modalContent button:hover{
-  transform:translateY(-2px);
-  background:#e0bc4a;
+.citas__btn {
+  flex: 1;
+  padding: 12px 10px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.citas__btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.citas__btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.citas__btn--edit {
+  background: #d4af37;
+  color: #111;
+}
+
+.citas__btn--edit:hover:not(:disabled) {
+  background: #e0bc4a;
+}
+
+.citas__btn--delete {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f3f0ec;
+}
+
+.citas__btn--delete:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* ================================================= */
+/* FORM EDITAR */
+/* ================================================= */
+
+.citas__editForm {
+  margin-top: 18px;
+  background: rgba(0, 0, 0, 0.38);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.citas__editForm h4 {
+  margin: 0 0 16px;
+  color: #f3f0ec;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.citas__editForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: #f3f0ec;
+  font-size: 0.9rem;
+}
+
+/* ================================================= */
+/* INPUTS Y SELECTS EN GRIS SUAVE */
+/* ================================================= */
+
+.citas__editForm input,
+.citas__editForm select {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  background: #d8d8d8;
+  color: #111;
+  outline: none;
+  box-sizing: border-box;
+  font-weight: 700;
+}
+
+.citas__editForm input::placeholder {
+  color: #555;
+}
+
+.citas__editForm input:focus,
+.citas__editForm select:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.18);
+}
+
+.citas__editForm input[type="date"] {
+  color-scheme: light;
+}
+
+.citas__editForm select {
+  cursor: pointer;
+}
+
+.citas__editForm select:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background: #bcbcbc;
+  color: #333;
+}
+
+/* ================================================= */
+/* CARGANDO HORAS */
+/* ================================================= */
+
+.citas__loadingHours {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  background: #d8d8d8;
+  color: #111;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* ================================================= */
+/* ERRORES */
+/* ================================================= */
+
+.citas__error {
+  color: #ff8b8b;
+  font-size: 0.9rem;
+  margin: 8px 0 12px;
+}
+
+/* ================================================= */
+/* BOTONES FORM EDITAR */
+/* ================================================= */
+
+.citas__editActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.citas__editActions button {
+  padding: 12px 10px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.citas__editActions button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.citas__editActions button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.citas__editActions button[type="submit"] {
+  background: #d4af37;
+  color: #111;
+}
+
+.citas__editActions button[type="submit"]:hover:not(:disabled) {
+  background: #e0bc4a;
+}
+
+.citas__editActions button[type="button"] {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f3f0ec;
+}
+
+.citas__editActions button[type="button"]:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* ================================================= */
+/* BOTÓN CERRAR MODAL */
+/* ================================================= */
+
+.citas__modalContent > button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px 16px;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f3f0ec;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.citas__modalContent > button:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 
 /* ================================================= */
 /* RESPONSIVE */
 /* ================================================= */
 
-@media (max-width:768px){
-  .citas__grid{
-    gap:8px;
+@media (max-width: 768px) {
+  .section__header {
+    min-height: 320px;
+    padding: 100px 20px 60px;
   }
 
-  .citas__day{
-    min-height:80px;
-    padding:12px 6px;
+  .citas {
+    padding-bottom: 60px;
   }
 
-  .citas__day strong{
-    font-size:1.1rem;
+  .citas__calendarWrap {
+    padding: 0 14px;
   }
 
-  .citas__calendarHeader h2{
-    font-size:.95rem;
+  .citas__grid {
+    gap: 8px;
+  }
+
+  .citas__day {
+    min-height: 80px;
+    padding: 12px 6px;
+  }
+
+  .citas__day strong {
+    font-size: 1.1rem;
+  }
+
+  .citas__calendarHeader {
+    padding: 12px;
+  }
+
+  .citas__calendarHeader h2 {
+    font-size: 0.95rem;
+  }
+
+  .citas__calendarHeader button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .citas__modal {
+    padding: 18px 10px;
+  }
+
+  .citas__modalContent {
+    max-height: calc(100vh - 36px);
+    padding: 20px 16px;
+    border-radius: 20px;
+  }
+
+  .citas__actions {
+    flex-direction: column;
+  }
+
+  .citas__editActions {
+    grid-template-columns: 1fr;
   }
 }

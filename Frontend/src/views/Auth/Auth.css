@@ -7,13 +7,30 @@
   font-size: 17px;
 }
 
+/* CABECERA */
+.section__header {
+  min-height: 290px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.section__title {
+  margin: 0;
+}
+
+/* CONTENEDOR PRINCIPAL */
 .register-box {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 400px;
+
+  /* Espaciado arriba / laterales / abajo */
+  padding: 65px 400px 80px;
+
   background: #1f1f1f;
+  gap: 70px;
 }
 
 .form-section {
@@ -28,7 +45,7 @@
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 }
 
 .google-btn {
@@ -44,18 +61,20 @@
   font-weight: bold;
   cursor: pointer;
   font-size: 15px;
+  margin-top: 0;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 label {
   font-size: 13px;
   color: #ccc;
   text-align: left;
+  margin-top: 4px;
 }
 
 input {
@@ -81,19 +100,18 @@ button {
   cursor: pointer;
   font-weight: bold;
   transition: 0.15s ease;
-  margin-top: 8px;
   font-size: 15px;
 }
 
 button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
 }
 
-/* 👇 ESPACIADO CORREGIDO */
 .actions {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
 .create-btn {
@@ -104,11 +122,11 @@ button:hover {
   font-size: 13px;
   text-align: center;
   color: #ccc;
-  margin: 6px 0 0 0;
+  margin: 4px 0 0 0;
 }
 
 .login-btn {
-  margin-top: 4px;
+  margin-top: 0;
 }
 
 .logo-section {
@@ -127,14 +145,14 @@ button:hover {
 /* 1600px */
 @media (max-width: 1600px) {
   .register-box {
-    padding: 0 300px;
+    padding: 60px 300px 75px;
   }
 }
 
 /* 1400px */
 @media (max-width: 1400px) {
   .register-box {
-    padding: 0 240px;
+    padding: 55px 240px 70px;
   }
 
   .logo {
@@ -145,7 +163,7 @@ button:hover {
 /* 1200px */
 @media (max-width: 1200px) {
   .register-box {
-    padding: 0 140px;
+    padding: 55px 140px 70px;
   }
 
   .logo {
@@ -156,7 +174,7 @@ button:hover {
 /* 1024px */
 @media (max-width: 1024px) {
   .register-box {
-    padding: 0 70px;
+    padding: 55px 70px 70px;
   }
 
   .logo {
@@ -171,8 +189,8 @@ button:hover {
 /* 900px */
 @media (max-width: 900px) {
   .register-box {
-    padding: 45px 35px;
-    gap: 30px;
+    padding: 55px 35px 70px;
+    gap: 35px;
   }
 
   .logo {
@@ -188,8 +206,8 @@ button:hover {
 @media (max-width: 768px) {
   .register-box {
     flex-direction: column;
-    padding: 45px 25px;
-    gap: 35px;
+    padding: 50px 25px 65px;
+    gap: 40px;
   }
 
   .logo {
@@ -204,8 +222,12 @@ button:hover {
 
 /* 480px */
 @media (max-width: 480px) {
+  .section__header {
+    min-height: 220px;
+  }
+
   .register-box {
-    padding: 25px 18px;
+    padding: 40px 18px 55px;
   }
 
   .form-wrapper {
@@ -216,7 +238,7 @@ button:hover {
     width: 200px;
   }
 
-  .register__title {
+  .section__title {
     font-size: 2.4rem;
   }
 }
@@ -227,7 +249,7 @@ button:hover {
     width: 170px;
   }
 
-  .register__title {
+  .section__title {
     font-size: 2rem;
   }
 }

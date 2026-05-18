@@ -1,12 +1,27 @@
 import { useEffect, useState } from "react";
 import "./Home.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
 import { SERVICIOS_ENDPOINT } from "../../services/endpoints";
 
 function Home() {
-
   const [services, setServices] = useState([]);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.state?.toastMessage) {
+      toast.success(location.state.toastMessage);
+
+      navigate(location.pathname, {
+        replace: true,
+        state: {},
+      });
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     fetch(SERVICIOS_ENDPOINT)
@@ -28,19 +43,16 @@ function Home() {
 
   return (
     <div className="home">
-
       <div className="section__header home__header">
         <img src="/img/Logo.webp" alt="logo" className="home__logo" />
       </div>
 
       <div className="servicios">
-
         <h2 className="home__title">
           NUESTROS MEJORES SERVICIOS
         </h2>
 
         <div className="grid">
-
           {services.map((service) => (
             <ServiceCard
               key={service.id}
@@ -49,17 +61,14 @@ function Home() {
               text={service.descripcion}
             />
           ))}
-
         </div>
 
         <Link to="/reserva" className="btn">
           RESERVA AHORA
         </Link>
-
       </div>
 
       <div className="stats">
-
         <div className="stat">
           <img src="/img/cuchilla.webp" alt="afeitados" />
           <strong>2500</strong>
@@ -77,9 +86,16 @@ function Home() {
           <strong>3</strong>
           <span>PELUQUEROS</span>
         </div>
-
       </div>
 
+      <ToastContainer
+        position="top-center"
+        autoClose={2500}
+        hideProgressBar={false}
+        closeButton={false}
+        pauseOnHover={true}
+        draggable={false}
+      />
     </div>
   );
 }
