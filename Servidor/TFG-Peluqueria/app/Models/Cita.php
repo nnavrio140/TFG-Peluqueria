@@ -8,7 +8,6 @@ use App\Models\Servicio;
 use App\Models\Empleado;
 use App\Models\Estado;
 use App\Models\User;
-use App\Models\HistorialCita;
 use Carbon\Carbon;
 
 class Cita extends Model
@@ -43,11 +42,6 @@ class Cita extends Model
     public function estado()
     {
         return $this->belongsTo(Estado::class);
-    }
-
-    public function historial()
-    {
-        return $this->hasMany(HistorialCita::class);
     }
 
     public function scopeParaDashboard($query, User $usuario)
