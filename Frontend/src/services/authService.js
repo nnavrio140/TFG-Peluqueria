@@ -1,4 +1,4 @@
-import { AUTH_ENDPOINTS } from './endpoints.js';
+import { AUTH_ENDPOINTS } from "./endpoints.js";
 
 const parseJsonResponse = async (response) => {
   const text = await response.text();
@@ -14,7 +14,7 @@ const parseJsonResponse = async (response) => {
 };
 
 export const authService = {
-  // 🔹 REGISTRO
+  // REGISTRO
   register: async (nombre, email, password, passwordConfirmation) => {
     const response = await fetch(AUTH_ENDPOINTS.REGISTER, {
       method: "POST",
@@ -27,6 +27,7 @@ export const authService = {
         email,
         password,
         password_confirmation: passwordConfirmation,
+        role_id: 3,
       }),
     });
 
@@ -39,7 +40,7 @@ export const authService = {
     return data;
   },
 
-  // 🔹 LOGIN
+  // LOGIN
   login: async (email, password) => {
     const response = await fetch(AUTH_ENDPOINTS.LOGIN, {
       method: "POST",
@@ -59,7 +60,7 @@ export const authService = {
     return data;
   },
 
-  // 🔹 USUARIO ACTUAL
+  //USUARIO ACTUAL
   getMe: async (token) => {
     const response = await fetch(AUTH_ENDPOINTS.ME, {
       method: "GET",
@@ -77,7 +78,7 @@ export const authService = {
     return await parseJsonResponse(response);
   },
 
-  // 🔹 LOGOUT
+  // LOGOUT
   logout: async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -91,13 +92,13 @@ export const authService = {
       },
     });
 
-    localStorage.removeItem("token"); // elimina token local
+    localStorage.removeItem("token");
   },
 
-  // 🔹 TOKEN
+  // TOKEN
   getToken: () => localStorage.getItem("token"),
 
-  // 🔵 LOGIN GOOGLE
+  // LOGIN GOOGLE
   googleLogin: () => {
     window.location.href = AUTH_ENDPOINTS.GOOGLE_LOGIN;
   },

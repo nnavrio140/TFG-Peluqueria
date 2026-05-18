@@ -162,6 +162,52 @@
 }
 
 /* ================================================= */
+/* BOTÓN RESERVA USUARIO */
+/* ================================================= */
+
+.citas__reservaWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 45px;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.citas__reservaBtn {
+  display: inline-block;
+  padding: 14px 40px;
+  background: #d4af37;
+  color: #000;
+  font-size: 0.75rem;
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  border: 1px solid #d4af37;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.citas__reservaBtn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
+  text-decoration: none;
+  color: #000;
+}
+
+.citas__reservaBtn:active {
+  transform: translateY(-1px);
+}
+
+.citas__reservaBtn:visited,
+.citas__reservaBtn:focus {
+  text-decoration: none;
+  color: #000;
+}
+
+/* ================================================= */
 /* MODAL */
 /* ================================================= */
 
@@ -507,6 +553,17 @@
   .citas__calendarHeader button {
     width: 44px;
     height: 44px;
+  }
+
+  .citas__reservaWrap {
+    margin-top: 32px;
+    margin-bottom: 10px;
+  }
+
+  .citas__reservaBtn {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
   }
 
   .citas__modal {

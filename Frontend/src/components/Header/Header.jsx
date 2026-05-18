@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect, useRef } from "react";
 import "./Header.css";
 
@@ -14,6 +14,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 function Header() {
   const { user, logout, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [openMenu, setOpenMenu] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -28,8 +29,11 @@ function Header() {
 
   const handleLogout = async () => {
     await logout();
+
     setOpenMenu(false);
     setMobileMenu(false);
+
+    navigate("/");
   };
 
   useEffect(() => {
@@ -50,7 +54,10 @@ function Header() {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   useEffect(() => {
@@ -85,13 +92,17 @@ function Header() {
           className="cabecera__hamburguesa"
           type="button"
           onClick={() => setMobileMenu(!mobileMenu)}
-          aria-label="Abrir menú"
+          aria-label={mobileMenu ? "Cerrar menú" : "Abrir menú"}
         >
           <FontAwesomeIcon icon={mobileMenu ? faXmark : faBars} />
         </button>
 
         {/* MENÚ */}
-        <div className={`cabecera__menu ${mobileMenu ? "cabecera__menu--activo" : ""}`}>
+        <div
+          className={`cabecera__menu ${
+            mobileMenu ? "cabecera__menu--activo" : ""
+          }`}
+        >
 
           {/* NAV */}
           <nav className="cabecera__navegacion">
@@ -159,7 +170,7 @@ function Header() {
 
                 <Link
                   to="/registro"
-                  className="cabecera__btn cabecera__btn--gold"
+                  className="cabecera__btn"
                   onClick={closeMobileMenu}
                 >
                   <FontAwesomeIcon icon={faUserPlus} />

@@ -31,10 +31,20 @@ function Reserva() {
   const [cargandoHoras, setCargandoHoras] = useState(false);
   const [loadingCita, setLoadingCita] = useState(false);
 
+  const [cargandoDias, setCargandoDias] = useState(false);
+  const [errorDisponibilidad, setErrorDisponibilidad] = useState(null);
+
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const diasDisponiblesSet = useMemo(() => new Set(dias || []), [dias]);
+
+  const formatLocalIso = (date) => {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}`;
+  };
 
   const calendarDates = useMemo(() => {
     const today = new Date();
@@ -67,9 +77,7 @@ function Reserva() {
       0
     ).getDate();
 
-    const todayLocalIso = `${today.getFullYear()}-${String(
-      today.getMonth() + 1
-    ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    const todayLocalIso = formatLocalIso(today);
 
     for (let day = 1; day <= daysInMonth; day += 1) {
       const date = new Date(
@@ -78,9 +86,7 @@ function Reserva() {
         day
       );
 
-      const iso = `${date.getFullYear()}-${String(
-        date.getMonth() + 1
-      ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+      const iso = formatLocalIso(date);
 
       const isPast = iso < todayLocalIso;
       const isWeekend = date.getDay() === 0 || date.getDay() === 6;
@@ -91,7 +97,7 @@ function Reserva() {
         : isPast
         ? "Fecha pasada"
         : isWeekend
-        ? "Cerrado (fin de semana)"
+        ? "Cerrado / no disponible"
         : "No disponible";
 
       days.push({
@@ -126,8 +132,11 @@ function Reserva() {
   useEffect(() => {
     fetch(SERVICIOS_ENDPOINTS.INDEX)
       .then((res) => res.json())
-      .then((data) => setServicios(data.data))
-      .catch(console.log);
+      .then((data) => setServicios(data.data || []))
+      .catch((error) => {
+        console.error("Error cargando servicios:", error);
+        toast.error("Error al cargar los servicios.");
+      });
   }, []);
 
   const getServiceImage = (name = "") => {
@@ -158,32 +167,81 @@ function Reserva() {
     fetch(EMPLEADOS_ENDPOINTS.INDEX)
       .then((res) => res.json())
       .then((data) => setEmpleados(data.data || []))
-      .catch(console.log);
+      .catch((error) => {
+        console.error("Error cargando empleados:", error);
+        toast.error("Error al cargar los barberos.");
+      });
   }, [step]);
 
   useEffect(() => {
     if (step !== 3 || !servicio || !empleado) return;
 
+    setDias([]);
+    setFecha(null);
+    setHora(null);
+    setHoras([]);
+    setCargandoDias(true);
+    setErrorDisponibilidad(null);
+
     fetch(
-      `${DISPONIBILIDAD_ENDPOINTS.DIAS_DISPONIBLES}?id_servicio=${servicio.id}&id_empleado=${empleado.id}`
+      `${DISPONIBILIDAD_ENDPOINTS.DIAS_DISPONIBLES}?id_servicio=${servicio.id}&id_empleado=${empleado.id}`,
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
     )
-      .then((res) => res.json())
-      .then((data) => setDias(data.dias || []))
-      .catch(console.log);
+      .then(async (res) => {
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(
+            data?.message || data?.error || "Error al cargar días disponibles."
+          );
+        }
+
+        setDias(data.dias || []);
+      })
+      .catch((error) => {
+        console.error("Error cargando días disponibles:", error);
+        setErrorDisponibilidad(error.message);
+        setDias([]);
+      })
+      .finally(() => setCargandoDias(false));
   }, [step, servicio, empleado]);
 
   useEffect(() => {
     if (step !== 3 || !servicio || !empleado || !fecha) return;
 
     setHoras([]);
+    setHora(null);
     setCargandoHoras(true);
+    setErrorDisponibilidad(null);
 
     fetch(
-      `${DISPONIBILIDAD_ENDPOINTS.GET_DISPONIBILIDAD}?id_servicio=${servicio.id}&id_empleado=${empleado.id}&fecha=${fecha}`
+      `${DISPONIBILIDAD_ENDPOINTS.GET_DISPONIBILIDAD}?id_servicio=${servicio.id}&id_empleado=${empleado.id}&fecha=${fecha}`,
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
     )
-      .then((res) => res.json())
-      .then((data) => setHoras(data.disponibilidad || []))
-      .catch(console.log)
+      .then(async (res) => {
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(
+            data?.message || data?.error || "Error al cargar horas disponibles."
+          );
+        }
+
+        setHoras(data.disponibilidad || []);
+      })
+      .catch((error) => {
+        console.error("Error cargando horas disponibles:", error);
+        setErrorDisponibilidad(error.message);
+        setHoras([]);
+      })
       .finally(() => setCargandoHoras(false));
   }, [step, servicio, empleado, fecha]);
 
@@ -240,6 +298,7 @@ function Reserva() {
         data = await response.json();
       } catch (jsonError) {
         const text = await response.text();
+
         throw new Error(
           text || "Respuesta inesperada del servidor al crear la cita."
         );
@@ -268,7 +327,6 @@ function Reserva() {
     <div className="reserva">
       <ToastContainer />
 
-      {/* PASO 1 */}
       {step === 1 && (
         <div className="reserva__servicesStep">
           <div className="section__header">
@@ -282,6 +340,12 @@ function Reserva() {
                 className="reserva__serviceItem"
                 onClick={() => {
                   setServicio(s);
+                  setEmpleado(null);
+                  setFecha(null);
+                  setHora(null);
+                  setDias([]);
+                  setHoras([]);
+                  setMonthOffset(0);
                   setStep(2);
                 }}
               >
@@ -296,7 +360,6 @@ function Reserva() {
         </div>
       )}
 
-      {/* PASO 2 */}
       {step === 2 && (
         <div className="reserva__step reserva__step--barbers">
           <div className="section__header">
@@ -312,6 +375,9 @@ function Reserva() {
                   setEmpleado(e);
                   setFecha(null);
                   setHora(null);
+                  setDias([]);
+                  setHoras([]);
+                  setMonthOffset(0);
                   setStep(3);
                 }}
               >
@@ -330,12 +396,19 @@ function Reserva() {
         </div>
       )}
 
-      {/* PASO 3 */}
       {step === 3 && (
         <div className="reserva__step">
           <div className="section__header">
             <h1 className="section__title">ELIGE FECHA</h1>
           </div>
+
+          {cargandoDias && (
+            <div className="reserva__empty">Cargando días disponibles...</div>
+          )}
+
+          {errorDisponibilidad && (
+            <div className="reserva__empty">{errorDisponibilidad}</div>
+          )}
 
           <div className="reserva__calendarLayout">
             <div className="reserva__calendarCol">
@@ -388,6 +461,7 @@ function Reserva() {
                     <button
                       key={day.iso}
                       type="button"
+                      title={day.status}
                       className={`reserva__calendarDay ${
                         day.available ? "is-active" : "is-disabled"
                       } ${fecha === day.iso ? "is-selected" : ""}`}
@@ -469,14 +543,18 @@ function Reserva() {
           <button
             className="btn btn--ghost reserva__backButton"
             type="button"
-            onClick={() => setStep(2)}
+            onClick={() => {
+              setFecha(null);
+              setHora(null);
+              setHoras([]);
+              setStep(2);
+            }}
           >
             Volver
           </button>
         </div>
       )}
 
-      {/* PASO 4 */}
       {step === 4 && (
         <div className="reserva__step reserva__confirmStep">
           <div className="section__header">

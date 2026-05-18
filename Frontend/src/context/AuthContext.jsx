@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Cargar usuario al iniciar la app
+  // Cargar usuario al iniciar la app
   useEffect(() => {
     const loadUser = async () => {
       if (!token) {
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, [token]);
 
-  // 🔹 LOGIN CON EMAIL/PASSWORD
+  // LOGIN CON EMAIL/PASSWORD
   const login = async (email, password) => {
     const data = await authService.login(email, password);
 
@@ -44,9 +44,17 @@ export const AuthProvider = ({ children }) => {
     setUser(me);
   };
 
-  // 🔹 REGISTER CON EMAIL/PASSWORD
+  // REGISTER CON EMAIL/PASSWORD
   const register = async (nombre, email, password, confirm) => {
-    const data = await authService.register(nombre, email, password, confirm);
+    const roleIdUsuario = 3;
+
+    const data = await authService.register(
+      nombre,
+      email,
+      password,
+      confirm,
+      roleIdUsuario
+    );
 
     if (!data.token) throw new Error("Error al registrarse");
 
@@ -57,14 +65,16 @@ export const AuthProvider = ({ children }) => {
     setUser(me);
   };
 
-  // 🔹 LOGOUT
+  // LOGOUT
   const logout = async () => {
-    await authService.logout(); // ahora logout coge token automáticamente
+    await authService.logout();
+
+    localStorage.removeItem("token");
     setUser(null);
     setToken(null);
   };
 
-  // 🔹 LOGIN CON GOOGLE
+  // LOGIN CON GOOGLE
   const loginWithGoogle = () => {
     authService.googleLogin();
   };

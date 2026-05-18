@@ -36,17 +36,17 @@ class User extends Authenticatable
 
     public function rol()
     {
-        return $this->belongsTo(Rol::class);
+        return $this->belongsTo(Rol::class, 'role_id');
     }
 
     public function citas()
     {
-        return $this->hasMany(Cita::class);
+        return $this->hasMany(Cita::class, 'user_id');
     }
 
     public function empleado()
     {
-        return $this->hasOne(Empleado::class);
+        return $this->hasOne(Empleado::class, 'user_id');
     }
 
     public function isAdmin()

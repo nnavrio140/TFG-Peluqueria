@@ -217,37 +217,38 @@ class CitaController extends Controller
         ]);
     }
 
-    public function diasDisponibles(Request $request)
-    {
-        $datos = $request->validate([
-            'id_servicio' => 'required|exists:servicios,id',
-            'id_empleado' => 'required|exists:empleados,id',
-        ]);
+public function diasDisponibles(Request $request)
+{
+    $datos = $request->validate([
+        'id_servicio' => 'required|exists:servicios,id',
+        'id_empleado' => 'required|exists:empleados,id',
+    ]);
 
-        $servicio = Servicio::findOrFail($datos['id_servicio']);
-        $empleado = Empleado::findOrFail($datos['id_empleado']);
+    $servicio = Servicio::findOrFail($datos['id_servicio']);
+    $empleado = Empleado::findOrFail($datos['id_empleado']);
 
-        $diasDisponibles = [];
+    $diasDisponibles = [];
 
-        for ($i = 0; $i < 30; $i++) {
+    // Buscar disponibilidad durante los próximos 365 días
+    for ($i = 0; $i < 365; $i++) {
 
-            $fecha = now()->addDays($i)->format('Y-m-d');
+        $fecha = now()->addDays($i)->format('Y-m-d');
 
-            $horarios = $this->obtenerHorariosDisponibles(
-                $empleado,
-                $servicio,
-                $fecha
-            );
+        $horarios = $this->obtenerHorariosDisponibles(
+            $empleado,
+            $servicio,
+            $fecha
+        );
 
-            if (!empty($horarios)) {
-                $diasDisponibles[] = $fecha;
-            }
+        if (!empty($horarios)) {
+            $diasDisponibles[] = $fecha;
         }
-
-        return response()->json([
-            'dias' => $diasDisponibles
-        ]);
     }
+
+    return response()->json([
+        'dias' => $diasDisponibles
+    ]);
+}
 
     // =========================
     // 🔥 MÉTODOS PRIVADOS

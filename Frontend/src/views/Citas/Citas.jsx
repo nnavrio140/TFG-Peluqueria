@@ -1,4 +1,5 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import {
   CITAS_ENDPOINTS,
@@ -27,9 +28,23 @@ function Citas() {
   const [horasDisponibles, setHorasDisponibles] = useState([]);
   const [cargandoHoras, setCargandoHoras] = useState(false);
 
+  const disponibilidadRequestIdRef = useRef(0);
+
+  const getRoleSlug = () => {
+    return user?.rol?.slug || user?.role?.slug || null;
+  };
+
+  const getEmpleadoUserId = () => {
+    return user?.empleado?.id || user?.id_empleado || user?.empleado_id || null;
+  };
+
+  const roleSlug = getRoleSlug();
+
   useEffect(() => {
     const load = async () => {
       try {
+        setApiError(null);
+
         const res = await fetch(CITAS_ENDPOINTS.INDEX, {
           headers: {
             Accept: "application/json",
@@ -38,14 +53,22 @@ function Citas() {
         });
 
         const data = await res.json();
+
+        if (!res.ok) {
+          setApiError(data?.message || "Error al cargar las citas.");
+          setCitas([]);
+          return;
+        }
+
         setCitas(data.data || []);
       } catch (error) {
         setApiError("Error al cargar las citas.");
+        setCitas([]);
       }
     };
 
-    if (token) load();
-  }, [token]);
+    if (token && user) load();
+  }, [token, user]);
 
   useEffect(() => {
     if (!selected) return;
@@ -59,15 +82,24 @@ function Citas() {
   }, [selected]);
 
   useEffect(() => {
-    if (!editingCita || !formValues.fecha) return;
+    if (!editingCita || !formValues.fecha) {
+      setCargandoHoras(false);
+      return;
+    }
 
     const servicioId = editingCita.servicio?.id;
     const empleadoId = editingCita.empleado?.id;
 
     if (!servicioId || !empleadoId) {
       setApiError("No se puede cargar disponibilidad de esta cita.");
+      setCargandoHoras(false);
       return;
     }
+
+    const requestId = disponibilidadRequestIdRef.current + 1;
+    disponibilidadRequestIdRef.current = requestId;
+
+    const controller = new AbortController();
 
     const cargarHorasDisponibles = async () => {
       setApiError(null);
@@ -78,6 +110,7 @@ function Citas() {
         const response = await fetch(
           `${DISPONIBILIDAD_ENDPOINTS.GET_DISPONIBILIDAD}?id_servicio=${servicioId}&id_empleado=${empleadoId}&fecha=${formValues.fecha}`,
           {
+            signal: controller.signal,
             headers: {
               Accept: "application/json",
               Authorization: `Bearer ${token}`,
@@ -87,10 +120,13 @@ function Citas() {
 
         const data = await response.json();
 
+        if (disponibilidadRequestIdRef.current !== requestId) return;
+
         if (!response.ok) {
           setApiError(
             data?.message || data?.error || "Error al cargar los horarios."
           );
+          setHorasDisponibles([]);
           return;
         }
 
@@ -109,39 +145,68 @@ function Citas() {
 
         setHorasDisponibles(horas);
 
-        if (!horas.includes(formValues.hora_inicio)) {
-          setFormValues((prev) => ({
-            ...prev,
-            hora_inicio: "",
-          }));
-        }
+        setFormValues((prev) => {
+          if (disponibilidadRequestIdRef.current !== requestId) return prev;
+
+          if (!horas.includes(prev.hora_inicio)) {
+            return {
+              ...prev,
+              hora_inicio: "",
+            };
+          }
+
+          return prev;
+        });
       } catch (error) {
-        setApiError("Error de conexión al cargar los horarios.");
+        if (error.name === "AbortError") return;
+
+        if (disponibilidadRequestIdRef.current === requestId) {
+          setApiError("Error de conexión al cargar los horarios.");
+          setHorasDisponibles([]);
+        }
       } finally {
-        setCargandoHoras(false);
+        if (disponibilidadRequestIdRef.current === requestId) {
+          setCargandoHoras(false);
+        }
       }
     };
 
     cargarHorasDisponibles();
+
+    return () => {
+      controller.abort();
+    };
   }, [editingCita, formValues.fecha, token]);
 
   const canManageCita = (cita) => {
     if (!user) return false;
-    if (user.rol?.slug === "admin") return true;
-    if (cita.usuario?.id === user.id) return true;
 
-    if (
-      user.rol?.slug === "empleado" &&
-      user.empleado?.id &&
-      cita.empleado?.id === user.empleado.id
-    ) {
+    const currentRoleSlug = getRoleSlug();
+
+    if (currentRoleSlug === "admin") return true;
+
+    if (cita.usuario?.id === user.id || cita.user_id === user.id) {
       return true;
+    }
+
+    if (currentRoleSlug === "empleado") {
+      const empleadoUserId = getEmpleadoUserId();
+
+      if (
+        empleadoUserId &&
+        (cita.empleado?.id === empleadoUserId ||
+          cita.empleado_id === empleadoUserId)
+      ) {
+        return true;
+      }
     }
 
     return false;
   };
 
   const openEditCita = (cita) => {
+    disponibilidadRequestIdRef.current += 1;
+
     setEditingCita(cita);
 
     setFormValues({
@@ -150,11 +215,13 @@ function Citas() {
     });
 
     setHorasDisponibles([]);
-    setCargandoHoras(false);
+    setCargandoHoras(Boolean(cita.fecha));
     setApiError(null);
   };
 
   const closeEdit = () => {
+    disponibilidadRequestIdRef.current += 1;
+
     setEditingCita(null);
 
     setFormValues({
@@ -172,6 +239,22 @@ function Citas() {
       ...prev,
       [field]: value,
     }));
+  };
+
+  const handleFechaChange = (value) => {
+    if (cargandoHoras || savingCita) return;
+
+    disponibilidadRequestIdRef.current += 1;
+
+    setFormValues((prev) => ({
+      ...prev,
+      fecha: value,
+      hora_inicio: "",
+    }));
+
+    setHorasDisponibles([]);
+    setApiError(null);
+    setCargandoHoras(Boolean(value));
   };
 
   const handleDeleteCita = async (cita) => {
@@ -293,10 +376,10 @@ function Citas() {
   }, [citas]);
 
   const pageTitle = useMemo(() => {
-    const roleSlug = user?.rol?.slug || null;
+    const currentRoleSlug = user?.rol?.slug || user?.role?.slug || null;
 
-    if (roleSlug === "admin") return "TODAS LAS CITAS";
-    if (roleSlug === "empleado") return "CITAS ASIGNADAS";
+    if (currentRoleSlug === "admin") return "TODAS LAS CITAS";
+    if (currentRoleSlug === "empleado") return "CITAS ASIGNADAS";
 
     return "MIS CITAS";
   }, [user]);
@@ -424,6 +507,14 @@ function Citas() {
         </div>
       </div>
 
+      {roleSlug === "usuario" && (
+        <div className="citas__reservaWrap">
+          <Link to="/reserva" className="citas__reservaBtn">
+            RESERVA AHORA
+          </Link>
+        </div>
+      )}
+
       {selected && (
         <div className="citas__modal" onClick={closeModal}>
           <div
@@ -444,7 +535,7 @@ function Citas() {
                   <b>Barbero:</b> {cita.empleado?.nombre || "-"}
                 </p>
 
-                {user?.rol?.slug !== "usuario" && (
+                {roleSlug !== "usuario" && (
                   <p>
                     <b>Cliente:</b> {cita.usuario?.nombre || "-"}
                   </p>
@@ -495,10 +586,8 @@ function Citas() {
                       <input
                         type="date"
                         value={formValues.fecha}
-                        onChange={(e) => {
-                          handleFormChange("fecha", e.target.value);
-                          handleFormChange("hora_inicio", "");
-                        }}
+                        onChange={(e) => handleFechaChange(e.target.value)}
+                        disabled={cargandoHoras || savingCita}
                         required
                       />
                     </label>
@@ -517,7 +606,10 @@ function Citas() {
                           }
                           required
                           disabled={
-                            !formValues.fecha || horasDisponibles.length === 0
+                            savingCita ||
+                            cargandoHoras ||
+                            !formValues.fecha ||
+                            horasDisponibles.length === 0
                           }
                         >
                           <option value="">

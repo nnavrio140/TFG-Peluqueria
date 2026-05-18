@@ -23,6 +23,8 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        $user->load(['rol', 'empleado']);
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -44,8 +46,14 @@ class AuthController extends Controller
             'nombre' => $request->nombre,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 2
+
+            // 1 = admin
+            // 2 = empleado
+            // 3 = usuario
+            'role_id' => 3,
         ]);
+
+        $user->load(['rol', 'empleado']);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -74,15 +82,21 @@ class AuthController extends Controller
             // Buscar usuario en base de datos
             $user = User::where('email', $googleUser->getEmail())->first();
 
-            // Si no existe, crear uno nuevo
+            // Si no existe, crear uno nuevo como usuario normal
             if (!$user) {
                 $user = User::create([
                     'nombre' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
                     'password' => Hash::make(uniqid()),
-                    'role_id' => 2
+
+                    // 1 = admin
+                    // 2 = empleado
+                    // 3 = usuario
+                    'role_id' => 3,
                 ]);
             }
+
+            $user->load(['rol', 'empleado']);
 
             // Crear token de acceso
             $token = $user->createToken('auth_token')->plainTextToken;
