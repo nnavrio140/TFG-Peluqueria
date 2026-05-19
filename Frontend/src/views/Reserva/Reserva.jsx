@@ -318,7 +318,16 @@ function Reserva() {
 
   return (
     <div className="reserva">
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={2500}
+        hideProgressBar={true}
+        closeButton={false}
+        closeOnClick={true}
+        pauseOnHover={false}
+        draggable={false}
+        theme="colored"
+      />
 
       {step === 1 && (
         <div className="reserva__servicesStep">
@@ -437,8 +446,8 @@ function Reserva() {
                     </button>
 
                     <h2 className="reserva__calendarMonth">
-                      {calendarDates.find((d) => d.type === "day")?.monthLabel ||
-                        ""}
+                      {calendarDates.find((d) => d.type === "day")
+                        ?.monthLabel || ""}
                     </h2>
 
                     <button
