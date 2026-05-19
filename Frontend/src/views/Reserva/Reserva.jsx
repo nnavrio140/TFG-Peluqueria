@@ -146,28 +146,6 @@ function Reserva() {
       });
   }, []);
 
-  const getServiceImage = (name = "") => {
-    if (name.includes("Barba")) return "/img/corte_barba.webp";
-    if (name.includes("Afeitado")) return "/img/navaja.webp";
-    if (name.includes("Teñido")) return "/img/peinado.webp";
-    if (name.includes("Corte")) return "/img/tijeras.webp";
-
-    return "/img/default.webp";
-  };
-
-  const getBarberImage = (id) => {
-    switch (id) {
-      case 1:
-        return "/img/juanje.webp";
-      case 2:
-        return "/img/nico.webp";
-      case 3:
-        return "/img/antonio.webp";
-      default:
-        return "/img/barber-default.webp";
-    }
-  };
-
   useEffect(() => {
     if (step !== 2) return;
 
@@ -175,7 +153,10 @@ function Reserva() {
 
     fetch(EMPLEADOS_ENDPOINTS.INDEX)
       .then((res) => res.json())
-      .then((data) => setEmpleados(data.data || []))
+      .then((data) => {
+        console.log(data);
+        setEmpleados(data.data || []);
+      })
       .catch((error) => {
         console.error("Error cargando empleados:", error);
         toast.error("Error al cargar los barberos.");
@@ -347,9 +328,7 @@ function Reserva() {
 
           {cargandoServicios ? (
             <div className="reserva__loading-section">
-              <div className="reserva__loading">
-                Cargando servicios...
-              </div>
+              <div className="reserva__loading">Cargando servicios...</div>
             </div>
           ) : (
             <div className="reserva__servicesGrid">
@@ -369,7 +348,7 @@ function Reserva() {
                   }}
                 >
                   <ServiceCard
-                    icon={getServiceImage(s.nombre)}
+                    icon={s.imagen_url || "/img/default.webp"}
                     title={s.nombre}
                     text={s.descripcion}
                   />
@@ -388,9 +367,7 @@ function Reserva() {
 
           {cargandoEmpleados ? (
             <div className="reserva__loading-section">
-              <div className="reserva__loading">
-                Cargando barberos...
-              </div>
+              <div className="reserva__loading">Cargando barberos...</div>
             </div>
           ) : (
             <div className="reserva__grid-barbers">
@@ -408,7 +385,10 @@ function Reserva() {
                     setStep(3);
                   }}
                 >
-                  <BarberCard barber={e} image={getBarberImage(e.id)} />
+                  <BarberCard
+                    barber={e}
+                    image={e.imagen_url || "/img/barber-default.webp"}
+                  />
                 </div>
               ))}
             </div>
@@ -529,9 +509,7 @@ function Reserva() {
                   <div className="reserva__empty">Cargando horarios...</div>
                 ) : horas.length > 0 ? (
                   <>
-                    <p className="reserva__selectLabel">
-                      Selecciona una hora
-                    </p>
+                    <p className="reserva__selectLabel">Selecciona una hora</p>
 
                     <div className="reserva__hoursOptions">
                       {horas.map((h) => (
@@ -558,9 +536,7 @@ function Reserva() {
                     </button>
                   </>
                 ) : (
-                  <div className="reserva__empty">
-                    No hay horas disponibles
-                  </div>
+                  <div className="reserva__empty">No hay horas disponibles</div>
                 )}
 
                 <button

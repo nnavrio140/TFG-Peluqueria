@@ -11,6 +11,7 @@ function About() {
     fetch(EMPLEADOS_ENDPOINT)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setBarbers(data.data || []);
       })
       .catch((err) => {
@@ -20,19 +21,6 @@ function About() {
         setLoading(false);
       });
   }, []);
-
-  const getBarberImage = (id) => {
-    switch (id) {
-      case 1:
-        return "/img/juanje.webp";
-      case 2:
-        return "/img/nico.webp";
-      case 3:
-        return "/img/antonio.webp";
-      default:
-        return "/img/barber-default.webp";
-    }
-  };
 
   return (
     <div className="about">
@@ -54,7 +42,7 @@ function About() {
               <BarberCard
                 key={barber.id}
                 barber={barber}
-                image={getBarberImage(barber.id)}
+                image={barber.imagen_url || "/img/barber-default.webp"}
               />
             ))}
           </div>

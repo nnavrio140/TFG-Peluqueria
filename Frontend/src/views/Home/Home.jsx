@@ -39,14 +39,6 @@ function Home() {
       });
   }, []);
 
-  const getServiceImage = (name = "") => {
-    if (name.includes("Barba")) return "/img/corte_barba.webp";
-    if (name.includes("Afeitado")) return "/img/navaja.webp";
-    if (name.includes("Teñido")) return "/img/peinado.webp";
-    if (name.includes("Corte")) return "/img/tijeras.webp";
-    return "/img/default.webp";
-  };
-
   return (
     <div className="home">
       <div className="section__header home__header">
@@ -54,9 +46,7 @@ function Home() {
       </div>
 
       <div className="servicios">
-        <h2 className="home__title">
-          NUESTROS MEJORES SERVICIOS
-        </h2>
+        <h2 className="home__title">NUESTROS MEJORES SERVICIOS</h2>
 
         {loading ? (
           <div className="home__loading-section">
@@ -69,7 +59,7 @@ function Home() {
             {services.map((service) => (
               <ServiceCard
                 key={service.id}
-                icon={getServiceImage(service.nombre || service.nombre_servicio)}
+                icon={service.imagen_url || "/img/default.webp"}
                 title={service.nombre || service.nombre_servicio}
                 text={service.descripcion}
               />

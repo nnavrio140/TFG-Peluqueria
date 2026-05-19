@@ -18,6 +18,8 @@ class EmpleadoResource extends JsonResource
             'id' => $this->id,
             'nombre' => $this->usuario?->nombre,
             'especialidad' => $this->especialidad,
+            'imagen' => $this->imagen,
+            'imagen_url' => $this->imagen_url,
             'activo' => (bool) $this->activo,
             'usuario_id' => $this->user_id,
             'horarios' => HorarioResource::collection($this->whenLoaded('horarios')),

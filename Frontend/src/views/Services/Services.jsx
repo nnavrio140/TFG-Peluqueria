@@ -21,21 +21,6 @@ function Services() {
       });
   }, []);
 
-  const getServiceImage = (name) => {
-    switch (name) {
-      case "Corte & Barba":
-        return "/img/corte_barba.webp";
-      case "Afeitado":
-        return "/img/navaja.webp";
-      case "Corte":
-        return "/img/tijeras.webp";
-      case "Corte & Teñido":
-        return "/img/peinado.webp";
-      default:
-        return "/img/default.webp";
-    }
-  };
-
   return (
     <div className="services">
       {/* HEADER */}
@@ -56,7 +41,7 @@ function Services() {
             {services.map((service) => (
               <ServiceCard
                 key={service.id}
-                icon={getServiceImage(service.nombre)}
+                icon={service.imagen_url || "/img/default.webp"}
                 title={service.nombre}
                 text={service.descripcion}
               />

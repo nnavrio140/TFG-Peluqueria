@@ -12,10 +12,13 @@
 .home__header {
   padding: 160px 20px 120px;
   margin-bottom: 80px;
+  text-align: center;
 }
 
 .home__logo {
   width: 380px;
+  max-width: 90%;
+  height: auto;
 }
 
 /* ================= SERVICIOS ================= */
@@ -55,12 +58,18 @@
   letter-spacing: 1px;
 }
 
-/* GRID */
+/* ================= GRID SERVICIOS ================= */
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 30px;
   margin-bottom: var(--space-md);
+  justify-content: center;
+}
+
+.grid > * {
+  width: 100%;
 }
 
 /* ================= BOTÓN ================= */
@@ -131,32 +140,145 @@
   letter-spacing: 0.10rem;
 }
 
-/* ================= RESPONSIVE ================= */
+/* ================= TABLET / CUANDO NO CABEN 3 CARDS ================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+  .home {
+    --space-xl: 100px;
+    --space-lg: 80px;
+    --space-md: 55px;
+    --space-sm: 35px;
+  }
+
+  .home__header {
+    padding: 130px 20px 90px;
+    margin-bottom: 60px;
+  }
+
   .home__logo {
-    width: 280px;
+    width: 320px;
   }
 
   .home__title {
-    font-size: 2rem;
+    font-size: 2.4rem;
+    line-height: 1.25;
+    margin-bottom: 55px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(280px, 420px);
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .stats {
+    padding: 80px 20px;
+  }
+}
+
+/* ================= MÓVIL ================= */
+
+@media (max-width: 768px) {
+  .home {
+    --space-xl: 80px;
+    --space-lg: 65px;
+    --space-md: 45px;
+    --space-sm: 30px;
+  }
+
+  .home__header {
+    padding: 110px 20px 70px;
+    margin-bottom: 45px;
+  }
+
+  .home__logo {
+    width: 260px;
+  }
+
+  .servicios {
+    padding: 0 16px var(--space-xl);
+  }
+
+  .home__title {
+    font-size: 1.9rem;
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    margin-bottom: 45px;
   }
 
   .home__loading-section {
-    min-height: 260px;
+    min-height: 240px;
+    margin-bottom: 45px;
   }
 
   .home__loading {
-    font-size: 18px;
+    font-size: 17px;
     padding: 0 20px;
   }
 
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(260px, 420px);
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 280px;
+    padding: 14px 24px;
   }
 
   .stats {
     grid-template-columns: 1fr;
-    gap: 25px;
+    gap: 35px;
+    padding: 65px 20px;
+  }
+
+  .stat strong {
+    font-size: 2.2rem;
+  }
+
+  .stat img {
+    width: 58px;
+    height: 58px;
+  }
+}
+
+/* ================= MÓVIL PEQUEÑO ================= */
+
+@media (max-width: 480px) {
+  .home__header {
+    padding: 95px 16px 60px;
+    margin-bottom: 35px;
+  }
+
+  .home__logo {
+    width: 220px;
+  }
+
+  .home__title {
+    font-size: 1.55rem;
+    letter-spacing: 0.03em;
+  }
+
+  .home__loading-section {
+    min-height: 210px;
+  }
+
+  .home__loading {
+    font-size: 15px;
+  }
+
+  .servicios {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(240px, 1fr);
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 20px;
   }
 }

@@ -15,6 +15,7 @@ class Servicio extends Model
         'descripcion',
         'precio',
         'duracion',
+        'imagen',
     ];
 
     public function citas()

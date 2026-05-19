@@ -9,7 +9,7 @@ class ServicioResource extends JsonResource
 {
     /**
      * Convierte el servicio a JSON para la API.
-     * Incluye duración y precio para el selector de cita.
+     * Incluye duración, precio e imagen para el frontend.
      *
      * @return array<string, mixed>
      */
@@ -22,6 +22,11 @@ class ServicioResource extends JsonResource
             'descripcion' => $this->descripcion,
             'precio' => $this->precio,
             'duracion' => $this->duracion,
+
+            'imagen' => $this->imagen,
+            'imagen_url' => $this->imagen
+                ? asset('storage/' . $this->imagen)
+                : null,
         ];
     }
 }

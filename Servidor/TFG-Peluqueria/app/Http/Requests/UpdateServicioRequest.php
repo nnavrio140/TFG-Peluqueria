@@ -11,9 +11,10 @@ class UpdateServicioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-         if($this->user()->isAdminOrEmploye()){
+        if ($this->user()->isAdminOrEmploye()) {
             return true;
         }
+
         return false;
     }
 
@@ -30,6 +31,7 @@ class UpdateServicioRequest extends FormRequest
             'descripcion' => 'required|string',
             'precio' => 'required|numeric',
             'duracion' => 'required|integer',
+            'imagen' => 'nullable|string|max:255',
         ];
     }
 
@@ -39,15 +41,22 @@ class UpdateServicioRequest extends FormRequest
             'nombre_servicio.required' => 'El nombre del servicio es obligatorio.',
             'nombre_servicio.string' => 'El nombre del servicio debe ser una cadena de texto.',
             'nombre_servicio.max' => 'El nombre del servicio no debe exceder los 255 caracteres.',
+
             'descripcion_corta.required' => 'La descripción corta es obligatoria.',
             'descripcion_corta.string' => 'La descripción corta debe ser una cadena de texto.',
             'descripcion_corta.max' => 'La descripción corta no debe exceder los 150 caracteres.',
+
             'descripcion.required' => 'La descripción es obligatoria.',
             'descripcion.string' => 'La descripción debe ser una cadena de texto.',
+
             'precio.required' => 'El precio es obligatorio.',
             'precio.numeric' => 'El precio debe ser un valor numérico.',
+
             'duracion.required' => 'La duración es obligatoria.',
             'duracion.integer' => 'La duración debe ser un número entero.',
+
+            'imagen.string' => 'La imagen debe ser una ruta de texto válida.',
+            'imagen.max' => 'La ruta de la imagen no debe exceder los 255 caracteres.',
         ];
     }
 }

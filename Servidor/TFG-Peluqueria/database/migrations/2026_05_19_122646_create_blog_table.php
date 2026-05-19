@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('servicios', function (Blueprint $table) {
-
+        Schema::create('blog', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_servicio');
-            $table->text('descripcion')->nullable();
-            $table->decimal('precio', 10, 2);
-            $table->unsignedInteger('duracion');
-            $table->string('imagen')->nullable();
-            $table->boolean('activo')->default(true);
+
+            // Título del corte, por ejemplo: Buzz Cut
+            $table->string('title');
+
+            // Ruta o URL de la imagen
+            $table->string('image');
 
             $table->timestamps();
         });
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('servicios');
+        Schema::dropIfExists('blog');
     }
 };

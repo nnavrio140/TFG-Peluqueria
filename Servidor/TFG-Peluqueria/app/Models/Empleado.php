@@ -12,9 +12,23 @@ class Empleado extends Model
     protected $fillable = [
         'especialidad',
         'salario',
+        'imagen',
         'activo',
         'user_id',
     ];
+
+    protected $appends = [
+        'imagen_url',
+    ];
+
+    public function getImagenUrlAttribute()
+    {
+        if (!$this->imagen) {
+            return null;
+        }
+
+        return asset('storage/' . $this->imagen);
+    }
 
     public function usuario()
     {

@@ -16,6 +16,8 @@ return new class extends Migration
 
             $table->decimal('salario', 10, 2)->nullable();
 
+            $table->string('imagen')->nullable();
+
             $table->boolean('activo')->default(true);
 
             $table->foreignId('user_id')

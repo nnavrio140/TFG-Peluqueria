@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Servicio;
 use App\Http\Requests\StoreServicioRequest;
+use App\Http\Requests\UpdateServicioRequest;
 use App\Http\Resources\ServicioResource;
 
 class ServicioController extends Controller
@@ -17,6 +17,7 @@ class ServicioController extends Controller
     public function index()
     {
         $servicios = Servicio::all();
+
         return ServicioResource::collection($servicios);
     }
 
@@ -27,6 +28,7 @@ class ServicioController extends Controller
     public function store(StoreServicioRequest $request)
     {
         $validated = $request->validated();
+
         $servicio = Servicio::create($validated);
 
         return response()->json([
@@ -46,9 +48,10 @@ class ServicioController extends Controller
     /**
      * Actualiza los datos de un servicio existente.
      */
-    public function update(StoreServicioRequest $request, Servicio $servicio)
+    public function update(UpdateServicioRequest $request, Servicio $servicio)
     {
         $validated = $request->validated();
+
         $servicio->update($validated);
 
         return response()->json([
