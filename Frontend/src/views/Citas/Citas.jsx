@@ -305,7 +305,7 @@ function Citas() {
 
     try {
       const response = await fetch(CITAS_ENDPOINTS.DELETE(cita.id), {
-        method: "DELETE",
+        method: "POST",
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
@@ -365,7 +365,7 @@ function Citas() {
 
     try {
       const response = await fetch(CITAS_ENDPOINTS.UPDATE(editingCita.id), {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
