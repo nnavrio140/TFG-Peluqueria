@@ -1,12 +1,12 @@
-export const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // AUTH
-export const LOGIN_ENDPOINT=`${API_BASE_URL}/login`;
-export const REGISTER_ENDPOINT=`${API_BASE_URL}/register`;
-export const LOGOUT_ENDPOINT=`${API_BASE_URL}/logout`;
-export const ME_ENDPOINT=`${API_BASE_URL}/me`;
-export const GOOGLE_LOGIN_ENDPOINT=`${API_BASE_URL}/auth/google`;
-export const GOOGLE_CALLBACK_ENDPOINT=`${API_BASE_URL}/auth/google/callback`;
+export const LOGIN_ENDPOINT = `${API_BASE_URL}/login`;
+export const REGISTER_ENDPOINT = `${API_BASE_URL}/register`;
+export const LOGOUT_ENDPOINT = `${API_BASE_URL}/logout`;
+export const ME_ENDPOINT = `${API_BASE_URL}/me`;
+export const GOOGLE_LOGIN_ENDPOINT = `${API_BASE_URL}/auth/google`;
+export const GOOGLE_CALLBACK_ENDPOINT = `${API_BASE_URL}/auth/google/callback`;
 
 export const AUTH_ENDPOINTS = {
   LOGIN: LOGIN_ENDPOINT,
@@ -18,13 +18,16 @@ export const AUTH_ENDPOINTS = {
 };
 
 // SERVICIOS
-export const SERVICIOS_INDEX_ENDPOINT=`${API_BASE_URL}/servicios`;
-export const SERVICIOS_STORE_ENDPOINT=`${API_BASE_URL}/servicios`;
-export const SERVICIOS_SHOW_ENDPOINT=(id)=>`${API_BASE_URL}/servicios/${id}`;
-export const SERVICIOS_UPDATE_ENDPOINT=(id)=>`${API_BASE_URL}/servicios/${id}`;
-export const SERVICIOS_DELETE_ENDPOINT=(id)=>`${API_BASE_URL}/servicios/${id}`;
+export const SERVICIOS_INDEX_ENDPOINT = `${API_BASE_URL}/servicios`;
+export const SERVICIOS_STORE_ENDPOINT = `${API_BASE_URL}/servicios`;
+export const SERVICIOS_SHOW_ENDPOINT = (id) => `${API_BASE_URL}/servicios/${id}`;
+export const SERVICIOS_UPDATE_ENDPOINT = (id) =>
+  `${API_BASE_URL}/servicios/${id}`;
+export const SERVICIOS_DELETE_ENDPOINT = (id) =>
+  `${API_BASE_URL}/servicios/${id}`;
 
 export const SERVICIOS_ENDPOINT = SERVICIOS_INDEX_ENDPOINT;
+
 export const SERVICIOS_ENDPOINTS = {
   INDEX: SERVICIOS_INDEX_ENDPOINT,
   STORE: SERVICIOS_STORE_ENDPOINT,
@@ -34,11 +37,13 @@ export const SERVICIOS_ENDPOINTS = {
 };
 
 // EMPLEADOS
-export const EMPLEADOS_INDEX_ENDPOINT=`${API_BASE_URL}/empleados`;
-export const EMPLEADOS_SHOW_ENDPOINT=(id)=>`${API_BASE_URL}/empleados/${id}`;
-export const EMPLEADOS_HORARIOS_ENDPOINT=(id)=>`${API_BASE_URL}/empleados/${id}/horarios`;
+export const EMPLEADOS_INDEX_ENDPOINT = `${API_BASE_URL}/empleados`;
+export const EMPLEADOS_SHOW_ENDPOINT = (id) => `${API_BASE_URL}/empleados/${id}`;
+export const EMPLEADOS_HORARIOS_ENDPOINT = (id) =>
+  `${API_BASE_URL}/empleados/${id}/horarios`;
 
 export const EMPLEADOS_ENDPOINT = EMPLEADOS_INDEX_ENDPOINT;
+
 export const EMPLEADOS_ENDPOINTS = {
   INDEX: EMPLEADOS_INDEX_ENDPOINT,
   SHOW: EMPLEADOS_SHOW_ENDPOINT,
@@ -46,11 +51,11 @@ export const EMPLEADOS_ENDPOINTS = {
 };
 
 // CITAS
-export const CITAS_INDEX_ENDPOINT=`${API_BASE_URL}/citas`;
-export const CITAS_STORE_ENDPOINT=`${API_BASE_URL}/citas`;
-export const CITAS_SHOW_ENDPOINT=(id)=>`${API_BASE_URL}/citas/${id}`;
-export const CITAS_UPDATE_ENDPOINT=(id)=>`${API_BASE_URL}/citas/${id}`;
-export const CITAS_DELETE_ENDPOINT=(id)=>`${API_BASE_URL}/citas/${id}`;
+export const CITAS_INDEX_ENDPOINT = `${API_BASE_URL}/citas`;
+export const CITAS_STORE_ENDPOINT = `${API_BASE_URL}/citas`;
+export const CITAS_SHOW_ENDPOINT = (id) => `${API_BASE_URL}/citas/${id}`;
+export const CITAS_UPDATE_ENDPOINT = (id) => `${API_BASE_URL}/citas/${id}`;
+export const CITAS_DELETE_ENDPOINT = (id) => `${API_BASE_URL}/citas/${id}`;
 
 export const CITAS_ENDPOINTS = {
   INDEX: CITAS_INDEX_ENDPOINT,
@@ -61,13 +66,18 @@ export const CITAS_ENDPOINTS = {
 };
 
 // DISPONIBILIDAD
-export const DISPONIBILIDAD_ENDPOINT=`${API_BASE_URL}/disponibilidad`;
-export const DIAS_DISPONIBLES_ENDPOINT=`${API_BASE_URL}/dias-disponibles`;
+export const DISPONIBILIDAD_ENDPOINT = `${API_BASE_URL}/disponibilidad`;
+export const DIAS_DISPONIBLES_ENDPOINT = `${API_BASE_URL}/dias-disponibles`;
+
 export const DISPONIBILIDAD_ENDPOINTS = {
   GET_DISPONIBILIDAD: DISPONIBILIDAD_ENDPOINT,
   DIAS_DISPONIBLES: DIAS_DISPONIBLES_ENDPOINT,
 };
 
 // CONTACTO
-export const CONTACT_ENDPOINT=`${API_BASE_URL}/contact`;
-export const CONTACT_STORE_ENDPOINT=`${API_BASE_URL}/contact`;
+export const CONTACT_ENDPOINT = `${API_BASE_URL}/contact`;
+export const CONTACT_STORE_ENDPOINT = `${API_BASE_URL}/contact`;
+
+export const CONTACT_ENDPOINTS = {
+  STORE: CONTACT_STORE_ENDPOINT,
+};

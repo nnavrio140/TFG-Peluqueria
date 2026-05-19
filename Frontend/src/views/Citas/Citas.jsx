@@ -32,6 +32,29 @@ function Citas() {
 
   const disponibilidadRequestIdRef = useRef(0);
 
+  const parseApiResponse = async (response) => {
+    const text = await response.text();
+
+    if (!text) {
+      return {};
+    }
+
+    try {
+      return JSON.parse(text);
+    } catch (error) {
+      console.error("Respuesta no JSON:", {
+        status: response.status,
+        url: response.url,
+        text,
+      });
+
+      return {
+        message: "El servidor devolvió una respuesta no válida.",
+        raw: text,
+      };
+    }
+  };
+
   const getRoleSlug = () => {
     return user?.rol?.slug || user?.role?.slug || null;
   };
@@ -65,7 +88,7 @@ function Citas() {
           },
         });
 
-        const data = await res.json();
+        const data = await parseApiResponse(res);
 
         if (!res.ok) {
           setApiError(data?.message || "Error al cargar las citas.");
@@ -75,6 +98,7 @@ function Citas() {
 
         setCitas(data.data || []);
       } catch (error) {
+        console.error("Error al cargar las citas:", error);
         setApiError("Error al cargar las citas.");
         setCitas([]);
       } finally {
@@ -137,7 +161,7 @@ function Citas() {
           }
         );
 
-        const data = await response.json();
+        const data = await parseApiResponse(response);
 
         if (disponibilidadRequestIdRef.current !== requestId) return;
 
@@ -178,6 +202,8 @@ function Citas() {
         });
       } catch (error) {
         if (error.name === "AbortError") return;
+
+        console.error("Error al cargar horarios:", error);
 
         if (disponibilidadRequestIdRef.current === requestId) {
           setApiError("Error de conexión al cargar los horarios.");
@@ -312,9 +338,19 @@ function Citas() {
         },
       });
 
+      const data = await parseApiResponse(response);
+
       if (!response.ok) {
-        const error = await response.json().catch(() => null);
-        setApiError(error?.message || "Error al eliminar la cita");
+        console.error("Error al eliminar cita:", {
+          status: response.status,
+          data,
+        });
+
+        setApiError(
+          data?.message ||
+            data?.error ||
+            `Error al eliminar la cita. Código: ${response.status}`
+        );
         return;
       }
 
@@ -332,6 +368,7 @@ function Citas() {
         resetEditState();
       }
     } catch (error) {
+      console.error("Error de conexión al eliminar cita:", error);
       setApiError("Error de conexión al eliminar la cita.");
     } finally {
       setDeletingCitaId(null);
@@ -374,18 +411,29 @@ function Citas() {
         body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
+      const data = await parseApiResponse(response);
 
       if (!response.ok) {
-        setApiError(data.message || data.error || "Error al actualizar la cita");
+        console.error("Error al actualizar cita:", {
+          status: response.status,
+          data,
+        });
+
+        setApiError(
+          data?.message ||
+            data?.error ||
+            `Error al actualizar la cita. Código: ${response.status}`
+        );
         return;
       }
 
-      const updated = data.data || data.cita || data;
+      const updated = data?.data || data?.cita || null;
 
       if (!updated || !updated.id) {
+        console.error("Respuesta inesperada al actualizar cita:", data);
+
         setApiError(
-          data.message ||
+          data?.message ||
             "La cita se actualizó, pero el servidor no devolvió la cita actualizada."
         );
         return;
@@ -404,6 +452,7 @@ function Citas() {
       setSelected(null);
       resetEditState();
     } catch (error) {
+      console.error("Error de conexión al actualizar cita:", error);
       setApiError("Error de conexión al actualizar la cita.");
     } finally {
       setSavingCita(false);
