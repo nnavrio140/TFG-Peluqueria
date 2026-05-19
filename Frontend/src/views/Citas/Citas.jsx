@@ -305,15 +305,11 @@ function Citas() {
 
     try {
       const response = await fetch(CITAS_ENDPOINTS.DELETE(cita.id), {
-        method: "POST",
+        method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          _method: "DELETE",
-        }),
       });
 
       if (!response.ok) {
@@ -369,16 +365,13 @@ function Citas() {
 
     try {
       const response = await fetch(CITAS_ENDPOINTS.UPDATE(editingCita.id), {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          ...payload,
-          _method: "PUT",
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
@@ -388,7 +381,15 @@ function Citas() {
         return;
       }
 
-      const updated = data.data;
+      const updated = data.data || data.cita || data;
+
+      if (!updated || !updated.id) {
+        setApiError(
+          data.message ||
+            "La cita se actualizó, pero el servidor no devolvió la cita actualizada."
+        );
+        return;
+      }
 
       setCitas((prev) =>
         prev.map((item) => (item.id === updated.id ? updated : item))
