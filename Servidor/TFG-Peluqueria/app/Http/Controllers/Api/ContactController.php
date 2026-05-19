@@ -8,6 +8,19 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    public function index()
+    {
+        $contactos = Contact::query()
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $contactos,
+            'contactos' => $contactos,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -18,11 +31,12 @@ class ContactController extends Controller
         ]);
 
         $contact = Contact::create($validated);
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Mensaje enviado correctamente',
-            'data' => $contact
+            'data' => $contact,
+            'contacto' => $contact,
         ], 201);
     }
 }

@@ -22,6 +22,20 @@ function Header() {
   const menuRef = useRef(null);
   const mobileRef = useRef(null);
 
+  const userRole =
+    user?.rol?.slug ||
+    user?.role?.slug ||
+    user?.rol ||
+    user?.role ||
+    user?.nombre_rol ||
+    user?.rol_nombre ||
+    "";
+
+  const normalizedRole = String(userRole).toLowerCase();
+
+  const canAccessDashboard =
+    normalizedRole === "admin" || normalizedRole === "empleado";
+
   const closeMobileMenu = () => {
     setMobileMenu(false);
     setOpenMenu(false);
@@ -36,19 +50,20 @@ function Header() {
     navigate("/");
   };
 
+  const goToDashboard = () => {
+    setOpenMenu(false);
+    setMobileMenu(false);
+
+    navigate("/admin/dashboard");
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target)
-      ) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
         setOpenMenu(false);
       }
 
-      if (
-        mobileRef.current &&
-        !mobileRef.current.contains(event.target)
-      ) {
+      if (mobileRef.current && !mobileRef.current.contains(event.target)) {
         setMobileMenu(false);
       }
     };
@@ -77,7 +92,6 @@ function Header() {
   return (
     <header className="cabecera">
       <div className="cabecera__contenedor" ref={mobileRef}>
-
         {/* LOGO */}
         <Link to="/" className="cabecera__marca" onClick={closeMobileMenu}>
           <img
@@ -103,7 +117,6 @@ function Header() {
             mobileMenu ? "cabecera__menu--activo" : ""
           }`}
         >
-
           {/* NAV */}
           <nav className="cabecera__navegacion">
             <Link to="/servicios" onClick={closeMobileMenu}>
@@ -129,10 +142,8 @@ function Header() {
 
           {/* AUTH */}
           <div className="cabecera__auth">
-
             {user ? (
               <div className="user-menu" ref={menuRef}>
-
                 <button
                   className={`cabecera__btn cabecera__btn--user ${
                     openMenu ? "cabecera__btn--active" : ""
@@ -141,11 +152,21 @@ function Header() {
                   onClick={() => setOpenMenu(!openMenu)}
                 >
                   <FontAwesomeIcon icon={faUser} />
-                  <span>{user.nombre}</span>
+                  <span>{user.nombre || user.name || "Usuario"}</span>
                 </button>
 
                 {openMenu && (
                   <div className="dropdown dropdown--user">
+                    {canAccessDashboard && (
+                      <button
+                        className="dropdown__item"
+                        type="button"
+                        onClick={goToDashboard}
+                      >
+                        Admin Dashboard
+                      </button>
+                    )}
+
                     <button
                       className="dropdown__item dropdown__item--logout"
                       type="button"
@@ -155,7 +176,6 @@ function Header() {
                     </button>
                   </div>
                 )}
-
               </div>
             ) : (
               <>
@@ -178,7 +198,6 @@ function Header() {
                 </Link>
               </>
             )}
-
           </div>
         </div>
       </div>

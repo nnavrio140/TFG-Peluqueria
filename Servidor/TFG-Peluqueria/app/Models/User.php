@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->rol && $this->rol->slug === 'usuario';
     }
+
+    public function isAdminOrEmploye()
+    {
+        return $this->isAdmin() || $this->isEmployee();
+    }
 }

@@ -10,19 +10,19 @@ import Home from "./views/Home/Home";
 import Services from "./views/Services/Services";
 import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
-import GoogleSuccess from "./views/Auth/GoogleSuccess"; 
+import GoogleSuccess from "./views/Auth/GoogleSuccess";
 import About from "./views/About/About";
 import Contact from "./views/Contact/Contact";
 import Reserva from "./views/Reserva/Reserva";
 import Blog from "./views/Blog/Blog";
 import Citas from "./views/Citas/Citas";
+import AdminDashboard from "./views/AdminDashboard/AdminDashboard";
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-
           {/* RUTAS CON HEADER */}
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
@@ -30,16 +30,24 @@ function App() {
             <Route path="/sobre-nosotros" element={<About />} />
             <Route path="/contacto" element={<Contact />} />
             <Route path="/blog" element={<Blog />} />
-            <Route path="/citas" element={
-              <ProtectedRoute>
-                <Citas />
-              </ProtectedRoute>
-            } />
-            <Route path="/reserva" element={
-              <ProtectedRoute>
-                <Reserva />
-              </ProtectedRoute>
-            } />
+
+            <Route
+              path="/citas"
+              element={
+                <ProtectedRoute>
+                  <Citas />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/reserva"
+              element={
+                <ProtectedRoute>
+                  <Reserva />
+                </ProtectedRoute>
+              }
+            />
           </Route>
 
           {/* RUTAS SIN HEADER */}
@@ -47,10 +55,19 @@ function App() {
             <Route path="/registro" element={<Register />} />
             <Route path="/login" element={<Login />} />
 
-            {/*CALLBACK GOOGLE */}
+            {/* CALLBACK GOOGLE */}
             <Route path="/login/success" element={<GoogleSuccess />} />
-          </Route>
 
+            {/* ADMIN DASHBOARD */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
