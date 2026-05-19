@@ -1,4 +1,6 @@
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+export const SERVER_URL =
+  import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
 // AUTH
 export const LOGIN_ENDPOINT = `${API_BASE_URL}/login`;
@@ -103,4 +105,21 @@ export const CONTACT_ENDPOINTS = {
   STORE: CONTACT_STORE_ENDPOINT,
   SHOW: CONTACT_SHOW_ENDPOINT,
   DELETE: CONTACT_DELETE_ENDPOINT,
+};
+
+// BLOG
+export const BLOG_INDEX_ENDPOINT = `${API_BASE_URL}/blog`;
+export const BLOG_STORE_ENDPOINT = `${API_BASE_URL}/blog`;
+export const BLOG_SHOW_ENDPOINT = (id) => `${API_BASE_URL}/blog/${id}`;
+export const BLOG_UPDATE_ENDPOINT = (id) => `${API_BASE_URL}/blog/${id}`;
+export const BLOG_DELETE_ENDPOINT = (id) => `${API_BASE_URL}/blog/${id}`;
+
+export const BLOG_ENDPOINT = BLOG_INDEX_ENDPOINT;
+
+export const BLOG_ENDPOINTS = {
+  INDEX: BLOG_INDEX_ENDPOINT,
+  STORE: BLOG_STORE_ENDPOINT,
+  SHOW: BLOG_SHOW_ENDPOINT,
+  UPDATE: BLOG_UPDATE_ENDPOINT,
+  DELETE: BLOG_DELETE_ENDPOINT,
 };

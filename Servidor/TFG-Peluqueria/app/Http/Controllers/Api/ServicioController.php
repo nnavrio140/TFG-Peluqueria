@@ -7,6 +7,7 @@ use App\Models\Servicio;
 use App\Http\Requests\StoreServicioRequest;
 use App\Http\Requests\UpdateServicioRequest;
 use App\Http\Resources\ServicioResource;
+use Illuminate\Support\Facades\Storage;
 
 class ServicioController extends Controller
 {
@@ -28,6 +29,10 @@ class ServicioController extends Controller
     public function store(StoreServicioRequest $request)
     {
         $validated = $request->validated();
+
+        if ($request->hasFile('imagen')) {
+            $validated['imagen'] = $request->file('imagen')->store('servicios', 'public');
+        }
 
         $servicio = Servicio::create($validated);
 
@@ -52,6 +57,14 @@ class ServicioController extends Controller
     {
         $validated = $request->validated();
 
+        if ($request->hasFile('imagen')) {
+            if ($servicio->imagen) {
+                Storage::disk('public')->delete($servicio->imagen);
+            }
+
+            $validated['imagen'] = $request->file('imagen')->store('servicios', 'public');
+        }
+
         $servicio->update($validated);
 
         return response()->json([
@@ -65,6 +78,10 @@ class ServicioController extends Controller
      */
     public function destroy(Servicio $servicio)
     {
+        if ($servicio->imagen) {
+            Storage::disk('public')->delete($servicio->imagen);
+        }
+
         $servicio->delete();
 
         return response()->json([

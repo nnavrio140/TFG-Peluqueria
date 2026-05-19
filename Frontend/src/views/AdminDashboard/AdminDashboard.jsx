@@ -7,6 +7,7 @@ import {
   USUARIOS_ENDPOINTS,
   SERVICIOS_ENDPOINTS,
   CONTACT_ENDPOINTS,
+  BLOG_ENDPOINTS,
 } from "../../services/endpoints";
 import "./AdminDashboard.css";
 
@@ -29,6 +30,15 @@ const EMPTY_FORMS = {
     descripcion: "",
     precio: "",
     duracion: "",
+    imagen: null,
+    imagen_actual: "",
+    imagen_preview: "",
+  },
+  blog: {
+    title: "",
+    image: null,
+    image_actual: "",
+    image_preview: "",
   },
 };
 
@@ -43,6 +53,7 @@ export default function AdminDashboard() {
   const [usuarios, setUsuarios] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [contactos, setContactos] = useState([]);
+  const [blogPosts, setBlogPosts] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -55,8 +66,13 @@ export default function AdminDashboard() {
 
   const token = localStorage.getItem("token");
 
-  const authHeaders = {
+  const jsonHeaders = {
     "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const formHeaders = {
     Accept: "application/json",
     Authorization: `Bearer ${token}`,
   };
@@ -79,6 +95,8 @@ export default function AdminDashboard() {
     if (Array.isArray(data?.usuarios)) return data.usuarios;
     if (Array.isArray(data?.servicios)) return data.servicios;
     if (Array.isArray(data?.contactos)) return data.contactos;
+    if (Array.isArray(data?.blog)) return data.blog;
+    if (Array.isArray(data?.posts)) return data.posts;
     return [];
   };
 
@@ -126,6 +144,91 @@ export default function AdminDashboard() {
     return servicio?.descripcion || "Sin descripción";
   };
 
+  const getServicioImagen = (servicio) => {
+    return (
+      servicio?.imagen_url ||
+      servicio?.url_imagen ||
+      servicio?.imagen_completa ||
+      servicio?.imagen ||
+      ""
+    );
+  };
+
+  const getBlogTitle = (post) => {
+    return post?.title || post?.titulo || "Sin título";
+  };
+
+  const getBlogImage = (post) => {
+    return (
+      post?.image_url ||
+      post?.url_image ||
+      post?.image_completa ||
+      post?.image ||
+      post?.imagen ||
+      ""
+    );
+  };
+
+  const getApiBaseUrl = () => {
+    try {
+      let indexUrl = "";
+
+      if (activeSection === "blog") {
+        indexUrl = BLOG_ENDPOINTS.INDEX;
+      } else {
+        indexUrl = SERVICIOS_ENDPOINTS.INDEX;
+      }
+
+      if (indexUrl.startsWith("http")) {
+        return new URL(indexUrl).origin;
+      }
+
+      return window.location.origin;
+    } catch (error) {
+      return window.location.origin;
+    }
+  };
+
+  const getImageUrl = (rawPath) => {
+    if (!rawPath) return "";
+
+    if (rawPath instanceof File) {
+      return URL.createObjectURL(rawPath);
+    }
+
+    const path = String(rawPath);
+
+    if (path.startsWith("http://") || path.startsWith("https://")) {
+      return path;
+    }
+
+    if (path.startsWith("/storage/")) {
+      return `${getApiBaseUrl()}${path}`;
+    }
+
+    if (path.startsWith("storage/")) {
+      return `${getApiBaseUrl()}/${path}`;
+    }
+
+    return `${getApiBaseUrl()}/storage/${path}`;
+  };
+
+  const getServicioImagenUrl = (servicioOrPath) => {
+    const rawPath =
+      typeof servicioOrPath === "string"
+        ? servicioOrPath
+        : getServicioImagen(servicioOrPath);
+
+    return getImageUrl(rawPath);
+  };
+
+  const getBlogImageUrl = (postOrPath) => {
+    const rawPath =
+      typeof postOrPath === "string" ? postOrPath : getBlogImage(postOrPath);
+
+    return getImageUrl(rawPath);
+  };
+
   const canAccessDashboard = (loggedUser) => {
     const role = getRoleSlug(loggedUser);
     return role === "admin" || role === "empleado";
@@ -140,7 +243,7 @@ export default function AdminDashboard() {
 
       const res = await fetch(ME_ENDPOINT, {
         method: "GET",
-        headers: authHeaders,
+        headers: jsonHeaders,
       });
 
       if (!res.ok) {
@@ -178,6 +281,10 @@ export default function AdminDashboard() {
     if (activeSection === "contacto") {
       await fetchData(CONTACT_ENDPOINTS.INDEX, setContactos, "contacto");
     }
+
+    if (activeSection === "blog") {
+      await fetchData(BLOG_ENDPOINTS.INDEX, setBlogPosts, "blog");
+    }
   };
 
   const fetchData = async (url, setter, label) => {
@@ -186,7 +293,7 @@ export default function AdminDashboard() {
 
       const res = await fetch(url, {
         method: "GET",
-        headers: authHeaders,
+        headers: jsonHeaders,
       });
 
       if (!res.ok) throw new Error(`Error cargando ${label}`);
@@ -204,6 +311,7 @@ export default function AdminDashboard() {
   const getEndpointsByType = (type) => {
     if (type === "usuarios") return USUARIOS_ENDPOINTS;
     if (type === "servicios") return SERVICIOS_ENDPOINTS;
+    if (type === "blog") return BLOG_ENDPOINTS;
     return null;
   };
 
@@ -244,12 +352,28 @@ export default function AdminDashboard() {
     }
 
     if (type === "servicios") {
+      const imagenActual = getServicioImagen(item);
+
       setFormData({
         nombre_servicio: item.nombre || item.nombre_servicio || "",
         descripcion_corta: item.descripcion_corta || "",
         descripcion: item.descripcion || "",
         precio: item.precio || "",
         duracion: item.duracion || "",
+        imagen: null,
+        imagen_actual: imagenActual,
+        imagen_preview: imagenActual ? getServicioImagenUrl(imagenActual) : "",
+      });
+    }
+
+    if (type === "blog") {
+      const imageActual = getBlogImage(item);
+
+      setFormData({
+        title: item.title || "",
+        image: null,
+        image_actual: imageActual,
+        image_preview: imageActual ? getBlogImageUrl(imageActual) : "",
       });
     }
 
@@ -266,7 +390,36 @@ export default function AdminDashboard() {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
+
+    if (files && files.length > 0) {
+      const file = files[0];
+
+      setFormData((prev) => {
+        if (name === "imagen") {
+          return {
+            ...prev,
+            imagen: file,
+            imagen_preview: URL.createObjectURL(file),
+          };
+        }
+
+        if (name === "image") {
+          return {
+            ...prev,
+            image: file,
+            image_preview: URL.createObjectURL(file),
+          };
+        }
+
+        return {
+          ...prev,
+          [name]: file,
+        };
+      });
+
+      return;
+    }
 
     setFormData((prev) => ({
       ...prev,
@@ -274,7 +427,7 @@ export default function AdminDashboard() {
     }));
   };
 
-  const buildPayload = () => {
+  const buildJsonPayload = () => {
     if (modalType === "usuarios") {
       const payload = { ...formData };
 
@@ -285,17 +438,49 @@ export default function AdminDashboard() {
       return payload;
     }
 
-    if (modalType === "servicios") {
-      return {
-        nombre_servicio: String(formData.nombre_servicio || "").trim(),
-        descripcion_corta: String(formData.descripcion_corta || "").trim(),
-        descripcion: String(formData.descripcion || "").trim(),
-        precio: Number(formData.precio),
-        duracion: Number(formData.duracion),
-      };
+    return { ...formData };
+  };
+
+  const buildServicioFormData = (isEditing) => {
+    const payload = new FormData();
+
+    if (isEditing) {
+      payload.append("_method", "PUT");
     }
 
-    return { ...formData };
+    payload.append(
+      "nombre_servicio",
+      String(formData.nombre_servicio || "").trim()
+    );
+    payload.append(
+      "descripcion_corta",
+      String(formData.descripcion_corta || "").trim()
+    );
+    payload.append("descripcion", String(formData.descripcion || "").trim());
+    payload.append("precio", String(formData.precio || ""));
+    payload.append("duracion", String(formData.duracion || ""));
+
+    if (formData.imagen instanceof File) {
+      payload.append("imagen", formData.imagen);
+    }
+
+    return payload;
+  };
+
+  const buildBlogFormData = (isEditing) => {
+    const payload = new FormData();
+
+    if (isEditing) {
+      payload.append("_method", "PUT");
+    }
+
+    payload.append("title", String(formData.title || "").trim());
+
+    if (formData.image instanceof File) {
+      payload.append("image", formData.image);
+    }
+
+    return payload;
   };
 
   const submitForm = async (e) => {
@@ -306,13 +491,24 @@ export default function AdminDashboard() {
 
     const isEditing = Boolean(editingItem);
     const url = isEditing ? endpoints.UPDATE(editingItem.id) : endpoints.STORE;
-    const method = isEditing ? "PUT" : "POST";
-    const payload = buildPayload();
+
+    const isServicio = modalType === "servicios";
+    const isBlog = modalType === "blog";
+    const isFormData = isServicio || isBlog;
+
+    const method = isFormData ? "POST" : isEditing ? "PUT" : "POST";
+
+    const payload = isServicio
+      ? buildServicioFormData(isEditing)
+      : isBlog
+        ? buildBlogFormData(isEditing)
+        : buildJsonPayload();
 
     console.log("Enviando a Laravel:", {
       url,
       method,
       payload,
+      tipo: modalType,
     });
 
     try {
@@ -321,8 +517,8 @@ export default function AdminDashboard() {
 
       const res = await fetch(url, {
         method,
-        headers: authHeaders,
-        body: JSON.stringify(payload),
+        headers: isFormData ? formHeaders : jsonHeaders,
+        body: isFormData ? payload : JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -363,7 +559,7 @@ export default function AdminDashboard() {
 
       const res = await fetch(endpoints.DELETE(id), {
         method: "DELETE",
-        headers: authHeaders,
+        headers: jsonHeaders,
       });
 
       if (!res.ok) {
@@ -419,9 +615,22 @@ export default function AdminDashboard() {
             getServicioNombre={getServicioNombre}
             getServicioDescripcionCorta={getServicioDescripcionCorta}
             getServicioDescripcion={getServicioDescripcion}
+            getServicioImagenUrl={getServicioImagenUrl}
             onCreate={() => openCreateModal("servicios")}
             onEdit={(item) => openEditModal("servicios", item)}
             onDelete={(id) => deleteItem("servicios", id)}
+          />
+        )}
+
+        {activeSection === "blog" && (
+          <BlogSection
+            blogPosts={blogPosts}
+            disabled={loading || saving}
+            getBlogTitle={getBlogTitle}
+            getBlogImageUrl={getBlogImageUrl}
+            onCreate={() => openCreateModal("blog")}
+            onEdit={(item) => openEditModal("blog", item)}
+            onDelete={(id) => deleteItem("blog", id)}
           />
         )}
 
@@ -472,6 +681,15 @@ export default function AdminDashboard() {
             onClick={() => changeSection("servicios")}
           >
             Servicios
+          </button>
+
+          <button
+            type="button"
+            disabled={loading || saving}
+            className={activeSection === "blog" ? "active" : ""}
+            onClick={() => changeSection("blog")}
+          >
+            Blog
           </button>
 
           <button
@@ -588,6 +806,7 @@ function ServiciosSection({
   getServicioNombre,
   getServicioDescripcionCorta,
   getServicioDescripcion,
+  getServicioImagenUrl,
   onCreate,
   onEdit,
   onDelete,
@@ -610,6 +829,7 @@ function ServiciosSection({
       <table className="admin-table">
         <thead>
           <tr>
+            <th>Imagen</th>
             <th>Nombre</th>
             <th>Descripción corta</th>
             <th>Descripción</th>
@@ -621,30 +841,126 @@ function ServiciosSection({
 
         <tbody>
           {servicios.length > 0 ? (
-            servicios.map((servicio) => (
-              <tr key={servicio.id}>
-                <td>{getServicioNombre(servicio)}</td>
-                <td title={getServicioDescripcionCorta(servicio)}>
-                  {getServicioDescripcionCorta(servicio)}
-                </td>
-                <td title={getServicioDescripcion(servicio)}>
-                  {getServicioDescripcion(servicio)}
-                </td>
-                <td>{Number(servicio.precio || 0).toFixed(2)}€</td>
-                <td>{servicio.duracion || 0} min</td>
-                <td>
-                  <ActionButtons
-                    item={servicio}
-                    disabled={disabled}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                  />
-                </td>
-              </tr>
-            ))
+            servicios.map((servicio) => {
+              const imagenUrl = getServicioImagenUrl(servicio);
+
+              return (
+                <tr key={servicio.id}>
+                  <td>
+                    {imagenUrl ? (
+                      <img
+                        src={imagenUrl}
+                        alt={getServicioNombre(servicio)}
+                        className="admin-service-thumb"
+                      />
+                    ) : (
+                      <span>Sin imagen</span>
+                    )}
+                  </td>
+
+                  <td>{getServicioNombre(servicio)}</td>
+
+                  <td title={getServicioDescripcionCorta(servicio)}>
+                    {getServicioDescripcionCorta(servicio)}
+                  </td>
+
+                  <td title={getServicioDescripcion(servicio)}>
+                    {getServicioDescripcion(servicio)}
+                  </td>
+
+                  <td>{Number(servicio.precio || 0).toFixed(2)}€</td>
+                  <td>{servicio.duracion || 0} min</td>
+
+                  <td>
+                    <ActionButtons
+                      item={servicio}
+                      disabled={disabled}
+                      onEdit={onEdit}
+                      onDelete={onDelete}
+                    />
+                  </td>
+                </tr>
+              );
+            })
           ) : (
             <tr>
-              <td colSpan="6">No hay servicios registrados en la BD.</td>
+              <td colSpan="7">No hay servicios registrados en la BD.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function BlogSection({
+  blogPosts,
+  disabled,
+  getBlogTitle,
+  getBlogImageUrl,
+  onCreate,
+  onEdit,
+  onDelete,
+}) {
+  return (
+    <div className="admin-table-wrapper">
+      <div className="admin-section-header">
+        <h2>Blog</h2>
+
+        <button
+          type="button"
+          className="admin-create-btn"
+          disabled={disabled}
+          onClick={onCreate}
+        >
+          Crear blog
+        </button>
+      </div>
+
+      <table className="admin-table">
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Título</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {blogPosts.length > 0 ? (
+            blogPosts.map((post) => {
+              const imageUrl = getBlogImageUrl(post);
+
+              return (
+                <tr key={post.id}>
+                  <td>
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={getBlogTitle(post)}
+                        className="admin-service-thumb"
+                      />
+                    ) : (
+                      <span>Sin imagen</span>
+                    )}
+                  </td>
+
+                  <td>{getBlogTitle(post)}</td>
+
+                  <td>
+                    <ActionButtons
+                      item={post}
+                      disabled={disabled}
+                      onEdit={onEdit}
+                      onDelete={onDelete}
+                    />
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan="3">No hay entradas de blog registradas en la BD.</td>
             </tr>
           )}
         </tbody>
@@ -728,13 +1044,22 @@ function AdminModal({
   onClose,
   loading,
 }) {
+  const title =
+    modalType === "usuarios"
+      ? "Usuario"
+      : modalType === "servicios"
+        ? "Servicio"
+        : modalType === "blog"
+          ? "Blog"
+          : "";
+
   return (
     <div className="admin-modal-backdrop">
       <div className="admin-modal">
         <div className="admin-modal-header">
           <div>
             <span>{editingItem ? "Editar" : "Crear"}</span>
-            <h3>{modalType === "usuarios" ? "Usuario" : "Servicio"}</h3>
+            <h3>{title}</h3>
           </div>
 
           <button
@@ -870,6 +1195,68 @@ function AdminModal({
                   disabled={loading}
                 />
               </label>
+
+              <label>
+                Imagen del servicio
+                <input
+                  type="file"
+                  name="imagen"
+                  accept="image/*"
+                  onChange={onChange}
+                  required={!editingItem}
+                  disabled={loading}
+                />
+              </label>
+
+              {formData.imagen_preview && (
+                <div className="admin-image-preview-box">
+                  <span>Vista previa</span>
+                  <img
+                    src={formData.imagen_preview}
+                    alt="Vista previa del servicio"
+                    className="admin-image-preview"
+                  />
+                </div>
+              )}
+            </>
+          )}
+
+          {modalType === "blog" && (
+            <>
+              <label>
+                Título
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title || ""}
+                  onChange={onChange}
+                  required
+                  disabled={loading}
+                />
+              </label>
+
+              <label>
+                Imagen del blog
+                <input
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  onChange={onChange}
+                  required={!editingItem}
+                  disabled={loading}
+                />
+              </label>
+
+              {formData.image_preview && (
+                <div className="admin-image-preview-box">
+                  <span>Vista previa</span>
+                  <img
+                    src={formData.image_preview}
+                    alt="Vista previa del blog"
+                    className="admin-image-preview"
+                  />
+                </div>
+              )}
             </>
           )}
 

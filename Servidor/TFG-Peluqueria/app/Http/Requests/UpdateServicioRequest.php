@@ -31,7 +31,7 @@ class UpdateServicioRequest extends FormRequest
             'descripcion' => 'required|string',
             'precio' => 'required|numeric',
             'duracion' => 'required|integer',
-            'imagen' => 'nullable|string|max:255',
+            'imagen' => 'sometimes|image|mimes:jpg,jpeg,png,webp|max:4096',
         ];
     }
 
@@ -55,8 +55,9 @@ class UpdateServicioRequest extends FormRequest
             'duracion.required' => 'La duración es obligatoria.',
             'duracion.integer' => 'La duración debe ser un número entero.',
 
-            'imagen.string' => 'La imagen debe ser una ruta de texto válida.',
-            'imagen.max' => 'La ruta de la imagen no debe exceder los 255 caracteres.',
+            'imagen.image' => 'El archivo debe ser una imagen válida.',
+            'imagen.mimes' => 'La imagen debe ser JPG, JPEG, PNG o WEBP.',
+            'imagen.max' => 'La imagen no debe pesar más de 4 MB.',
         ];
     }
 }

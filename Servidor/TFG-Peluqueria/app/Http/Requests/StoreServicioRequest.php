@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreServicioRequest extends FormRequest
 {
     /**
-     * Verifica si el usuario tiene permiso para crear o editar servicios.
+     * Verifica si el usuario tiene permiso para crear servicios.
      * Solo admin o empleado pueden gestionar servicios.
      */
     public function authorize(): bool
@@ -20,7 +20,7 @@ class StoreServicioRequest extends FormRequest
     }
 
     /**
-     * Reglas de validación para crear o actualizar un servicio.
+     * Reglas de validación para crear un servicio.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -32,7 +32,7 @@ class StoreServicioRequest extends FormRequest
             'descripcion' => 'required|string',
             'precio' => 'required|numeric',
             'duracion' => 'required|integer',
-            'imagen' => 'nullable|string|max:255',
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,webp|max:4096',
         ];
     }
 
@@ -59,8 +59,10 @@ class StoreServicioRequest extends FormRequest
             'duracion.required' => 'La duración es obligatoria.',
             'duracion.integer' => 'La duración debe ser un número entero.',
 
-            'imagen.string' => 'La imagen debe ser una ruta de texto válida.',
-            'imagen.max' => 'La ruta de la imagen no debe exceder los 255 caracteres.',
+            'imagen.required' => 'La imagen del servicio es obligatoria.',
+            'imagen.image' => 'El archivo debe ser una imagen válida.',
+            'imagen.mimes' => 'La imagen debe ser JPG, JPEG, PNG o WEBP.',
+            'imagen.max' => 'La imagen no debe pesar más de 4 MB.',
         ];
     }
 }

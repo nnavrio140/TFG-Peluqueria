@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\CitaController;
 use App\Http\Controllers\Api\EmpleadoController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\UsuarioController;
+use App\Http\Controllers\Api\BlogController;
 
 # AUTH públicas
 Route::post('/login', [AuthController::class, 'login']);
@@ -32,6 +33,9 @@ Route::get('/dias-disponibles', [CitaController::class, 'diasDisponibles']);
 
 # CONTACTO pública
 Route::post('/contact', [ContactController::class, 'store']);
+
+# BLOG público
+Route::get('/blog', [BlogController::class, 'index']);
 
 # RUTAS PROTEGIDAS
 Route::middleware('auth:sanctum')->group(function () {
@@ -62,4 +66,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/servicios/{servicio}', [ServicioController::class, 'update']);
     Route::delete('/servicios/{servicio}', [ServicioController::class, 'destroy']);
 
+    # BLOG ADMIN
+    Route::post('/blog', [BlogController::class, 'store']);
+    Route::put('/blog/{id}', [BlogController::class, 'update']);
+    Route::delete('/blog/{id}', [BlogController::class, 'destroy']);
 });
