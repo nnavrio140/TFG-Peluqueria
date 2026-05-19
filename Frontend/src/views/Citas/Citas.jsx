@@ -307,9 +307,13 @@ function Citas() {
       const response = await fetch(CITAS_ENDPOINTS.DELETE(cita.id), {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          _method: "DELETE",
+        }),
       });
 
       if (!response.ok) {
@@ -371,7 +375,10 @@ function Citas() {
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...payload,
+          _method: "PUT",
+        }),
       });
 
       const data = await response.json();
