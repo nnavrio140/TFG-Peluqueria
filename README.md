@@ -46,7 +46,7 @@
 
 ## [Bitacora del proyecto](https://github.com/nnavrio140/TFG-Peluqueria/wiki/BIT%C3%81CORA-DEL-PROYECTO)
 
-## Bibliografía
+## [Bibliografía](https://github.com/nnavrio140/TFG-Peluqueria/wiki/Bibliografia)
 
 ## Autor
  - Nicolás Navarrete Ríos
