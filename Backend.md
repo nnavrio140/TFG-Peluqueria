@@ -27,3 +27,5 @@ sudo apt install php8.4-mysql
 sudo apt install php8.4-mbstring
 
 php artisan migrate:fresh --seed
+
+php artisan storage:link
