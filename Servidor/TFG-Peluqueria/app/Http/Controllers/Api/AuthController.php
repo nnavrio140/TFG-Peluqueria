@@ -46,10 +46,6 @@ class AuthController extends Controller
             'nombre' => $request->nombre,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-
-            // 1 = admin
-            // 2 = empleado
-            // 3 = usuario
             'role_id' => 3,
         ]);
 
@@ -88,10 +84,6 @@ class AuthController extends Controller
                     'nombre' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
                     'password' => Hash::make(uniqid()),
-
-                    // 1 = admin
-                    // 2 = empleado
-                    // 3 = usuario
                     'role_id' => 3,
                 ]);
             }

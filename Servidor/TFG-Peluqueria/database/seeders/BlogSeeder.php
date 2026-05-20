@@ -47,6 +47,14 @@ class BlogSeeder extends Seeder
                 'title' => 'Corte Francés',
                 'image' => 'blog/frances.webp',
             ],
+            [
+                'title' => 'Corte Mohicano',
+                'image' => 'blog/mohicano.webp',
+            ],
+            [
+                'title' => 'Warrior Cut',
+                'image' => 'blog/warrior-cut.webp',
+            ],
         ];
 
         foreach ($posts as $post) {
