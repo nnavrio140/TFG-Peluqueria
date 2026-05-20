@@ -5,17 +5,21 @@
  - Es una aplicacion que sirve para gestionar las citas de una peluqueria
 ## Funcionalidades
 - Roles
-  - Admin: Podra ver todas las citas, gestionar las citas de todo el mundo actuales e historicas
-  - Cliente: Podra ver sus citas y gestionar sus citas actuales e historicas
+  - Admin: podrá ver todas las citas, gestionar las citas actuales e históricas de todos los usuarios y administrar la información principal de la aplicación.
+  - Empleado: podrá ver las citas que tenga asignadas, consultar su agenda y gestionar las citas que debe atender.
+  - Cliente: podrá ver sus propias citas, crear nuevas reservas y gestionar sus citas actuales e históricas.
 - Vistas:
   - Home
-  - Gestion de citas: lleva un historico y creacion de vista
+  - Servicios
+  - Citas
   - Login
   - Register
   - Nosotros
   - Contacto
-  - CRUD usuario y citas
-  - CRUD Perfil
+  - Blog
+  - Reserva 
+  - Mis citas
+  - Panel de administración
 ## Arquitectura / Tecnología
 
 ### Frontend
