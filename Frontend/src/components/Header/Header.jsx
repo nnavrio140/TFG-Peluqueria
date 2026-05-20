@@ -50,6 +50,13 @@ function Header() {
     navigate("/");
   };
 
+  const goToProfile = () => {
+    setOpenMenu(false);
+    setMobileMenu(false);
+
+    navigate("/perfil");
+  };
+
   const goToDashboard = () => {
     setOpenMenu(false);
     setMobileMenu(false);
@@ -157,6 +164,14 @@ function Header() {
 
                 {openMenu && (
                   <div className="dropdown dropdown--user">
+                    <button
+                      className="dropdown__item"
+                      type="button"
+                      onClick={goToProfile}
+                    >
+                      Ver perfil
+                    </button>
+
                     {canAccessDashboard && (
                       <button
                         className="dropdown__item"

@@ -17,13 +17,14 @@ import Reserva from "./views/Reserva/Reserva";
 import Blog from "./views/Blog/Blog";
 import Citas from "./views/Citas/Citas";
 import AdminDashboard from "./views/AdminDashboard/AdminDashboard";
+import VerPerfil from "./views/VerPerfil/VerPerfil";
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* RUTAS CON HEADER */}
+          {/* RUTAS CON HEADER Y FOOTER */}
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/servicios" element={<Services />} />
@@ -50,13 +51,23 @@ function App() {
             />
           </Route>
 
-          {/* RUTAS SIN HEADER */}
+          {/* RUTAS SIN HEADER NI FOOTER */}
           <Route element={<AuthLayout />}>
             <Route path="/registro" element={<Register />} />
             <Route path="/login" element={<Login />} />
 
             {/* CALLBACK GOOGLE */}
             <Route path="/login/success" element={<GoogleSuccess />} />
+
+            {/* VER PERFIL */}
+            <Route
+              path="/perfil"
+              element={
+                <ProtectedRoute>
+                  <VerPerfil />
+                </ProtectedRoute>
+              }
+            />
 
             {/* ADMIN DASHBOARD */}
             <Route
