@@ -32,9 +32,9 @@
 
 ## Enlaces del proyecto
 
-- <a href="PENDIENTE" target="_blank">Ver vídeo del proyecto</a>
-- <a href="https://www.figma.com/design/gN0VS56l6lpVcojX3PKtbD/Peluquer%C3%ADa?node-id=0-1&t=pPJrdrFSQrpcNun6-0" target="_blank">Ver prototipo en Figma</a>
-- <a href="https://tfg-peluqueria-cyan.vercel.app/" target="_blank">Ver aplicación desplegada en Vercel</a>
+- [Vídeo del proyecto](PENDIENTE)
+- [Prototipo Figma](https://www.figma.com/design/gN0VS56l6lpVcojX3PKtbD/Peluquer%C3%ADa?node-id=0-1&t=pPJrdrFSQrpcNun6-0)
+- [Aplicación desplegada](https://tfg-peluqueria-cyan.vercel.app/)
 
 ## Arquitectura / Tecnología
 
