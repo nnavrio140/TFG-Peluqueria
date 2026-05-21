@@ -26,6 +26,7 @@
   - Nosotros
   - Contacto
   - Blog
+  - Perfil
   - Reserva
   - Mis citas
   - Panel de administración
