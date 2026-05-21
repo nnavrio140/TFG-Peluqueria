@@ -6,6 +6,7 @@ import "./Reserva.css";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
 import BarberCard from "../../components/BarberCard/BarberCard";
 import { AuthContext } from "../../context/AuthContext";
+import { getImageUrl } from "../../utils/getImageUrl";
 import {
   SERVICIOS_ENDPOINTS,
   EMPLEADOS_ENDPOINTS,
@@ -357,7 +358,7 @@ function Reserva() {
                   }}
                 >
                   <ServiceCard
-                    icon={s.imagen_url || "/img/default.webp"}
+                    icon={getImageUrl(s.imagen_url, "/img/default.webp")}
                     title={s.nombre}
                     text={s.descripcion}
                   />
@@ -396,7 +397,10 @@ function Reserva() {
                 >
                   <BarberCard
                     barber={e}
-                    image={e.imagen_url || "/img/barber-default.webp"}
+                    image={getImageUrl(
+                      e.imagen_url,
+                      "/img/barber-default.webp"
+                    )}
                   />
                 </div>
               ))}
