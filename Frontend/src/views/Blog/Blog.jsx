@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./Blog.css";
 import BlogCard from "../../components/BlogCard/BlogCard";
 import { BLOG_ENDPOINT } from "../../services/endpoints";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function Blog() {
   const [posts, setPosts] = useState([]);
@@ -50,7 +51,16 @@ function Blog() {
             {/* GRID */}
             <div className="blog__grid">
               {currentPosts.map((post) => (
-                <BlogCard key={post.id} post={post} />
+                <BlogCard
+                  key={post.id}
+                  post={{
+                    ...post,
+                    imagen_url: getImageUrl(
+                      post.imagen_url,
+                      "/img/default.webp"
+                    ),
+                  }}
+                />
               ))}
             </div>
 
