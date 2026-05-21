@@ -19,7 +19,11 @@ function Blog() {
 
         const fixedPosts = (data.data || []).map((post) => ({
           ...post,
-          image: getImageUrl(post.image, "/img/default.webp", "/storage/blog"),
+          image: getImageUrl(
+            post.image_url || post.image,
+            "/img/default.webp",
+            "/storage"
+          ),
         }));
 
         console.log("BLOG FIXED:", fixedPosts);
@@ -42,7 +46,6 @@ function Blog() {
 
   return (
     <div className="blog">
-      {/* HEADER */}
       <div className="section__header">
         <h1 className="section__title">BLOG</h1>
       </div>
@@ -57,14 +60,12 @@ function Blog() {
           <p className="blog__loading">No hay cortes disponibles todavía.</p>
         ) : (
           <>
-            {/* GRID */}
             <div className="blog__grid">
               {currentPosts.map((post) => (
                 <BlogCard key={post.id} post={post} />
               ))}
             </div>
 
-            {/* PAGINATION */}
             {pageCount > 1 && (
               <div className="blog__pagination">
                 <button
