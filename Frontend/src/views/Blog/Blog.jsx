@@ -15,7 +15,14 @@ function Blog() {
     fetch(BLOG_ENDPOINT)
       .then((res) => res.json())
       .then((data) => {
-        setPosts(data.data || []);
+        console.log("BLOG API:", data.data);
+
+        const fixedPosts = (data.data || []).map((post) => ({
+          ...post,
+          image: getImageUrl(post.image, "/img/default.webp"),
+        }));
+
+        setPosts(fixedPosts);
         setCurrentPage(0);
       })
       .catch((error) => {
@@ -51,16 +58,7 @@ function Blog() {
             {/* GRID */}
             <div className="blog__grid">
               {currentPosts.map((post) => (
-                <BlogCard
-                  key={post.id}
-                  post={{
-                    ...post,
-                    imagen_url: getImageUrl(
-                      post.imagen_url,
-                      "/img/default.webp"
-                    ),
-                  }}
-                />
+                <BlogCard key={post.id} post={post} />
               ))}
             </div>
 
