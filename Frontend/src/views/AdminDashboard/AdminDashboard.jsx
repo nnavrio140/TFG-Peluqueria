@@ -82,7 +82,9 @@ export default function AdminDashboard() {
   }, []);
 
   useEffect(() => {
-    if (user && !accessDenied) loadData();
+    if (user && !accessDenied) {
+      loadData();
+    }
   }, [activeSection, user, accessDenied]);
 
   const getArray = (data) => {
@@ -102,9 +104,7 @@ export default function AdminDashboard() {
     console.error("Error API:", data);
 
     if (data?.message && data?.errors) {
-      return `${data.message}: ${Object.values(data.errors)
-        .flat()
-        .join(" ")}`;
+      return `${data.message}: ${Object.values(data.errors).flat().join(" ")}`;
     }
 
     return (
@@ -139,15 +139,26 @@ export default function AdminDashboard() {
     servicio?.imagen_url ||
     servicio?.url_imagen ||
     servicio?.imagen_completa ||
+    servicio?.imagen_path ||
+    servicio?.image_path ||
     servicio?.imagen ||
+    servicio?.image ||
     "";
 
-  const getBlogTitle = (post) => post?.title || post?.titulo || "Sin título";
+  const getBlogTitle = (post) =>
+    post?.title || post?.titulo || post?.nombre || "Sin título";
 
   const getBlogImage = (post) =>
     post?.image_url ||
+    post?.imagen_url ||
     post?.url_image ||
+    post?.url_imagen ||
     post?.image_completa ||
+    post?.imagen_completa ||
+    post?.image_path ||
+    post?.imagen_path ||
+    post?.path ||
+    post?.ruta ||
     post?.image ||
     post?.imagen ||
     "";
@@ -581,6 +592,7 @@ export default function AdminDashboard() {
         <div className="admin-denied-box">
           <h1>Acceso denegado</h1>
           <p>Solo los administradores y empleados pueden entrar al dashboard.</p>
+
           <button type="button" onClick={() => navigate("/")}>
             Volver
           </button>
@@ -868,6 +880,9 @@ function BlogSection({
           {blogPosts.length > 0 ? (
             blogPosts.map((post) => {
               const imageUrl = getBlogImageUrl(post);
+
+              console.log("BLOG POST:", post);
+              console.log("BLOG IMAGE URL:", imageUrl);
 
               return (
                 <tr key={post.id}>
