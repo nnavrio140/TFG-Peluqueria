@@ -38,6 +38,7 @@ const EMPTY_FORMS = {
   blog: {
     title: "",
     image: null,
+    imagen: null,
     image_actual: "",
     image_preview: "",
   },
@@ -310,6 +311,7 @@ export default function AdminDashboard() {
       setFormData({
         title: item.title || item.titulo || "",
         image: null,
+        imagen: null,
         image_actual: imageActual,
         image_preview: imageActual ? getBlogImageUrl(imageActual) : "",
       });
@@ -346,6 +348,7 @@ export default function AdminDashboard() {
           return {
             ...prev,
             image: file,
+            imagen: file,
             image_preview: URL.createObjectURL(file),
           };
         }
@@ -411,9 +414,23 @@ export default function AdminDashboard() {
     }
 
     payload.append("title", String(formData.title || "").trim());
+    payload.append("titulo", String(formData.title || "").trim());
 
-    if (formData.image instanceof File) {
-      payload.append("image", formData.image);
+    const blogImage =
+      formData.image instanceof File
+        ? formData.image
+        : formData.imagen instanceof File
+        ? formData.imagen
+        : null;
+
+    if (blogImage) {
+      payload.append("image", blogImage);
+      payload.append("imagen", blogImage);
+    }
+
+    console.log("BLOG FORMDATA ENVIADO:");
+    for (const pair of payload.entries()) {
+      console.log(pair[0], pair[1]);
     }
 
     return payload;
@@ -461,6 +478,9 @@ export default function AdminDashboard() {
         setMessage(await getApiErrorMessage(res));
         return;
       }
+
+      const responseData = await res.json().catch(() => null);
+      console.log("RESPUESTA LARAVEL:", responseData);
 
       setMessage(
         isEditing
