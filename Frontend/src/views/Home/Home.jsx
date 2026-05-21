@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
 import { SERVICIOS_ENDPOINT } from "../../services/endpoints";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function Home() {
   const [services, setServices] = useState([]);
@@ -12,15 +13,6 @@ function Home() {
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const getImageUrl = (url) => {
-    if (!url) return "/img/default.webp";
-
-    return url.replace(
-      "http://ec2-16-192-23-37.eu-north-1.compute.amazonaws.com",
-      ""
-    );
-  };
 
   useEffect(() => {
     if (location.state?.toastMessage) {

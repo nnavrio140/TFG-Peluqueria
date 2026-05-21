@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./Services.css";
 import ServiceCard from "../../components/ServiceCard/ServiceCard";
 import { SERVICIOS_ENDPOINT } from "../../services/endpoints";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function Services() {
   const [services, setServices] = useState([]);
@@ -41,7 +42,7 @@ function Services() {
             {services.map((service) => (
               <ServiceCard
                 key={service.id}
-                icon={service.imagen_url || "/img/default.webp"}
+                icon={getImageUrl(service.imagen_url)}
                 title={service.nombre}
                 text={service.descripcion}
               />
