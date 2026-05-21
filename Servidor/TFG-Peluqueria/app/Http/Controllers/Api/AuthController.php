@@ -60,13 +60,16 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // GOOGLE REDIRECT
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')
-            ->stateless()
-            ->redirect();
-    }
+        // GOOGLE REDIRECT
+        public function redirectToGoogle()
+        {
+            return Socialite::driver('google')
+                ->stateless()
+                ->with([
+                    'prompt' => 'select_account'
+                ])
+                ->redirect();
+        }
 
     // GOOGLE CALLBACK
     public function handleGoogleCallback()
