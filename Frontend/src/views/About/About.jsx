@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./About.css";
 import BarberCard from "../../components/BarberCard/BarberCard";
 import { EMPLEADOS_ENDPOINT } from "../../services/endpoints";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function About() {
   const [barbers, setBarbers] = useState([]);
@@ -24,7 +25,6 @@ function About() {
 
   return (
     <div className="about">
-
       {/* HEADER */}
       <div className="section__header">
         <h1 className="section__title">SOBRE NOSOTROS</h1>
@@ -42,13 +42,15 @@ function About() {
               <BarberCard
                 key={barber.id}
                 barber={barber}
-                image={barber.imagen_url || "/img/barber-default.webp"}
+                image={getImageUrl(
+                  barber.imagen_url,
+                  "/img/barber-default.webp"
+                )}
               />
             ))}
           </div>
         )}
       </div>
-
     </div>
   );
 }
