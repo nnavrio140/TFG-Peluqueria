@@ -13,6 +13,15 @@ function Home() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const getImageUrl = (url) => {
+    if (!url) return "/img/default.webp";
+
+    return url.replace(
+      "http://ec2-16-192-23-37.eu-north-1.compute.amazonaws.com",
+      ""
+    );
+  };
+
   useEffect(() => {
     if (location.state?.toastMessage) {
       toast.success(location.state.toastMessage);
@@ -59,7 +68,7 @@ function Home() {
             {services.map((service) => (
               <ServiceCard
                 key={service.id}
-                icon={service.imagen_url || "/img/default.webp"}
+                icon={getImageUrl(service.imagen_url)}
                 title={service.nombre || service.nombre_servicio}
                 text={service.descripcion}
               />
