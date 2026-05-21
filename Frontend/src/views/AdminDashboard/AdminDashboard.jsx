@@ -439,7 +439,7 @@ function SectionHeader({ title, buttonText, disabled, onCreate }) {
 
 function UsuariosSection({ usuarios, getRoleSlug, getUserName, disabled, onCreate, onEdit, onDelete }) {
   return (
-    <div className="admin-table-wrapper">
+    <div className="admin-table-wrapper admin-table-usuarios">
       <SectionHeader title="Usuarios" buttonText="Crear usuario" disabled={disabled} onCreate={onCreate} />
 
       <table className="admin-table">
@@ -467,7 +467,7 @@ function UsuariosSection({ usuarios, getRoleSlug, getUserName, disabled, onCreat
 
 function ServiciosSection({ servicios, disabled, getServicioNombre, getServicioDescripcionCorta, getServicioDescripcion, getServicioImagenUrl, onCreate, onEdit, onDelete }) {
   return (
-    <div className="admin-table-wrapper">
+    <div className="admin-table-wrapper admin-table-servicios">
       <SectionHeader title="Servicios" buttonText="Crear servicio" disabled={disabled} onCreate={onCreate} />
 
       <table className="admin-table">
@@ -503,7 +503,7 @@ function ServiciosSection({ servicios, disabled, getServicioNombre, getServicioD
 
 function BlogSection({ blogPosts, disabled, getBlogTitle, getBlogImageUrl, onCreate, onEdit, onDelete }) {
   return (
-    <div className="admin-table-wrapper">
+    <div className="admin-table-wrapper admin-table-blog">
       <SectionHeader title="Blog" buttonText="Crear blog" disabled={disabled} onCreate={onCreate} />
 
       <table className="admin-table">
@@ -535,7 +535,7 @@ function BlogSection({ blogPosts, disabled, getBlogTitle, getBlogImageUrl, onCre
 
 function ContactoSection({ contactos }) {
   return (
-    <div className="admin-table-wrapper">
+    <div className="admin-table-wrapper admin-table-contacto">
       <SectionHeader title="Contacto" />
 
       <table className="admin-table">

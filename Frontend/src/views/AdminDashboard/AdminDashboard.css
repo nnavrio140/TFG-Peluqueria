@@ -629,15 +629,6 @@
   .admin-content {
     width: calc(100% - 40px);
   }
-
-  .admin-table {
-    min-width: 900px;
-  }
-
-  .admin-table-wrapper {
-    overflow-x: auto;
-    overflow-y: visible;
-  }
 }
 
 @media (max-width: 760px) {
@@ -705,21 +696,177 @@
     align-items: flex-start;
   }
 
-  .admin-create-btn {
-    width: 100%;
-  }
-
   .admin-section-header h2 {
     font-size: 22px;
   }
 
-  .admin-table {
-    min-width: 900px;
+  .admin-create-btn {
+    width: 100%;
   }
 
   .admin-table-wrapper {
-    overflow-x: auto;
-    overflow-y: visible;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .admin-table {
+    width: 100%;
+    min-width: 0;
+    display: block;
+    box-shadow: none;
+  }
+
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table tbody {
+    display: grid;
+    gap: 16px;
+  }
+
+  .admin-table tr {
+    display: block;
+    background: #202020;
+    border: 1px solid rgba(232, 196, 89, 0.35);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  }
+
+  .admin-table td {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    text-align: right;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: initial;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    padding: 14px 16px;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+  }
+
+  .admin-table td:last-child {
+    border-bottom: none;
+  }
+
+  .admin-table td::before {
+    content: "";
+    text-align: left;
+    color: #e8c459;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+  }
+
+  /* Labels usuarios */
+  .admin-table-usuarios td:nth-child(1)::before {
+    content: "Nombre";
+  }
+
+  .admin-table-usuarios td:nth-child(2)::before {
+    content: "Email";
+  }
+
+  .admin-table-usuarios td:nth-child(3)::before {
+    content: "Password";
+  }
+
+  .admin-table-usuarios td:nth-child(4)::before {
+    content: "Rol";
+  }
+
+  .admin-table-usuarios td:nth-child(5)::before {
+    content: "Acciones";
+  }
+
+  /* Labels servicios */
+  .admin-table-servicios td:nth-child(1)::before {
+    content: "Imagen";
+  }
+
+  .admin-table-servicios td:nth-child(2)::before {
+    content: "Nombre";
+  }
+
+  .admin-table-servicios td:nth-child(3)::before {
+    content: "Desc. corta";
+  }
+
+  .admin-table-servicios td:nth-child(4)::before {
+    content: "Descripción";
+  }
+
+  .admin-table-servicios td:nth-child(5)::before {
+    content: "Precio";
+  }
+
+  .admin-table-servicios td:nth-child(6)::before {
+    content: "Duración";
+  }
+
+  .admin-table-servicios td:nth-child(7)::before {
+    content: "Acciones";
+  }
+
+  /* Labels blog */
+  .admin-table-blog td:nth-child(1)::before {
+    content: "Imagen";
+  }
+
+  .admin-table-blog td:nth-child(2)::before {
+    content: "Título";
+  }
+
+  .admin-table-blog td:nth-child(3)::before {
+    content: "Acciones";
+  }
+
+  /* Labels contacto */
+  .admin-table-contacto td:nth-child(1)::before {
+    content: "Nombre";
+  }
+
+  .admin-table-contacto td:nth-child(2)::before {
+    content: "Email";
+  }
+
+  .admin-table-contacto td:nth-child(3)::before {
+    content: "Asunto";
+  }
+
+  .admin-table-contacto td:nth-child(4)::before {
+    content: "Mensaje";
+  }
+
+  .admin-actions {
+    justify-content: flex-end;
+  }
+
+  .admin-action-icon-btn {
+    width: 46px;
+    height: 38px;
+  }
+
+  .admin-service-thumb {
+    width: 48px !important;
+    height: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    object-fit: contain !important;
+    margin-left: auto;
+    margin-right: 0;
   }
 
   .admin-modal-backdrop {
@@ -743,13 +890,19 @@
     width: 100%;
   }
 
-  .admin-service-thumb {
-    width: 48px !important;
-    height: 48px !important;
-    max-width: 48px !important;
-    max-height: 48px !important;
-    min-width: 48px !important;
-    min-height: 48px !important;
-    object-fit: contain !important;
-  }
+  .admin-table td:first-child {
+  text-align: right !important;
+}
+
+.admin-table td:first-child::before {
+  text-align: left !important;
+}
+
+.admin-table-usuarios td:nth-child(1) {
+  justify-items: end;
+}
+
+.admin-table-usuarios td:nth-child(1)::before {
+  justify-self: start;
+}
 }
