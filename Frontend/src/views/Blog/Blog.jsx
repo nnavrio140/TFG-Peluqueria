@@ -19,8 +19,10 @@ function Blog() {
 
         const fixedPosts = (data.data || []).map((post) => ({
           ...post,
-          image: getImageUrl(post.image, "/img/default.webp"),
+          image: getImageUrl(post.image, "/img/default.webp", "/storage/blog"),
         }));
+
+        console.log("BLOG FIXED:", fixedPosts);
 
         setPosts(fixedPosts);
         setCurrentPage(0);
