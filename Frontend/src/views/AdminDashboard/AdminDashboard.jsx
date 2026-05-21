@@ -32,11 +32,13 @@ const EMPTY_FORMS = {
     precio: "",
     duracion: "",
     imagen: null,
+    image: null,
     imagen_actual: "",
     imagen_preview: "",
   },
   blog: {
     title: "",
+    titulo: "",
     image: null,
     imagen: null,
     image_actual: "",
@@ -100,18 +102,32 @@ export default function AdminDashboard() {
   };
 
   const getApiErrorMessage = async (res) => {
-    const data = await res.json().catch(() => null);
+    const text = await res.text();
 
-    console.error("Error API:", data);
+    console.error("STATUS ERROR:", res.status);
+    console.error("RESPUESTA RAW LARAVEL:", text);
+
+    let data = null;
+
+    try {
+      data = text ? JSON.parse(text) : null;
+    } catch (error) {
+      console.error("Laravel no devolvió JSON válido:", error);
+    }
 
     if (data?.message && data?.errors) {
       return `${data.message}: ${Object.values(data.errors).flat().join(" ")}`;
     }
 
-    return (
-      data?.message ||
-      "No se pudo guardar el registro. Revisa los campos enviados."
-    );
+    if (data?.errors) {
+      return Object.values(data.errors).flat().join(" ");
+    }
+
+    if (data?.message) {
+      return data.message;
+    }
+
+    return text || "No se pudo guardar el registro. Revisa los campos enviados.";
   };
 
   const getRoleSlug = (item) =>
@@ -300,6 +316,7 @@ export default function AdminDashboard() {
         precio: item.precio || "",
         duracion: item.duracion || "",
         imagen: null,
+        image: null,
         imagen_actual: imagenActual,
         imagen_preview: imagenActual ? getServicioImagenUrl(imagenActual) : "",
       });
@@ -310,6 +327,7 @@ export default function AdminDashboard() {
 
       setFormData({
         title: item.title || item.titulo || "",
+        titulo: item.title || item.titulo || "",
         image: null,
         imagen: null,
         image_actual: imageActual,
@@ -340,7 +358,9 @@ export default function AdminDashboard() {
           return {
             ...prev,
             imagen: file,
+            image: file,
             imagen_preview: URL.createObjectURL(file),
+            image_preview: URL.createObjectURL(file),
           };
         }
 
@@ -350,6 +370,7 @@ export default function AdminDashboard() {
             image: file,
             imagen: file,
             image_preview: URL.createObjectURL(file),
+            imagen_preview: URL.createObjectURL(file),
           };
         }
 
@@ -387,20 +408,36 @@ export default function AdminDashboard() {
       payload.append("_method", "PUT");
     }
 
-    payload.append(
-      "nombre_servicio",
-      String(formData.nombre_servicio || "").trim()
-    );
-    payload.append(
-      "descripcion_corta",
-      String(formData.descripcion_corta || "").trim()
-    );
-    payload.append("descripcion", String(formData.descripcion || "").trim());
-    payload.append("precio", String(formData.precio || ""));
-    payload.append("duracion", String(formData.duracion || ""));
+    const nombreServicio = String(formData.nombre_servicio || "").trim();
+    const descripcionCorta = String(formData.descripcion_corta || "").trim();
+    const descripcion = String(formData.descripcion || "").trim();
+    const precio = String(formData.precio || "");
+    const duracion = String(formData.duracion || "");
 
-    if (formData.imagen instanceof File) {
-      payload.append("imagen", formData.imagen);
+    payload.append("nombre_servicio", nombreServicio);
+    payload.append("nombre", nombreServicio);
+
+    payload.append("descripcion_corta", descripcionCorta);
+    payload.append("descripcion", descripcion);
+
+    payload.append("precio", precio);
+    payload.append("duracion", duracion);
+
+    const servicioImage =
+      formData.imagen instanceof File
+        ? formData.imagen
+        : formData.image instanceof File
+        ? formData.image
+        : null;
+
+    if (servicioImage) {
+      payload.append("imagen", servicioImage);
+      payload.append("image", servicioImage);
+    }
+
+    console.log("SERVICIO FORMDATA ENVIADO:");
+    for (const pair of payload.entries()) {
+      console.log(pair[0], pair[1]);
     }
 
     return payload;
@@ -413,8 +450,10 @@ export default function AdminDashboard() {
       payload.append("_method", "PUT");
     }
 
-    payload.append("title", String(formData.title || "").trim());
-    payload.append("titulo", String(formData.title || "").trim());
+    const titulo = String(formData.title || formData.titulo || "").trim();
+
+    payload.append("title", titulo);
+    payload.append("titulo", titulo);
 
     const blogImage =
       formData.image instanceof File
