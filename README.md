@@ -33,7 +33,7 @@
 
 ## Enlaces del proyecto
 
-- [Vídeo del proyecto](PENDIENTE)
+- [Vídeo del proyecto](https://youtu.be/2qOHzxPK0YM)
 - [Prototipo Figma](https://www.figma.com/design/gN0VS56l6lpVcojX3PKtbD/Peluquer%C3%ADa?node-id=0-1&t=bJlBnFuxjE4TNfk9-1)
 - [Aplicación desplegada](https://tfg-peluqueria-cyan.vercel.app/)
 
